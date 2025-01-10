@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Realtime_chess</title>
+        <link rel="stylesheet" href="lib/chessboard-0.3.0.min.css" />
+        <script src="/socket.io/socket.io.js"></script>
+    </head>
+    <style>
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column; /* 确保垂直排列 */
+    height: 100vh; /* 页面全高 */
+    overflow: hidden; /* 避免内容超出 */
+}
+
+    #gameBoard {
+        display: flex;
+        align-items: center;
+        width: 60%;
+    }
+
+    .login-window {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        text-align: center;
+        width: 300px;
+        z-index: 100000; /* 叠加到其他元素之上 */
+    }
+
+    .login-window input {
+        width: 80%;
+        padding: 10px;
+        margin: 10px 0;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+    .login-window button {
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    .login-window button:hover {
+        background-color: #0056b3;
+    }
+
+    .message {
+        padding: 10px;
+        font-size: 14px;
+        color: red;
+    }
+
+    .hidden {
+        display: none;
+    }
+
+    /* 样式模拟地址栏 */
+    #address-bar {
+        width: 100%;
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+        color: #333;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    #username {
+        font-weight: bold;
+        color: #0078D7; /* 微软蓝 */
+    }
+    </style>
+    <body>   
+        <div id="address-bar"><span>Welcome, <span id="span_username">Guest</span></span></div>
+        <div id="gameBoard"></div>
+        <div class="login-window hidden" id="loginWindow">
+            <h2>Login/Register</h2>
+            <input type="text" placeholder="Username" id="username">
+            <input type="password" placeholder="Password" id="password">
+            <div id="login_message" class="message hidden">INITIAL MESSAGE SHOULD BE HIDDEN</div>
+            <button onclick="submitForm()">Submit</button>
+        </div>
+        <!-- Scripts related to user login/register -->
+        <script src="/user.js"></script>
+        <!-- Scripts related to the game -->
+        <script src="lib/chess.min.js"></script>
+        <script src="lib/chessboard-0.3.0.min.js"></script>
+        <script src="lib/jquery-1.11.1.js"></script>
+        <script src="/client.js"></script>
+    </body>
+</html>
