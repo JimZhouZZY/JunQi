@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const { SECRET_KEY } = require('../config/constants');
+const { SECRET_KEY } = require('../config/config');
 const userModel = require('../models/userModel');
 
 // 验证密码

@@ -1,4 +1,4 @@
-const { SECRET_KEY } = require('../config/constants.js');
+const { SECRET_KEY } = require('../config/config.js');
 const jwt = require('jsonwebtoken');
 
 function authenticateToken(req, res, next) {
