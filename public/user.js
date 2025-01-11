@@ -4,7 +4,7 @@ async function submitForm() {
     const password = document.getElementById('password').value;
 
     try{
-        const response = await fetch('/login-register', {
+        const response = await fetch('/users/login-register', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -50,7 +50,7 @@ async function checkLoginStatus() {
         return;
     }
 
-    const response = await fetch('/protected-route', {
+    const response = await fetch('/users/protected-route', {
         method: 'GET',
         headers: { 'Authorization': token },
     });
@@ -67,7 +67,7 @@ async function checkLoginStatus() {
 }
 
 async function fetchUserId(username) {
-    const response = await fetch('/get-userid', {
+    const response = await fetch('/users/get-userid-by-username', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -79,7 +79,7 @@ async function fetchUserId(username) {
 }
 
 async function fetchUserName(userid) {
-    const response = await fetch('/get-username', {
+    const response = await fetch('/users/get-username-by-userid', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
