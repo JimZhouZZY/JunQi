@@ -10,8 +10,8 @@ PIECE_NAMES = {
 
 def draw_board(board_str):
     board, current_player, half_moves, total_moves = board_str.split()
-    rows = [board[i:i+5] for i in range(0, 50, 5)]
-    row_labels = 'abcdefghij'
+    rows = [board[i:i+5] for i in range(0, 60, 5)]
+    row_labels = 'abcdefghijkl'
     col_labels = '1  2  3  4  5'
 
     print("  | " + col_labels)
@@ -34,5 +34,5 @@ def draw_board(board_str):
     print(f"Total Moves: {total_moves}")
 
 '''Example Usage'''
-# board_str = "0acc0Ljc0e000000000000000B000000000GB000JK000CACC0 r 30 149"
-# draw_board(board_str)
+board_str = "0acc0Ljc0e0000000000000000000000000B000000000GB000JK000CACC0 r 30 149"
+draw_board(board_str)
