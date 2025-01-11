@@ -68,12 +68,16 @@ def welcome():
     print("----------------------------------------------------------------------------")
 
 import traceback
+import readline
 if __name__ == "__main__":
     welcome()
     while True:
         try:
             print("=============================================================================")
             user_input = input("Input: ")
+            if user_input.lower() == "exit":
+                print("Goodbye!")
+                break
             print("Output: ")
             draw_state(str(user_input))
             print("=============================================================================")
