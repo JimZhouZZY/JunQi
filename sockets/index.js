@@ -1,6 +1,6 @@
 const roomHandler = require('./room');
 const moveHandler = require('./move');
-const queueHandler = require('./move');
+const queueHandler = require('./queue');
 
 module.exports = (io) => {
     io.on('connection', (socket) => {

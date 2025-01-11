@@ -1,12 +1,13 @@
 // queue.js
+const queueService = require('../services/queueService');
 const usernameSocketMap = {};
 
-module.exports.usernameSocketMap = usernameSocketMap;
-
 module.exports = (io, socket) => {
-    socket.on('join-queue', (username) => {
+    socket.on('queues-join', async (username, queuename) => {
         usernameSocketMap[username] = socket.id;
         console.log(`${username} joined with socket id: ${socket.id}`);
+        await queueService.joinSpecificQueue(username, queuename);
+        await queueService.tryStartMatch(queuename);
     });
 
     socket.on('disconnect', () => {
@@ -20,3 +21,5 @@ module.exports = (io, socket) => {
         }
     });
 };
+
+module.exports.usernameSocketMap = usernameSocketMap;

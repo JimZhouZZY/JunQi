@@ -1,9 +1,9 @@
 module.exports = (io, socket) => {
     // 玩家加入房间
     socket.on('joinRoom', (roomName) => {
+        // 暂无用法
         socket.join(roomName); // 加入房间
         console.log(`${socket.id} joined room: ${roomName}`);
-
         // 通知房间内其他玩家
         socket.to(roomName).emit('playerJoined', `${socket.id} joined the room.`);
     });

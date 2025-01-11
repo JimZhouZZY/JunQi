@@ -1,15 +1,14 @@
 // user.js
+//import socket from './socket.js';
+
+socket.on('room-name', function(roomName) {
+    ROOM_NAME = roomName;
+});
+
 async function joinQueue() {
     const username = USERNAME;
     const queuename = 'main'; // TODO: diferrent queue_type
-    const response = await fetch('/queues/join', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ username, queuename })
-    });
-    const data = await response.json();
+    socket.emit('queues-join', username, queuename);
     // TODO: Recieve and show response
     // TODO: Handle errors
 }
@@ -111,8 +110,9 @@ async function updateMenuBar() {
 
 }
 
-USERID = null;
-USERNAME = null;
+var USERID = null;
+var USERNAME = null;
+var ROOM_NAME = null;
 async function main() {
     USERID = await checkLoginStatus();
     if (USERID == null) {

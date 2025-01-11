@@ -64,19 +64,26 @@ body {
         color: red;
     }
 
-    .button {
-        padding: 20px 20px;
-        background-color: #007bff;
-        color: #007bff;
-        border: none;
-        border-radius: 10px;
-        cursor: pointer;
+    /* 设置按钮的基础样式 */
+    .toggle_button button {
+        padding: 10px 20px;
         font-size: 16px;
+        background-color: #4CAF50; /* 初始绿色背景 */
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
     }
 
-    .button:hover {
-        background-color: #0056b3;
+    .toggle_button button:hover {
+        background-color: #45a049; /* 鼠标悬停时的颜色 */
     }
+
+    .toggle_button button:active {
+        background-color: #3e8e41; /* 按下按钮时的颜色 */
+    }
+
 
     .hidden {
         display: none;
@@ -103,7 +110,10 @@ body {
     <body>   
         <div id="address-bar"><span>Welcome, <span id="span_username">Guest</span></span></div>
         <div id="gameBoard"></div>
-        <button onclick="joinQueue()">Start</button>
+        <div class="toggle_button">
+            <button onclick="joinQueue()">Start</button>
+            <button onclick="leaveQueue()">Cancle</button>
+        </div>
         <div class="login-window hidden" id="loginWindow">
             <h2>Login/Register</h2>
             <input type="text" placeholder="Username" id="username">
@@ -111,12 +121,13 @@ body {
             <div id="login_message" class="message hidden">INITIAL MESSAGE SHOULD BE HIDDEN</div>
             <button onclick="submitForm()">Submit</button>
         </div>
-        <!-- Scripts related to user login/register -->
+        <!-- Internal -->
+        <script src="socket.js"></script>
         <script src="/user.js"></script>
-        <!-- Scripts related to the game -->
+        <script src="/client.js"></script>
+        <!-- External -->
         <script src="/lib/chess.min.js"></script>
         <script src="/lib/chessboard-0.3.0.min.js"></script>
         <script src="/lib/jquery-1.11.1.js"></script>
-        <script src="/client.js"></script>
     </body>
 </html>

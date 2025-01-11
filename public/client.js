@@ -1,4 +1,4 @@
-var socket = io();
+//import socket from './socket.js';
 
 var board;
 var game;
@@ -20,17 +20,17 @@ window.onload = function() {
 // Handle move of player's own side
 var handleMove = function(source, target) {
     var move = game.move({from: source, to: target});
-
+    // TODO: 服务端也需要判断
     if (move === null) {
         return 'snapback';
     } else {
-        socket.emit('move', move);
+        socket.emit('move', move, ROOM_NAME);
     };
 };
 
 // Handle move from the other side
-socket.on('move', function(msg) {
-    game.move(msg);
+socket.on('move', function(moveData) {
+    game.move(moveData);
     board.position(game.fen());
 });
 

@@ -6,7 +6,7 @@ queues['main'] = new UserQueue(2);
 
 const locks = {};
 
-async function tryStartMatch(queuename) {
+exports.tryStartMatch = async function (queuename) {
     if (locks[queuename]) return; // 防止重复执行
     locks[queuename] = true;
 
@@ -14,19 +14,18 @@ async function tryStartMatch(queuename) {
         if (queues[queuename].isReady()){
             usernames = await exports.dequeueSpecificQueue(queuename);
 
-            console.log(usernames);
             // TODO: multiple match types
             matchService.startMatch(usernames);
+            return true;
         }
     } finally {
         locks[queuename] = false;
+        return false;
     }
 }
 
 exports.joinSpecificQueue = async function(username, queuename) {
     queues[queuename].enqueueUser(username);
-    console.log(queues[queuename]);
-    tryStartMatch(queuename);
 }
 
 exports.leaveSpecificQueue = async function(username, queuename) {
@@ -37,7 +36,6 @@ exports.dequeueSpecificQueue = async function(queuename) {
     let queue = queues[queuename];
     let usernames = [];
     for (let i=0; i < queue.group_size; i++) {
-        console.log(queue.peek());
         usernames.push(queue.peek());
         queue.dequeue();
     }
