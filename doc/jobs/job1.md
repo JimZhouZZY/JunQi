@@ -40,12 +40,14 @@ b｜令师雷空排
 c｜空空空空空
 d｜空空空空空
 e｜空空空空空
-f｜-------
-g｜炸空空空空
-h｜空空空空空
-i｜营炸空空空
-j｜师军空空空
-k｜雷旗雷雷空
+f｜空空空空空
+ ｜-------
+g｜空空空空空
+h｜炸空空空空
+i｜空空空空空
+j｜营炸空空空
+k｜师军空空空
+l｜雷旗雷雷空
 ```
 
 ### 标准化位置表示
@@ -69,9 +71,9 @@ Returns（返回值）：
   Boolean: True - 是合法操作
            Flase - 不是合法操作
 Example:
-  >>> isLegalAction("0acc0Ljc0e000000000000000B000000000GB000JK000CACC0 r 30 149", "b2c2")
+  >>> isLegalAction("0acc0Ljc0e0000000000000000000000000B000000000GB000JK000CACC0 r 30 149", "b2c2")
       True
-  >>> isLegalAction("0acc0Ljc0e000000000000000B000000000GB000JK000CACC0 r 30 149", "b2b3")
+  >>> isLegalAction("0acc0Ljc0e0000000000000000000000000B000000000GB000JK000CACC0 r 30 149", "b2b3")
       False
 ```
 ### 编写 getLegalActions() 函数
@@ -85,8 +87,8 @@ Args:
 Returns:
   List[String]（字符串的列表）: 当前棋盘状态下所有的合法操作列表
 Example:
-  >>> getLegalAction("0acc0Ljc0e000000000000000B000000000GB000JK000CACC0 r 30 149")
-      ["b2b1","b2c2","b5a5","b5b4", "b5c5", "b5d5", "b5e5", "b5f5", "b5g5", "b5h5", "b5i5", "b5j5"]
+  >>> getLegalAction("0acc0Ljc0e0000000000000000000000000B000000000GB000JK000CACC0 r 30 149")
+      ["b2b1","b2c2","b5a5","b5b4", "b5c5", "b5d5", "b5e5", "b5f5", "b5g5", "b5h5", "b5i5", "b5j5", "b5k5"]
 ```
 ### 编写 applyAction() 函数
 ```
@@ -100,8 +102,8 @@ Args:
 Returns:
   String: 执行输入的action之后的标准化棋盘状态字符串
 Example:
-  >>> applyAction("0acc0Ljc0e000000000000000B000000000GB000JK000CACC0 r 30 149", "b2c2")
-      ["0acc0L0c0e0j0000000000000B000000000GB000JK000CACC0 r 31 150"]
-  >>> applyAction("0acc0Ljc0e000000000000000B000000000GB000JK000CACC0 r 30 149", "b2b1") # 红师长碰蓝司令
-      ["0acc0L0c0e000000000000000B000000000GB000JK000CACC0 r 1 150"]                     # 红师长挂掉，蓝司令不变
+  >>> applyAction("0acc0Ljc0e0000000000000000000000000B000000000GB000JK000CACC0 r 30 149", "b2c2")
+      ["0acc0L0c0e0j00000000000000000000000B000000000GB000JK000CACC0 r 31 150"]
+  >>> applyAction("0acc0Ljc0e0000000000000000000000000B000000000GB000JK000CACC0 r 30 149", "b2b1") # 红师长碰蓝司令
+      ["0acc0L0c0e0000000000000000000000000B000000000GB000JK000CACC0 r 1 150"]                     # 红师长挂掉，蓝司令不变
 ```
