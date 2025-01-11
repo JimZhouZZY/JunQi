@@ -1,4 +1,19 @@
 // user.js
+async function joinQueue() {
+    const username = USERNAME;
+    const queuename = 'main'; // TODO: diferrent queue_type
+    const response = await fetch('/queues/join', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, queuename })
+    });
+    const data = await response.json();
+    // TODO: Recieve and show response
+    // TODO: Handle errors
+}
+
 async function submitForm() {
     const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;
@@ -107,8 +122,9 @@ async function main() {
             document.getElementById('loginWindow').classList.remove('hidden');
         });
     } else {
-        console.log('User ID: ', USERID)
+        console.log('User ID: ', USERID);
         USERNAME = await fetchUserName(USERID);
+        console.log('Username: ', USERNAME);
     };
     updateMenuBar();
 }

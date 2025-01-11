@@ -64,6 +64,20 @@ body {
         color: red;
     }
 
+    .button {
+        padding: 20px 20px;
+        background-color: #007bff;
+        color: #007bff;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    .button:hover {
+        background-color: #0056b3;
+    }
+
     .hidden {
         display: none;
     }
@@ -89,6 +103,7 @@ body {
     <body>   
         <div id="address-bar"><span>Welcome, <span id="span_username">Guest</span></span></div>
         <div id="gameBoard"></div>
+        <button onclick="joinQueue()">Start</button>
         <div class="login-window hidden" id="loginWindow">
             <h2>Login/Register</h2>
             <input type="text" placeholder="Username" id="username">
