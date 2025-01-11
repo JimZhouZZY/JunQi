@@ -1,28 +1,21 @@
 // app.js
 const express = require('express');
-const userRoutes = require('./routes/users.js')
 
-var app = express();
+const app = express();
 app.use(express.static('public'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+const userRoutes = require('./routes/users.js')
 app.use('/users', userRoutes);
 
-var http = require('http').Server(app);
-var port = process.env.PORT || 3000;
-
+const http = require('http').Server(app);
+const port = process.env.PORT || 3000;
 http.listen(port, function () {
     console.log('listening on port: ' + port);
 });
 
-var io = require('socket.io')(http);
+const socketHandler = require('./sockets');
+const socketIO = require('socket.io')(http);
+socketHandler(socketIO);
 
-io.on('connection', function (socket) {
-    console.log('new connection');
-
-    // Handle the move event
-    socket.on('move', function (msg) {
-        socket.broadcast.emit('move', msg);
-    });
-});

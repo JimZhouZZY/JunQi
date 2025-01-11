@@ -10,7 +10,7 @@ async function verifyPassword(inputPassword, storedPasswordHash) {
 
 // 加密密码
 async function hashPassword(password) {
-    return bcrypt.hash(password, 10); // 10 是 salt rounds
+    return bcrypt.hash(password, 10); // 10 is salt rounds
 }
 
 // 生成 JWT
