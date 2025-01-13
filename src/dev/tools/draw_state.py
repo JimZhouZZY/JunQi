@@ -36,7 +36,11 @@ def board_coordinate_to_index(coordinates, total_columns=5):
 
 def draw_state(board_str):
     global STATE
-    board, current_player, half_moves, total_moves = board_str.split()
+    try:
+        board, current_player, half_moves, total_moves = board_str.split()
+    except:
+        board = board_str.split()[0]
+        current_player, half_moves, total_moves = 0, 0, 0
     STATE = copy.deepcopy(str(board))
     if len(board) != 60:
         print("Invalid string length!")
