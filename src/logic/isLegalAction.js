@@ -247,7 +247,7 @@ for (let j=1; j<10; j++){
 }
 board.addEdge("5,2", "6,2");
 
-module.exports = function isLegalAction(s,request){
+function isLegalAction(s,request){
     const blocked = new Set();
 
     //console.log(board.canMoveAsEngineer("1,0", "4,0", blocked));
@@ -267,59 +267,9 @@ module.exports = function isLegalAction(s,request){
     for (let i=0; i<12; i++){
         for (let j=0;j<5;j++){
             if (s1[i*5+j] !="0"){
-                blocked.add([String(i)+","+String(j)]);
+                blocked.add(String(i)+","+String(j));
             }
         }
-<<<<<<< Updated upstream
-        const result = splitBySpace(s);
-        const s1=result[0]; const s2=result[1]; const s3=result[2]; const s4=result[3];
-        
-        const headi=request.charCodeAt(0)-97; const headj=Number(request[1])-1;
-        const head=String(headi)+","+String(headj);
-        
-        const taili=request.charCodeAt(2)-97; const tailj=Number(request[3])-1;
-        const tail=String(taili)+","+String(tailj);
-        //console.log(headi,headj,taili,tailj)
-        for (let i=0; i<12; i++){
-            for (let j=0;j<5;j++){
-                if (s1[i*5+j] !="0"){
-                    blocked.add(String(i)+","+String(j));
-                }
-            }
-          }
-        //console.log(board.canMoveAsEngineer("9,0", "8,2", blocked));
-        //建立标记点
-        //判断兵种
-        const Target=s1[headi*5+headj];
-        //console.log(Target);
-        let flag=true;
-        //console.log(board);
-        if (Target === "d" || Target === "D" ){
-            if (board.railwayNodes.has(head) && board.railwayNodes.has(tail)) {
-                flag=board.canMoveAsEngineer(head,tail,blocked)
-            }else{
-                //console.log(blocked.has(tail))
-                if (blocked.has(tail)){
-                    flag=false;
-                } else flag=chessBoard.areAdjacent(head, tail)
-            }
-        }else if (Target === "a" || Target === "A" || Target === "c" || Target === "C" || head==="0,1" || head==="11,1" || tail==="0,3" || tail==="11,3"){
-            flag=false;
-        }else{
-            if (board.railwayNodes.has(head) && board.railwayNodes.has(tail)) {
-                flag=board.canMoveAsOther(head,tail,blocked)
-            }else{
-                if (blocked.has(tail)){
-                    flag=false;
-                } else flag=chessBoard.areAdjacent(head, tail)
-            }
-        } 
-        return flag;
-      }
-console.log(isLegalAction("000000000000000000000000000000000000000000000000000000d00000 r 30 149","b2c2"))
-
-
-=======
     }
     //console.log(board.canMoveAsEngineer("9,0", "8,2", blocked));
     //建立标记点
@@ -332,7 +282,10 @@ console.log(isLegalAction("00000000000000000000000000000000000000000000000000000
         if (board.railwayNodes.has(head) && board.railwayNodes.has(tail)) {
             flag=board.canMoveAsEngineer(head,tail,blocked)
         }else{
-            flag=chessBoard.areAdjacent(head, tail)
+            //console.log(blocked.has(tail))
+            if (blocked.has(tail)){
+                flag=false;
+            } else flag=chessBoard.areAdjacent(head, tail)
         }
     }else if (Target === "a" || Target === "A" || Target === "c" || Target === "C" || head==="0,1" || head==="11,1" || tail==="0,3" || tail==="11,3"){
         flag=false;
@@ -340,10 +293,13 @@ console.log(isLegalAction("00000000000000000000000000000000000000000000000000000
         if (board.railwayNodes.has(head) && board.railwayNodes.has(tail)) {
             flag=board.canMoveAsOther(head,tail,blocked)
         }else{
-            flag=chessBoard.areAdjacent(head, tail)
+            if (blocked.has(tail)){
+                flag=false;
+            } else flag=chessBoard.areAdjacent(head, tail)
         }
     }
     return flag;
 }
->>>>>>> Stashed changes
+
+module.exports = isLegalAction;
 
