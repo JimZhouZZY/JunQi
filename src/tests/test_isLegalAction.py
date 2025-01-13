@@ -5,6 +5,8 @@ str_true = "true\n"
 str_false = "false\n"
 tailing_state = " r 30 149"
 
+# TODO: isLegalPlayer
+
 datas = [
     ["0acc0Ljc0e0000000000000000000000000B000000000GB000JK000CACC0" + tailing_state, "b2c2", str_true],
     ["000000000000000000000000000000000000000000000000000000d00000" + tailing_state, "k5b4", str_true],
@@ -41,6 +43,33 @@ datas = [
     ["0acf0Ljc00000000000000000000e000D00i000000000GB000JK00DCACC0" + tailing_state, "k2j3", str_false],
     # ["0acf0Ljc00000000000000000000e000D00i000000000GB000JK00DCACC0" + tailing_state, "k2k2", str_false],
     ["0acf0Ljc00000000000000000000e000D00i000000000GB000JK00DCACC0" + tailing_state, "k2k4", str_true],
+    ["0acf0Ljc00000000000000000000e000D00i000000f0000000JK00DCACC0" + tailing_state, "i3h1", str_false],
+    ["0acf0Ljc00000000000000000000e000D00i000000f0000000JK00DCACC0" + tailing_state, "i3h2", str_true],
+    ["0acf0Ljc00000000000000000000e000D00i000000f0000000JK00DCACC0" + tailing_state, "i3h3", str_true],
+    ["0acf0Ljc00000000000000000000e000D00i000000f0000000JK00DCACC0" + tailing_state, "i3h4", str_true],
+    ["0acf0Ljc00000000000000000000e000D00i000000f0000000JK00DCACC0" + tailing_state, "i3i1", str_false],
+    ["0acf0Ljc00000000000000000000e000D00i000000f0000000JK00DCACC0" + tailing_state, "i3i2", str_true],
+    ["0acf0Ljc00000000000000000000e000D00i000000f0000000JK00DCACC0" + tailing_state, "i3i4", str_true],
+    ["0acf0Ljc00000000000000000000e000D00i000000f0000000JK00DCACC0" + tailing_state, "i3j1", str_false],
+    ["0acf0Ljc00000000000000000000e000D00i000000f0000000JK00DCACC0" + tailing_state, "i3j2", str_true],
+    ["0acf0Ljc00000000000000000000e000D00i000000f0000000JK00DCACC0" + tailing_state, "i3j3", str_true],
+    ["0acf0Ljc00000000000000000000e000D00i000000f0000000JK00DCACC0" + tailing_state, "i3j4", str_true],
+    ["0acf0Ljc00000000000000000000e000D00iK00000f0000000JK00DCACC0" + tailing_state, "i3h2", str_false],
+    ["0acf0Ljc00000000000000000000e000D00iK00000f0000000JK00DCACC0" + tailing_state, "h1h2", str_false],
+    # ["0acf0Ljc00000000000000000000e000D00iK00000f0000000JK00DCACC0" + tailing_state, "h2h1", str_true],
+    ["0acf0Ljc00000000000000000000e000D00iK00000f0000000JK00DCACC0" + tailing_state, "h2i2", str_true],
+    ["0acf0Ljc00000000000000000000e000D00iK00000f0000000JK00DCACC0" + tailing_state, "h2i3", str_false],
+    ["0acf0Ljc00000000000000000000e000D00iK00000f0000000JK00DCACC0" + tailing_state, "h2g3", str_false],
+    ["0acf0Ljc00000000000000000000e000D00iK00000f0000000JK00DCACC0" + tailing_state, "h2g2", str_true],
+    ["0acf0Ljc00000000000000000000e000D00iK00000f0000000JK00DCACC0" + tailing_state, "h2g1", str_true],
+    ["0acf0Ljc00000000000000000000e000D00iK00000f0000000JK00DCACC0" + tailing_state, "f4f1", str_true],
+    ["0acf0Ljc00000000000000000000e000D00iK00000f0000000JK00DCACC0" + tailing_state, "f4f2", str_true],
+    ["0acf0Ljc00000000000000000000e000D00iK00000f0000000JK00DCACC0" + tailing_state, "f4f5", str_true],
+    ["0acf0Ljc00000000000000000000e000D00iK00000f0000000JK00DCACC0" + tailing_state, "f4e4", str_true],
+    ["0acf0Ljc00000000000000000000e000D00iK00000f0000000JK00DCACC0" + tailing_state, "f4e3", str_false],
+    ["0acf0Ljc00000000000000000000e000D00iK00000f0000000JK00DCACC0" + tailing_state, "f4e5", str_false],
+    # ["0acf0Ljc00000000000000000000e000D00iK00000f0000000JK00DCACC0" + tailing_state, "f4b4", str_false],
+    # ["0acf0Ljc00000000000000000000e000D00iK00000f0000000JK00DCACC0" + tailing_state, "h4h5", str_false],
 ]
 
 def test_isLegalAction():
