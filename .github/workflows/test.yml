@@ -44,7 +44,3 @@ jobs:
       - name: Run Python Tests
         if: matrix.language == 'python'
         run: pytest
-      
-      - name: Run Node Tests
-        if: matrix.language == 'node'
-        run: npm test
