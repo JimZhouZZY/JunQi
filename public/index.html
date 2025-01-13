@@ -2,16 +2,15 @@
 <html>
     <head>
         <title>Realtime_chess</title>
-        <link rel="stylesheet" href="lib/chessboard-0.3.0.min.css" />
-        <script src="/socket.io/socket.io.js"></script>
+        <link rel="stylesheet" href="/js/lib/chessboard-0.3.0.min.css" />
         <!-- Internal CSS -->
-        <link rel="stylesheet" href="components/adressBar.css">
-        <link rel="stylesheet" href="components/body.css">
-        <link rel="stylesheet" href="components/gameBoard.css">
-        <link rel="stylesheet" href="components/hidden.css">
-        <link rel="stylesheet" href="components/loginWindow.css">
-        <link rel="stylesheet" href="components/message.css">
-        <link rel="stylesheet" href="components/toggleButton.css">
+        <link rel="stylesheet" href="css/adressBar.css">
+        <link rel="stylesheet" href="css/body.css">
+        <link rel="stylesheet" href="css/gameBoard.css">
+        <link rel="stylesheet" href="css/hidden.css">
+        <link rel="stylesheet" href="css/loginWindow.css">
+        <link rel="stylesheet" href="css/message.css">
+        <link rel="stylesheet" href="css/toggleButton.css">
     </head>
     <body>   
         <div id="address-bar"><span>Welcome, <span id="span_username">Guest</span></span></div>
@@ -27,13 +26,14 @@
             <div id="login_message" class="message hidden">INITIAL MESSAGE SHOULD BE HIDDEN</div>
             <button onclick="submitForm()">Submit</button>
         </div>
-        <!-- Internal Script -->
-        <script src="socket.js"></script>
-        <script src="/user.js"></script>
-        <script src="/client.js"></script>
         <!-- External Script -->
-        <script src="/lib/chess.min.js"></script>
-        <script src="/lib/chessboard-0.3.0.min.js"></script>
-        <script src="/lib/jquery-1.11.1.js"></script>
+        <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+        <script src="/js/lib/chess.min.js"></script>
+        <script src="/js/lib/chessboard-0.3.0.min.js"></script>
+        <script src="/js/lib/jquery-1.11.1.js"></script>
+        <!-- Internal Script -->
+        <script src="/js/socket.js"></script>
+        <script src="/js/user.js"></script>
+        <script src="/js/client.js"></script>
     </body>
 </html>
