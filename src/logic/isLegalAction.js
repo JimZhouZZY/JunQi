@@ -83,7 +83,6 @@ chessBoard.addEdge("9,3", "10,2");chessBoard.addEdge("9,3", "10,4");
 //构建蓝方行营边
 chessBoard.removeEdge("5,1","6,1");chessBoard.removeEdge("5,3","6,3");
 
-//chessBoard.printBoard();
 
 //傻逼工兵能走铁路！！！
 class ArmyChessBoard2 {
@@ -142,8 +141,9 @@ class ArmyChessBoard2 {
                 if (
                     this.isRailwayNode(neighbor) && // 必须是铁路节点
                     !visited.has(neighbor) && // 未访问过
-                    !blockedNodes.has(neighbor) // 未被阻挡
+                    (!blockedNodes.has(neighbor) || end===neighbor )// 未被阻挡
                 ) {
+                    //console.log(neighbor);
                     queue.push(neighbor);
                     visited.add(neighbor);
                 }
@@ -151,49 +151,6 @@ class ArmyChessBoard2 {
         }
 
         return false; // 未找到通路
-    }
-
-    // 其它棋子移动规则：沿铁路只能直行，不能转弯
-    canMoveAsOther(start, end, blockedNodes = new Set()) {
-        if (!this.isRailwayNode(start) || !this.isRailwayNode(end)) {
-            return false; // 起点或终点必须是铁路节点
-        }
-
-        // 获取起点和终点的行列坐标
-        const [startRow, startCol] = start.split(',').map(Number);
-        const [endRow, endCol] = end.split(',').map(Number);
-
-        // 确保移动是直线
-        if (startRow !== endRow && startCol !== endCol) {
-            return false; // 只能直线移动
-        }
-
-        // 检查路径上的节点是否被阻挡
-        if (startRow === endRow) {
-            // 水平方向移动
-            const minCol = Math.min(startCol, endCol);
-            const maxCol = Math.max(startCol, endCol);
-
-            for (let col = minCol + 1; col < maxCol; col++) {
-                const node = `${startRow},${col}`;
-                if (blockedNodes.has(node)) {
-                    return false; // 路径被阻挡
-                }
-            }
-        } else {
-            // 垂直方向移动
-            const minRow = Math.min(startRow, endRow);
-            const maxRow = Math.max(startRow, endRow);
-
-            for (let row = minRow + 1; row < maxRow; row++) {
-                const node = `${row},${startCol}`;
-                if (blockedNodes.has(node)) {
-                    return false; // 路径被阻挡
-                }
-            }
-        }
-
-        return true; // 可以移动
     }
 }
 const board = new ArmyChessBoard2(12,5);
@@ -250,7 +207,6 @@ board.addEdge("5,2", "6,2");
 function isLegalAction(s,request){
     const blocked = new Set();
 
-    //console.log(board.canMoveAsEngineer("1,0", "4,0", blocked));
     function splitBySpace(inputString) {
         // 使用空格分割字符串
         return inputString.split(" ");
@@ -271,35 +227,68 @@ function isLegalAction(s,request){
             }
         }
     }
-    //console.log(board.canMoveAsEngineer("9,0", "8,2", blocked));
     //建立标记点
     //判断兵种
     const Target=s1[headi*5+headj];
-    //console.log(Target);
+    const Goal=s1[taili*5+tailj];
+    //同类相吃
+    const a=Target.charCodeAt(0)-65;const b=Goal.charCodeAt(0)-65;
+    if (( a>=0 && a<=26 && b>=0 && b<=26) || (a>26 && b>26)){
+        return false;
+    }
+    //行营不能动
+    if ((tail==="2,1" || tail==="2,3" || tail==="3,2" || tail==="4,1" || tail==="4,3" || 
+        tail==="7,1" || tail==="7,3" || tail==="8,2" || tail==="9,1" || tail==="9,3" 
+    ) && b!==-17 ){
+        return false;
+    }
+    //自己走自己
+    if (head===tail){
+        return false;
+    }
+    //本身就是空的
+    if (Target==="0"){
+        return false;
+    }
     let flag=true;
-    //console.log(board);
     if (Target === "d" || Target === "D" ){
         if (board.railwayNodes.has(head) && board.railwayNodes.has(tail)) {
             flag=board.canMoveAsEngineer(head,tail,blocked)
         }else{
-            //console.log(blocked.has(tail))
-            if (blocked.has(tail)){
-                flag=false;
-            } else flag=chessBoard.areAdjacent(head, tail)
+            flag=chessBoard.areAdjacent(head, tail)
         }
-    }else if (Target === "a" || Target === "A" || Target === "c" || Target === "C" || head==="0,1" || head==="11,1" || tail==="0,3" || tail==="11,3"){
+    }else if (Target === "a" || Target === "A" || Target === "c" || Target === "C" || head==="0,1" || head==="11,1" || head==="0,3" || head==="11,3"){
         flag=false;
     }else{
         if (board.railwayNodes.has(head) && board.railwayNodes.has(tail)) {
-            flag=board.canMoveAsOther(head,tail,blocked)
-        }else{
-            if (blocked.has(tail)){
+            //flag=board.canMoveAsOther(head,tail,blocked)
+            if (!(headi===taili)&& !(headj===tailj)){
                 flag=false;
-            } else flag=chessBoard.areAdjacent(head, tail)
+            }else{
+                if (headi===taili){
+                    for (let i=headj+1;i<tailj;i++){
+                        let point=String(headi)+","+String(i)
+                        if (blocked.has(point)){
+                            flag=false;
+                        }
+                    }
+                    flag=flag && chessBoard.areAdjacent(head,String(headi)+","+String(headj+1))
+                }
+                if (headj===tailj){
+                    for (let i=headi+1;i<taili;i++){
+                        let point=String(i)+","+String(headj);
+                        if (blocked.has(point)){
+                            flag=false;
+                        }
+                    }
+                    flag=flag && chessBoard.areAdjacent(head,String(headi+1)+","+String(headj))
+                }
+                
+            }
+        }else{
+            flag=chessBoard.areAdjacent(head, tail)
         }
     }
     return flag;
 }
-
 module.exports = isLegalAction;
-
