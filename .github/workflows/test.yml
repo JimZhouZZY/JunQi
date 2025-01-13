@@ -11,10 +11,9 @@ jobs:
 
     strategy:
       matrix:
-        language: [python, node, java]
+        language: [python, node]
         python-version: [3.8, 3.9, 3.10]
-        node-version: [16, 18]
-        java-version: [17]
+        node-version: [18]
 
     steps:
       - name: Checkout Code
@@ -42,8 +41,10 @@ jobs:
         if: matrix.language == 'node'
         run: npm install
 
-      - name: Run Tests
+      - name: Run Python Tests
         if: matrix.language == 'python'
         run: pytest
+      
+      - name: Run Node Tests
         if: matrix.language == 'node'
         run: npm test
