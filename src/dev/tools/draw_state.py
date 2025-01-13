@@ -17,6 +17,7 @@ def modify_state(coor, piece):
     idx = board_coordinate_to_index([coor])[0]
     STATE = STATE[:idx] + piece + STATE[idx+1:]
     draw_state(STATE+" 0 0 0")
+    print(STATE)
 
 
 def board_coordinate_to_index(coordinates, total_columns=5):
