@@ -281,6 +281,7 @@ function isLegalAction(s, request) {
     }
     return flag;
 }
+
 function applyAction(s, request){
     function splitBySpace(inputString) {
         // 使用空格分割字符串
@@ -343,6 +344,5 @@ function applyAction(s, request){
     let sss=s1+" "+s2+" "+String(s3)+" "+String(s4);
     return sss;
 }
-if (isLegalAction("0acc0Ljc0e0000000000000000000000000B000000000GB000JK000CACC0 r 30 149","b2c2")===true){
-    console.log(applyAction("0acc0Ljc0e0000000000000000000000000B000000000GB000JK000CACC0 r 30 149","b2c2"));
-}
+
+module.exports = {isLegalAction, applyAction};
