@@ -4,113 +4,19 @@
         <title>Realtime_chess</title>
         <link rel="stylesheet" href="lib/chessboard-0.3.0.min.css" />
         <script src="/socket.io/socket.io.js"></script>
+        <!-- Internal CSS -->
+        <link rel="stylesheet" href="components/adressBar.css">
+        <link rel="stylesheet" href="components/body.css">
+        <link rel="stylesheet" href="components/gameBoard.css">
+        <link rel="stylesheet" href="components/hidden.css">
+        <link rel="stylesheet" href="components/loginWindow.css">
+        <link rel="stylesheet" href="components/message.css">
+        <link rel="stylesheet" href="components/toggleButton.css">
     </head>
-    <style>
-body {
-    margin: 0;
-    padding: 0;
-    font-family: Arial, sans-serif;
-    display: flex;
-    flex-direction: column; /* 确保垂直排列 */
-    height: 100vh; /* 页面全高 */
-    overflow: hidden; /* 避免内容超出 */
-}
-
-    #gameBoard {
-        display: flex;
-        align-items: center;
-        width: 60%;
-    }
-
-    .login-window {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background: white;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-        text-align: center;
-        width: 300px;
-        z-index: 100000; /* 叠加到其他元素之上 */
-    }
-
-    .login-window input {
-        width: 80%;
-        padding: 10px;
-        margin: 10px 0;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-    }
-
-    .login-window button {
-        padding: 10px 20px;
-        background-color: #007bff;
-        color: white;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        font-size: 16px;
-    }
-
-    .login-window button:hover {
-        background-color: #0056b3;
-    }
-
-    .message {
-        padding: 10px;
-        font-size: 14px;
-        color: red;
-    }
-
-    /* 设置按钮的基础样式 */
-    .toggle_button button {
-        padding: 10px 20px;
-        font-size: 16px;
-        background-color: #4CAF50; /* 初始绿色背景 */
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: background-color 0.3s;
-    }
-
-    .toggle_button button:hover {
-        background-color: #45a049; /* 鼠标悬停时的颜色 */
-    }
-
-    .toggle_button button:active {
-        background-color: #3e8e41; /* 按下按钮时的颜色 */
-    }
-
-
-    .hidden {
-        display: none;
-    }
-
-    /* 样式模拟地址栏 */
-    #address-bar {
-        width: 100%;
-        padding: 10px;
-        font-size: 16px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        background-color: #f9f9f9;
-        color: #333;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-    }
-    #username {
-        font-weight: bold;
-        color: #0078D7; /* 微软蓝 */
-    }
-    </style>
     <body>   
         <div id="address-bar"><span>Welcome, <span id="span_username">Guest</span></span></div>
         <div id="gameBoard"></div>
-        <div class="toggle_button">
+        <div class="toggle-button">
             <button onclick="joinQueue()">Start</button>
             <button onclick="leaveQueue()">Cancle</button>
         </div>
@@ -121,11 +27,11 @@ body {
             <div id="login_message" class="message hidden">INITIAL MESSAGE SHOULD BE HIDDEN</div>
             <button onclick="submitForm()">Submit</button>
         </div>
-        <!-- Internal -->
+        <!-- Internal Script -->
         <script src="socket.js"></script>
         <script src="/user.js"></script>
         <script src="/client.js"></script>
-        <!-- External -->
+        <!-- External Script -->
         <script src="/lib/chess.min.js"></script>
         <script src="/lib/chessboard-0.3.0.min.js"></script>
         <script src="/lib/jquery-1.11.1.js"></script>
