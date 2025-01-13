@@ -247,7 +247,7 @@ class ArmyChessBoard1 {
       }
       board.addEdge("5,2", "6,2");
     
-function isLegalAction( s ){
+function isLegalAction(s,request){
         const blocked = new Set();
       
         //console.log(board.canMoveAsEngineer("1,0", "4,0", blocked));
@@ -257,8 +257,6 @@ function isLegalAction( s ){
         }
         const result = splitBySpace(s);
         const s1=result[0]; const s2=result[1]; const s3=result[2]; const s4=result[3];
-        
-        let request="b2c2";
         
         const headi=request.charCodeAt(0)-97; const headj=Number(request[1])-1;
         const head=String(headi)+","+String(headj);
@@ -297,7 +295,7 @@ function isLegalAction( s ){
         } 
         return flag;
       }
-console.log(isLegalAction("0acc0Ljc0e0000000000000000000000000B000000000GB000JK000CACC0 r 30 149"))
+console.log(isLegalAction("0acc0Ljc0e0000000000000000000000000B000000000GB000JK000CACC0 r 30 149","b2c2"))
 
 
 
