@@ -1,5 +1,8 @@
 import subprocess
 import traceback
+import os
+
+test_path = os.path.dirname(os.path.abspath(__file__))
 
 str_true = "true\n"
 str_false = "false\n"
@@ -19,15 +22,15 @@ datas = [
     ["0acc0Ljc0e000000000000000000d000D00B000000000GB000JK00DCACC0" + tailing_state, "k5f2", str_false],
     ["0acc0Ljc0e000000000000000000d000D00B000000000GB000JK00DCACC0" + tailing_state, "h1a1", str_false],
     ["0acc0Ljc0e000000000000000000d000D00B000000000GB000JK00DCACC0" + tailing_state, "f4g4", str_true],
-    # ["0acc0Ljc0e000000000000000000e000D00B000000000GB000JK00DCACC0" + tailing_state, "f4g4", str_false],
+        ["0acc0Ljc0e000000000000000000e000D00B000000000GB000JK00DCACC0" + tailing_state, "f4g4", str_false],
     ["0acc0Ljc0e000000000000000000e000D00B000000000GB000JK00DCACC0" + tailing_state, "b3b4", str_false],
-    # ["0acf0Ljc0e000000000000000000e000D00B000000000GB000JK00DCACC0" + tailing_state, "a4b4", str_false],
-    # ["0acf0Ljc0e000000000000000000e000D00B000000000GB000JK00DCACC0" + tailing_state, "b5b3", str_false],
-    # ["0acf0Ljc00000000000000000000e000D00B000000000GB000JK00DCACC0" + tailing_state, "g3b3", str_true],
+        ["0acf0Ljc0e000000000000000000e000D00B000000000GB000JK00DCACC0" + tailing_state, "a4b4", str_false],
+        ["0acf0Ljc0e000000000000000000e000D00B000000000GB000JK00DCACC0" + tailing_state, "b5b3", str_false],
+        ["0acf0Ljc00000000000000000000e000D00B000000000GB000JK00DCACC0" + tailing_state, "g3b3", str_true],
     ["0acf0Ljc00000000000000000000e000D00B000000000GB000JK00DCACC0" + tailing_state, "b1b2", str_true],
     ["0acf0Ljc00000000000000000000e000D00B000000000GB000JK00DCACC0" + tailing_state, "b1a1", str_true],
     ["0acf0Ljc00000000000000000000e000D00B000000000GB000JK00DCACC0" + tailing_state, "b1g1", str_true],
-    # ["0acf0Ljc00000000000000000000e000D00B000000000GB000JK00DCACC0" + tailing_state, "b1h1", str_false],
+        ["0acf0Ljc00000000000000000000e000D00B000000000GB000JK00DCACC0" + tailing_state, "b1h1", str_false],
     ["0acf0Ljc00000000000000000000e000D00B000000000GB000JK00DCACC0" + tailing_state, "b1i1", str_false],
     ["0acf0Ljc00000000000000000000e000D00i000000000GB000JK00DCACC0" + tailing_state, "b1h1", str_true],
     ["0acf0Ljc00000000000000000000e000D00i000000000GB000JK00DCACC0" + tailing_state, "b1i1", str_false],
@@ -41,7 +44,7 @@ datas = [
     ["0acf0Ljc00000000000000000000e000D00i000000000GB000JK00DCACC0" + tailing_state, "k5g3", str_false],
     ["0acf0Ljc00000000000000000000e000D00i000000000GB000JK00DCACC0" + tailing_state, "k5b3", str_false],
     ["0acf0Ljc00000000000000000000e000D00i000000000GB000JK00DCACC0" + tailing_state, "k2j3", str_false],
-    # ["0acf0Ljc00000000000000000000e000D00i000000000GB000JK00DCACC0" + tailing_state, "k2k2", str_false],
+        ["0acf0Ljc00000000000000000000e000D00i000000000GB000JK00DCACC0" + tailing_state, "k2k2", str_false],
     ["0acf0Ljc00000000000000000000e000D00i000000000GB000JK00DCACC0" + tailing_state, "k2k4", str_true],
     ["0acf0Ljc00000000000000000000e000D00i000000f0000000JK00DCACC0" + tailing_state, "i3h1", str_false],
     ["0acf0Ljc00000000000000000000e000D00i000000f0000000JK00DCACC0" + tailing_state, "i3h2", str_true],
@@ -56,7 +59,7 @@ datas = [
     ["0acf0Ljc00000000000000000000e000D00i000000f0000000JK00DCACC0" + tailing_state, "i3j4", str_true],
     ["0acf0Ljc00000000000000000000e000D00iK00000f0000000JK00DCACC0" + tailing_state, "i3h2", str_false],
     ["0acf0Ljc00000000000000000000e000D00iK00000f0000000JK00DCACC0" + tailing_state, "h1h2", str_false],
-    # ["0acf0Ljc00000000000000000000e000D00iK00000f0000000JK00DCACC0" + tailing_state, "h2h1", str_true],
+        ["0acf0Ljc00000000000000000000e000D00iK00000f0000000JK00DCACC0" + tailing_state, "h2h1", str_true],
     ["0acf0Ljc00000000000000000000e000D00iK00000f0000000JK00DCACC0" + tailing_state, "h2i2", str_true],
     ["0acf0Ljc00000000000000000000e000D00iK00000f0000000JK00DCACC0" + tailing_state, "h2i3", str_false],
     ["0acf0Ljc00000000000000000000e000D00iK00000f0000000JK00DCACC0" + tailing_state, "h2g3", str_false],
@@ -68,8 +71,8 @@ datas = [
     ["0acf0Ljc00000000000000000000e000D00iK00000f0000000JK00DCACC0" + tailing_state, "f4e4", str_true],
     ["0acf0Ljc00000000000000000000e000D00iK00000f0000000JK00DCACC0" + tailing_state, "f4e3", str_false],
     ["0acf0Ljc00000000000000000000e000D00iK00000f0000000JK00DCACC0" + tailing_state, "f4e5", str_false],
-    # ["0acf0Ljc00000000000000000000e000D00iK00000f0000000JK00DCACC0" + tailing_state, "f4b4", str_false],
-    # ["0acf0Ljc00000000000000000000e000D00iK00000f0000000JK00DCACC0" + tailing_state, "h4h5", str_false],
+        ["0acf0Ljc00000000000000000000e000D00iK00000f0000000JK00DCACC0" + tailing_state, "f4b4", str_false],
+        ["0acf0Ljc00000000000000000000e000D00iK00000f0000000JK00DCACC0" + tailing_state, "h4h5", str_false],
 ]
 
 def test_isLegalAction():
@@ -78,7 +81,11 @@ def test_isLegalAction():
         state = data[0]
         move = data[1]
         answer = data[2]
-        result = subprocess.run(['node', 'test_isLegalAction.js', state, move ], capture_output=True, text=True)
+        result = subprocess.run(
+            ['node', '../tests/test_isLegalAction.js', state, move ],
+            cwd=test_path,
+            capture_output=True,
+            text=True)
         if result.stdout == answer:
             print(f"Case {idx} SUCCEED")
         else:
