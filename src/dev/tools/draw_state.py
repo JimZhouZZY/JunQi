@@ -1,4 +1,5 @@
 from colorama import Fore, Back, Style, init
+import copy
 
 init(autoreset=True)
 
@@ -8,14 +9,40 @@ PIECE_NAMES = {
     'b': "炸", 'a': "旗", '0': "空"
 }
 
+STATE = ''
+
+def modify_state(coor, piece):
+    global STATE
+    print("State")
+    idx = board_coordinate_to_index([coor])[0]
+    STATE = STATE[:idx] + piece + STATE[idx+1:]
+    draw_state(STATE+" 0 0 0")
+
+
+def board_coordinate_to_index(coordinates, total_columns=5):
+    indexs = []
+    for coordinate in coordinates:
+        if len(coordinate) != 2:
+            continue
+        column = coordinate[0].lower()  # 行的字母部分
+        row = int(coordinate[1:])  # 列的数字部分
+        row_index = ord(column) - ord('a')
+        column_index = row - 1
+        index = row_index * total_columns + column_index
+        print(index)
+        indexs.append(index)
+    return indexs
+
 def draw_state(board_str):
+    global STATE
     board, current_player, half_moves, total_moves = board_str.split()
+    STATE = copy.deepcopy(str(board))
     if len(board) != 60:
         print("Invalid string length!")
         return
     rows = [board[i:i+5] for i in range(0, 60, 5)]
     row_labels = 'abcdefghijkl'
-    col_labels = '1  2  3  4  5'
+    col_labels = '1   2   3   4   5'
 
     print("  | " + col_labels)
     print("  +" + "---+" * 5)
@@ -78,11 +105,18 @@ if __name__ == "__main__":
         try:
             print("=============================================================================")
             user_input = input("Input: ")
+            print("Output: ")
             if user_input.lower() == "exit":
                 print("Goodbye!")
                 break
-            print("Output: ")
-            draw_state(str(user_input))
+            elif ((user_input.lower().split(" ")[0] == "idx" or user_input.lower().split(" ")[0] == "index")):
+                board_coordinate_to_index(user_input.lower().split(" "))
+            elif user_input.lower().split(" ")[0] == "mod":
+                coor = user_input.lower().split(" ")[1]
+                piece = user_input.split(" ")[2]
+                modify_state(coor, piece)
+            else:
+                draw_state(str(user_input))
             print("=============================================================================")
         except KeyboardInterrupt:
             print("\nProgram interrupted by user. Exiting...")
