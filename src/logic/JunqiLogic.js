@@ -281,4 +281,68 @@ function isLegalAction(s, request) {
     }
     return flag;
 }
-module.exports = isLegalAction;
+
+function applyAction(s, request){
+    function splitBySpace(inputString) {
+        // 使用空格分割字符串
+        return inputString.split(" ");
+    }
+    const result = splitBySpace(s);
+    let s1 = result[0]; let s2 = result[1]; let s3 = Number(result[2]); let s4 = Number(result[3]);
+    const headi = request.charCodeAt(0) - 97; const headj = Number(request[1]) - 1;
+    const taili = request.charCodeAt(2) - 97; const tailj = Number(request[3]) - 1;
+    const Target = s1[headi * 5 + headj];
+    const Goal = s1[taili * 5 + tailj];
+    let flag=true;
+    if (Target === "d" || Target === "D") {
+        if (Goal === "d" || Goal === "D") {
+            s1[headi * 5 + headj]="0";
+            s1[taili * 5 + tailj]="0";
+            flag=false;
+        }else{
+            if (Goal === "c" || Goal === "C") {
+                s1[headi * 5 + headj]="0";
+                s1[taili * 5 + tailj]=Target;
+                flag=false;
+            }else{
+                s1[headi * 5 + headj]="0";
+                flag=false;
+            }
+        } 
+    }
+    if (Target === "b" || Target === "B") {
+        s1[taili * 5 + tailj]="0";
+        s1[headi * 5 + headj]="0";
+        flag=false;
+    }
+    let a = Target.charCodeAt(0); let b = Goal.charCodeAt(0);
+    if (a<97){
+        a=a+32;
+    }
+    if (b<97){
+        b=b+32;
+    }
+    const T2=String.fromCharCode(a);const G2=String.fromCharCode(b);
+    if (T2>G2){
+        s1[headi * 5 + headj]="0";
+        s1[taili * 5 + tailj]=Target;
+        flag=false;
+    }else{
+        s1[headi * 5 + headj]=Goal;
+        s1[taili * 5 + tailj]="0";
+        flag=false;
+    }
+    s4=s4+1;
+    if (flag!==true){
+        s3=1;
+    }
+    if (s2==="r"){
+        s2="b";
+    }else{
+        s2="r";
+    }
+    let sss=s1+" "+s2+" "+String(s3)+" "+String(s4);
+    return sss;
+}
+
+module.exports = {isLegalAction, applyAction};
