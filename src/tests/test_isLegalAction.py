@@ -88,10 +88,11 @@ def test_isLegalAction():
             cwd=test_path,
             capture_output=True,
             text=True)
-        if result.stdout == answer:
+        result = result.stdout
+        if result == answer:
             print(f"Case {idx} SUCCEED")
         else:
-            print(f"Case {idx} FAILED - Result answer: {result.stdout[:-1]}, Expected anser: {answer[:-1]}")
+            print(f"Case {idx} FAILED - Result answer: {result[:-1]}, Expected anser: {answer[:-1]}")
             print(f"    - Input data:\n    - {data}")
         answers.append(answer)
         results.append(result)
