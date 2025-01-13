@@ -267,7 +267,7 @@ function isLegalAction(s,request){
         for (let i=0; i<12; i++){
             for (let j=0;j<5;j++){
                 if (s1[i*5+j] !="0"){
-                    blocked.add([String(i)+","+String(j)]);
+                    blocked.add(String(i)+","+String(j));
                 }
             }
           }
@@ -282,7 +282,10 @@ function isLegalAction(s,request){
             if (board.railwayNodes.has(head) && board.railwayNodes.has(tail)) {
                 flag=board.canMoveAsEngineer(head,tail,blocked)
             }else{
-                flag=chessBoard.areAdjacent(head, tail)
+                //console.log(blocked.has(tail))
+                if (blocked.has(tail)){
+                    flag=false;
+                } else flag=chessBoard.areAdjacent(head, tail)
             }
         }else if (Target === "a" || Target === "A" || Target === "c" || Target === "C" || head==="0,1" || head==="11,1" || tail==="0,3" || tail==="11,3"){
             flag=false;
@@ -290,12 +293,14 @@ function isLegalAction(s,request){
             if (board.railwayNodes.has(head) && board.railwayNodes.has(tail)) {
                 flag=board.canMoveAsOther(head,tail,blocked)
             }else{
-                flag=chessBoard.areAdjacent(head, tail)
+                if (blocked.has(tail)){
+                    flag=false;
+                } else flag=chessBoard.areAdjacent(head, tail)
             }
         } 
         return flag;
       }
-console.log(isLegalAction("0acc0Ljc0e0000000000000000000000000B000000000GB000JK000CACC0 r 30 149","b2c2"))
+console.log(isLegalAction("000000000000000000000000000000000000000000000000000000d00000 r 30 149","b2c2"))
 
 
 
