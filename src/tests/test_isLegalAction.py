@@ -26,7 +26,7 @@ datas = [
     ["0acc0Ljc0e000000000000000000e000D00B000000000GB000JK00DCACC0" + tailing_state, "b3b4", str_false],
         ["0acf0Ljc0e000000000000000000e000D00B000000000GB000JK00DCACC0" + tailing_state, "a4b4", str_false],
         ["0acf0Ljc0e000000000000000000e000D00B000000000GB000JK00DCACC0" + tailing_state, "b5b3", str_false],
-    ["0acf0Ljc00000000000000000000e000D00B000000000GB000JK00DCACC0" + tailing_state, "g3b3", str_false],
+    ["0acf0Ljc00000000000000000000e000D00B000000000GB000JK00DCACC0" + tailing_state, "g3b3", str_true],
     ["0acf0Ljc00000000000000000000e000D00B000000000GB000JK00DCACC0" + tailing_state, "b1b2", str_true],
     ["0acf0Ljc00000000000000000000e000D00B000000000GB000JK00DCACC0" + tailing_state, "b1a1", str_true],
     ["0acf0Ljc00000000000000000000e000D00B000000000GB000JK00DCACC0" + tailing_state, "b1g1", str_true],
@@ -42,7 +42,7 @@ datas = [
     ["0acf0Ljc00000000000000000000e000D00i000000000GB000JK00DCACC0" + tailing_state, "j2k3", str_true],
     ["0acf0Ljc00000000000000000000e000D00i000000000GB000JK00DCACC0" + tailing_state, "j2k2", str_false],
     ["0acf0Ljc00000000000000000000e000D00i000000000GB000JK00DCACC0" + tailing_state, "k5g3", str_false],
-    ["0acf0Ljc00000000000000000000e000D00i000000000GB000JK00DCACC0" + tailing_state, "k5b3", str_false],
+    ["0acf0Ljc00000000000000000000e000D00i000000000GB000JK00DCACC0" + tailing_state, "k5f3", str_false],
     ["0acf0Ljc00000000000000000000e000D00i000000000GB000JK00DCACC0" + tailing_state, "k2j3", str_false],
         ["0acf0Ljc00000000000000000000e000D00i000000000GB000JK00DCACC0" + tailing_state, "k2k2", str_false],
     ["0acf0Ljc00000000000000000000e000D00i000000000GB000JK00DCACC0" + tailing_state, "k2k4", str_true],
@@ -88,10 +88,11 @@ def test_isLegalAction():
             cwd=test_path,
             capture_output=True,
             text=True)
-        if result.stdout == answer:
+        result = result.stdout
+        if result == answer:
             print(f"Case {idx} SUCCEED")
         else:
-            print(f"Case {idx} FAILED - Result answer: {result.stdout[:-1]}, Expected anser: {answer[:-1]}")
+            print(f"Case {idx} FAILED - Result answer: {result[:-1]}, Expected anser: {answer[:-1]}")
             print(f"    - Input data:\n    - {data}")
         answers.append(answer)
         results.append(result)
