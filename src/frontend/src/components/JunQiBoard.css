@@ -1,3 +1,11 @@
+.chess-board {
+  border: 2px solid black;
+}
+
 .square {
-  border: 1px solid gray;
+  position: relative;
+}
+
+.row {
+  display: flex;
 }
