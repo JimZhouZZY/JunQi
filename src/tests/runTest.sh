@@ -1,1 +1,1 @@
-pytest --rootdir=./
+pytest
