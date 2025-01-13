@@ -77,6 +77,8 @@ datas = [
 
 def test_isLegalAction():
     idx = 0
+    answers = []
+    results = []
     for data in datas:
         state = data[0]
         move = data[1]
@@ -91,7 +93,9 @@ def test_isLegalAction():
         else:
             print(f"Case {idx} FAILED - Result answer: {result.stdout[:-1]}, Expected anser: {answer[:-1]}")
             print(f"    - Input data:\n    - {data}")
-        assert (result.stdout == answer)
+        answers.append(answer)
+        results.append(result)
         idx += 1
+    assert results == answers
 
 
