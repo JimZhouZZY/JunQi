@@ -73,6 +73,9 @@ datas = [
     ["0acf0Ljc00000000000000000000e000D00iK00000f0000000JK00DCACC0" + tailing_state, "f4e5", str_false],
         ["0acf0Ljc00000000000000000000e000D00iK00000f0000000JK00DCACC0" + tailing_state, "f4b4", str_false],
         ["0acf0Ljc00000000000000000000e000D00iK00000f0000000JK00DCACC0" + tailing_state, "h4h5", str_false],
+        ["0acc0Ljc0e0000000000000000000000000B000000000GB000JK000CACC0" + tailing_state, "b2c2", str_true],
+        ["0acc0Ljc0e0000000000000000000000000B000000000GB000JK000CACC0" + tailing_state, "c5d5", str_false],
+        ["0acc0Ljc0e0000000000000000000000000B000000000GB000JK000CACC0" + tailing_state, "c5b5", str_false],
 ]
 
 def test_isLegalAction():
@@ -99,4 +102,4 @@ def test_isLegalAction():
         idx += 1
     assert results == answers
 
-
+# test_isLegalAction()
