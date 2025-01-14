@@ -281,7 +281,6 @@ function isLegalAction(s, request) {
     }
     return flag;
 }
-
 function applyAction(s, request){
     function splitBySpace(inputString) {
         // 使用空格分割字符串
@@ -294,25 +293,29 @@ function applyAction(s, request){
     const Target = s1[headi * 5 + headj];
     const Goal = s1[taili * 5 + tailj];
     let flag=true;
+    function StringChange(s,index,change){
+        return s.slice(0,index)+change+s.slice(index+1,59);
+    }
+    //console.log(s1[59])
     if (Target === "d" || Target === "D") {
         if (Goal === "d" || Goal === "D") {
-            s1[headi * 5 + headj]="0";
-            s1[taili * 5 + tailj]="0";
+            s1=StringChange(s1,headi * 5 + headj,"0");
+            s1=StringChange(s1,taili * 5 + tailj,"0");
             flag=false;
         }else{
             if (Goal === "c" || Goal === "C") {
-                s1[headi * 5 + headj]="0";
-                s1[taili * 5 + tailj]=Target;
+                s1=StringChange(s1,headi * 5 + headj,"0");
+                s1=StringChange(s1,taili * 5 + tailj,Target);
                 flag=false;
             }else{
-                s1[headi * 5 + headj]="0";
+                s1=StringChange(s1,headi * 5 + headj,"0");
                 flag=false;
             }
         } 
     }
     if (Target === "b" || Target === "B") {
-        s1[taili * 5 + tailj]="0";
-        s1[headi * 5 + headj]="0";
+        s1=StringChange(s1,headi * 5 + headj,"0");
+        s1=StringChange(s1,taili * 5 + tailj,"0");
         flag=false;
     }
     let a = Target.charCodeAt(0); let b = Goal.charCodeAt(0);
@@ -323,15 +326,24 @@ function applyAction(s, request){
         b=b+32;
     }
     const T2=String.fromCharCode(a);const G2=String.fromCharCode(b);
+    //console.log(T2,G2)
     if (T2>G2){
-        s1[headi * 5 + headj]="0";
-        s1[taili * 5 + tailj]=Target;
+        s1=StringChange(s1,headi * 5 + headj,"0");
+        s1=StringChange(s1,taili * 5 + tailj,Target);
         flag=false;
     }else{
-        s1[headi * 5 + headj]=Goal;
-        s1[taili * 5 + tailj]="0";
-        flag=false;
+        if (T2<G2){
+            s1=StringChange(s1,headi * 5 + headj,"0");
+            flag=false;
+        }else{
+            s1=StringChange(s1,headi * 5 + headj,"0");
+            s1=StringChange(s1,taili * 5 + tailj,"0");
+            flag=false;
+        }
     }
+    //console.log(flag);
+    s1[0]="w"
+   // console.log(s1);
     s4=s4+1;
     if (flag!==true){
         s3=1;
@@ -341,8 +353,7 @@ function applyAction(s, request){
     }else{
         s2="r";
     }
-    let sss=s1+" "+s2+" "+String(s3)+" "+String(s4);
-    return sss;
+    let st=s1+" "+s2+" "+String(s3)+" "+String(s4);
+    return st;
 }
-
 module.exports = {isLegalAction, applyAction};
