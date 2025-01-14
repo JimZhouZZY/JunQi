@@ -1,7 +1,9 @@
-const { isLegalAction, applyAction } = require('../logic/junqiLogic.js');
+const JunqiGame = require('../logic/junqiLogic.js');
 
 const args = process.argv.slice(2);
 const state = args[0];
 const move = args[1];
 
-console.log(isLegalAction(state, move));
+junqi_game = new JunqiGame(state);
+
+console.log(junqi_game.isLegalAction(move));
