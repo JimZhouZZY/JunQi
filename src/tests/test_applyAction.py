@@ -71,4 +71,4 @@ def test_applyAction():
         idx += 1
     assert results == answers
 
-test_applyAction()
+# test_applyAction()
