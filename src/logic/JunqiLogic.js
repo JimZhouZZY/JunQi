@@ -294,7 +294,7 @@ function applyAction(s, request){
     const Goal = s1[taili * 5 + tailj];
     let flag=true;
     function StringChange(s,index,change){
-        return s.slice(0,index)+change+s.slice(index+1,59);
+        return s.slice(0,index)+change+s.slice(index+1);
     }
     //console.log(s1[59])
     if (Target === "d" || Target === "D") {
