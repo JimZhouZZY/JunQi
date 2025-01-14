@@ -29,7 +29,7 @@ class JunqiGame {
             }
 
             // 遍历所有邻接节点
-            for (const neighbor of this.board.graph.getNeighbors(current)) {
+            for (const neighbor of this.board.getNeighbors(current)) {
                 if (
                     (neighbor.type == 'railway') && // 必须是铁路节点
                     !visited.has(neighbor) && // 未访问过
@@ -92,15 +92,15 @@ class JunqiGame {
         }
         let flag = true;
         if (Target === "d" || Target === "D") {
-            if (this.board.graph.adjList.has(node(head, 'railway')) && this.board.graph.adjList.has(node(tail, 'railway'))) {
+            if (this.board.adjList.has(node(head, 'railway')) && this.board.adjList.has(node(tail, 'railway'))) {
                 flag = this.canMoveAsEngineer(head, tail, blocked);
             } else {
-                flag = this.board.graph.areAdjacent(node(head), node(tail));
+                flag = this.board.areAdjacent(node(head), node(tail));
             }
         } else if (Target === "a" || Target === "A" || Target === "c" || Target === "C" || head === "0-1" || head === "11-1" || head === "0-3" || head === "11-3") {
             flag = false;
         } else {
-            if (this.board.graph.adjList.has(node(head, 'railway')) && this.board.graph.adjList.has(node(tail, 'railway'))) {
+            if (this.board.adjList.has(node(head, 'railway')) && this.board.adjList.has(node(tail, 'railway'))) {
                 //flag=this.board.canMoveAsOther(head,tail,blocked)
                 if (!(headi === taili) && !(headj === tailj)) {
                     flag = false;
@@ -112,7 +112,7 @@ class JunqiGame {
                                 flag = false;
                             }
                         }
-                        flag = flag && this.board.graph.areAdjacent(node(head), node(String(headi) + "-" + String(headj + 1)));
+                        flag = flag && this.board.areAdjacent(node(head), node(String(headi) + "-" + String(headj + 1)));
                     }
                     if (headj === tailj) {
                         for (let i = headi + 1; i < taili; i++) {
@@ -121,12 +121,12 @@ class JunqiGame {
                                 flag = false;
                             }
                         }
-                        flag = flag && this.board.graph.areAdjacent(node(head), node(String(headi + 1) + "-" + String(headj)))
+                        flag = flag && this.board.areAdjacent(node(head), node(String(headi + 1) + "-" + String(headj)))
                     }
     
                 }
             } else {
-                flag = this.board.graph.areAdjacent(node(head), node(tail));
+                flag = this.board.areAdjacent(node(head), node(tail));
             }
         }
         return flag;
