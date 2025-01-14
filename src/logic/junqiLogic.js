@@ -17,6 +17,7 @@ class JunqiGame {
         }
 
         // BFS
+
         let queue = [start];
         let visited = new Set();
         visited.add(start);
@@ -35,7 +36,6 @@ class JunqiGame {
                     !visited.has(neighbor) && // 未访问过
                     (!blockedNodes.has(neighbor) || end === neighbor)// 未被阻挡
                 ) {
-                    // console.log(neighbor);
                     queue.push(neighbor);
                     visited.add(neighbor);
                 }
