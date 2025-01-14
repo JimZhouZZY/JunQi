@@ -2,55 +2,55 @@ const { node } = require('./types/junqiNode.js');
 const JunqiBoard = require('./types/junqiBoard');
 
 class JunqiGame {
-    constructor(jzn='0'.repeat(60)) {
+    constructor(jzn='0'.repeat(60)+' 0 0 0') {
         this.rows = 12;
         this.cols = 5;
         this.jzn = jzn; // JZN stands for 'Jim-Zhou Notation'
         this.board = new JunqiBoard();
     }
-
-    canMoveAsEngineer(start, end, blockedNodes = new Set()) {
-        start = node(start, 'railway');
-        end = node(end, 'railway');
-        if (!start.type === 'railway' || !end.type === 'railway') {
-            return false; // 起点或终点必须是铁路节点
-        }
-
-        // BFS
-
-        let queue = [start];
-        let visited = new Set();
-        visited.add(start);
-
-        while (queue.length > 0) {
-            const current = queue.shift();
-
-            if (current === end) {
-                return true; // 找到通路
-            }
-
-            // 遍历所有邻接节点
-            for (const neighbor of this.board.getNeighbors(current)) {
-                if (
-                    (neighbor.type == 'railway') && // 必须是铁路节点
-                    !visited.has(neighbor) && // 未访问过
-                    (!blockedNodes.has(neighbor) || end === neighbor)// 未被阻挡
-                ) {
-                    queue.push(neighbor);
-                    visited.add(neighbor);
-                }
-            }
-        }
-        return false; // 未找到通路
-    }
-    
+ 
     isLegalAction(request) {
         const blocked = new Set();
         const s = this.jzn;
+        const canMoveAsEngineer = (start, end, blockedNodes = new Set()) => {
+            start = node(start, 'railway');
+            end = node(end, 'railway');
+            if (!start.type === 'railway' || !end.type === 'railway') {
+                return false; // 起点或终点必须是铁路节点
+            }
+    
+            // BFS
+    
+            let queue = [start];
+            let visited = new Set();
+            visited.add(start);
+    
+            while (queue.length > 0) {
+                const current = queue.shift();
+    
+                if (current === end) {
+                    return true; // 找到通路
+                }
+    
+                // 遍历所有邻接节点
+                for (const neighbor of this.board.getNeighbors(current)) {
+                    if (
+                        (neighbor.type == 'railway') && // 必须是铁路节点
+                        !visited.has(neighbor) && // 未访问过
+                        (!blockedNodes.has(neighbor) || end === neighbor)// 未被阻挡
+                    ) {
+                        queue.push(neighbor);
+                        visited.add(neighbor);
+                    }
+                }
+            }
+            return false; // 未找到通路
+        }
     
         function splitBySpace(inputString) {
             return inputString.split(" ");
         }
+
         const result = splitBySpace(s);
         const s1 = result[0]; const s2 = result[1]; const s3 = result[2]; const s4 = result[3];
     
@@ -93,7 +93,7 @@ class JunqiGame {
         let flag = true;
         if (Target === "d" || Target === "D") {
             if (this.board.adjList.has(node(head, 'railway')) && this.board.adjList.has(node(tail, 'railway'))) {
-                flag = this.canMoveAsEngineer(head, tail, blocked);
+                flag = canMoveAsEngineer(head, tail, blocked);
             } else {
                 flag = this.board.areAdjacent(node(head), node(tail));
             }
@@ -101,7 +101,6 @@ class JunqiGame {
             flag = false;
         } else {
             if (this.board.adjList.has(node(head, 'railway')) && this.board.adjList.has(node(tail, 'railway'))) {
-                //flag=this.board.canMoveAsOther(head,tail,blocked)
                 if (!(headi === taili) && !(headj === tailj)) {
                     flag = false;
                 } else {
