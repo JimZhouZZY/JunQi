@@ -138,12 +138,15 @@ class JunqiLogic
             Generally, a player cannot see the type of opposite player's pieces.
             But please note that if the 司令(L/l) of the player dies, the opposite
             player can see the position of 军旗(A/a) of the player.
-        Example:
+        Example: (See the pictures below)
             >>> getMaskedJzn('b')
-                0acc0L##0#0000000000000000000000000B000000000GB000JK000CACC0 r 30 149 
+                0a##0L##0#0000000000000000000000000B000000000GB000JK000CACC0 r 30 149!
             >>> getMaskedJzn('r')
-                0acc0#jc0e0000000000000000000000000B000000000##000##000####0 r 30 149 
-
+                0acc0#jc0e0000000000000000000000000#000000000##000##000####0 r 30 149!
 ```
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/06510707-a99a-4ad8-810a-906ccc2ed440" alt="Example 1" width="45%">
+  <img src="https://github.com/user-attachments/assets/65b00498-5e02-475f-a746-3bc4ff71b760" alt="Example 2" width="45%">
+</p>
 
 **PLEASE STRICTLY FOLLOW THE DOCUMENTATION**
