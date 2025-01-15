@@ -13,11 +13,12 @@
     <link rel="stylesheet" href="css/loginWindow.css">
     <link rel="stylesheet" href="css/message.css">
     <link rel="stylesheet" href="css/toggleButton.css">
+    <link rel="stylesheet" href="css/junqi-app.css">
 </head>
 
 <body>
     <div id="address-bar"><span>Welcome, <span id="span_username">Guest</span></span></div>
-    <div id="gameBoard"></div>
+    <div id="junqi-app"></div>
     <div class="toggle-button">
         <button onclick="joinQueue()">Start</button>
         <button onclick="leaveQueue()">Cancle</button>
@@ -33,12 +34,16 @@
 <!-- External Script -->
 <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
 <script src="/js/lib/chess.min.js"></script>
-<script src="/js/lib/chessboard-0.3.0.min.js"></script>
 <script src="/js/lib/jquery-1.11.1.js"></script>
 <!-- Internal Script -->
 <script src="/js/socket.js"></script>
 <script src="/js/user.js"></script>
-<script src="/js/client.js"></script>
-<script src="/js/static/main.2f430fca.js"></script>
+<script type="module" src="/js/types/junqiNode.mjs"></script>
+<script type="module" src="/js/types/junqiGraph.mjs"></script>
+<script type="module" src="/js/types/junqiBoard.mjs"></script>
+<script type="module" src="/js/junqiLogic.mjs"></script>
+<script type="module" src="/js/client.mjs"></script>
+<script src="/js/junqi-app.js"></script>
+
 
 </html>

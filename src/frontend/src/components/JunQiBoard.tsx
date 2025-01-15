@@ -1,18 +1,34 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from "react";
 import './JunQiBoard.css';
 
 type Piece = {
   type: string;
   color: 'red' | 'blue';
+  row: number;
+  col: number;
 };
 
-const JunQiBoard: React.FC = () => {
-  const [board, setBoard] = useState<(Piece | null)[][]>(
-    Array(12).fill(null).map(() => Array(5).fill(null))
-  );
+type MoveHandler = (move: string) => void;
 
-  const updateBoardFromFEN = (fen: string) => {
-    const pieces = fen.split('').filter(char => /^[a-zA-Z0-9]$/.test(char));
+interface JunQiBoardProps {
+  moveHandler?: MoveHandler;
+}
+
+//window.moveHandler = (move) => {
+//  console.log(`Move ${move}`);
+//}
+
+window.jzn = '000000000000000000000000000000000000000000000000000000000000';
+
+const JunQiBoard: React.FC<JunQiBoardProps> = ({
+  moveHandler = window.moveHandler
+}) => {
+  const [board, setBoard] = useState<(Piece | null)[][]>(Array(12).fill(null).map(() => Array(5).fill(null)));
+  const [selectedPiece, setSelectedPiece] = useState<Piece | null>(null);
+
+  function updateBoardFromFEN(fen: string) {
+    const jzn_splitted = fen.split(" ")[0];
+    const pieces = jzn_splitted.split('').filter(char => /^[a-zA-Z0-9]$/.test(char));
 
     const newBoard: (Piece | null)[][] = Array(12)
       .fill(null)
@@ -32,16 +48,59 @@ const JunQiBoard: React.FC = () => {
           const col = idx % 5;
           const color = char === char.toUpperCase() ? 'blue' : 'red';
           const type = char.toUpperCase(); // Use uppercase letters for piece type
-          newBoard[row][col] = { type, color };
+          newBoard[row][col] = { type, color, row, col };
           idx++;
         }
       }
     });
-
     setBoard(newBoard);
   };
 
-  const renderSquare = (row: number, col: number) => {
+  function convertToChessNotation(row: number, col: number): string {
+    const rowString = String.fromCharCode(97 + row); // 97 是 'a' 的 ASCII 值
+    const colString = (col + 1).toString(); // 将 col 转换为从 1 开始
+    return rowString + colString;
+}
+  function handleClick(row: number, col: number) {
+    const piece = board[row][col];
+    if (selectedPiece && piece && selectedPiece.color != piece.color) {
+      const move = convertToChessNotation(selectedPiece.row, selectedPiece.col) + convertToChessNotation(row, col);
+      if (window.moveHandler) {
+        window.moveHandler(move);
+      } else {
+        console.error("moveHandler function is not available");
+      }
+      setSelectedPiece(null);
+    }
+    if (piece) {
+      // If a piece is clicked, set it as selected
+      setSelectedPiece(piece);
+      console.log(`Piece selected: ${piece.type} (${piece.color}) at (${row}, ${col})`);
+    } else {
+      // If no piece is clicked, handle an empty space click (e.g., move the selected piece)
+      if (selectedPiece) {
+        const move = convertToChessNotation(selectedPiece.row, selectedPiece.col) + convertToChessNotation(row, col);
+        if (window.moveHandler) {
+          window.moveHandler(move);
+        } else {
+          console.error("moveHandler function is not available");
+        }
+        setSelectedPiece(null);
+        /* DEBUG */
+        /*
+        console.log(`Move ${selectedPiece.type} to (${row}, ${col})`);
+        // Example of moving the piece, implement your move logic here
+        const newBoard = [...board];
+        newBoard[row][col] = selectedPiece;
+        newBoard[selectedPiece.row!][selectedPiece.col!] = null; // Remove piece from previous position
+        setBoard(newBoard);
+        setSelectedPiece(null); // Deselect the piece after moving
+        */
+      }
+    }
+  };
+
+  function renderSquare(row: number, col: number) {
     const isBlack = (row + col) % 2 === 1;
     const piece = board[row][col];
 
@@ -50,7 +109,6 @@ const JunQiBoard: React.FC = () => {
       const { color, type } = piece;
       const fillColor = color === 'red' ? 'red' : 'blue';
 
-      // Here we use the type as a placeholder for the character, replace with appropriate logic later
       return (
         <svg width="30" height="30" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
           <rect x="10" y="10" width="80" height="80" fill={fillColor} />
@@ -74,6 +132,7 @@ const JunQiBoard: React.FC = () => {
           justifyContent: 'center',
           border: '1px solid gray',
         }}
+        onClick={() => handleClick(row, col)} // Add onClick event here
       >
         {piece && renderPieceSVG(piece)}
       </div>
@@ -85,6 +144,11 @@ const JunQiBoard: React.FC = () => {
       {Array.from({ length: 5 }).map((_, col) => renderSquare(row, col))}
     </div>
   );
+
+
+  useEffect(() => {
+    window.updateBoardFromFEN = updateBoardFromFEN; // 可选：暴露到全局对象
+  }, []);
 
   return (
     <div className="chess-board" style={{ display: 'inline-block' }}>

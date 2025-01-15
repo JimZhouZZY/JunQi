@@ -15,4 +15,4 @@ function node(name, type='normal') {
     return nodeCache.get(key);
 }
 
-module.exports = { node , JunqiNode };
+export { node , JunqiNode };

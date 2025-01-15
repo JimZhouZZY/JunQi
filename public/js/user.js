@@ -3,6 +3,7 @@
 
 socket.on('room-name', function(roomName) {
     ROOM_NAME = roomName;
+    console.log(`Client received room name: ${ROOM_NAME}`)
 });
 
 async function joinQueue() {

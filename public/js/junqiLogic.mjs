@@ -1,7 +1,7 @@
-const { node } = require('./types/junqiNode.js');
-const JunqiBoard = require('./types/junqiBoard');
+import { node, JunqiNode } from './types/junqiNode.mjs';
+import JunqiBoard from './types/junqiBoard.mjs';
 
-class JunqiGame {
+export default class JunqiGame {
     constructor(jzn='0'.repeat(60)+' 0 0 0') {
         this.rows = 12;
         this.cols = 5;
@@ -225,5 +225,3 @@ class JunqiGame {
         return st;
     }
 }
-
-module.exports = JunqiGame;
