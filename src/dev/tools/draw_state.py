@@ -6,7 +6,7 @@ init(autoreset=True)
 PIECE_NAMES = {
     'l': "司", 'k': "军", 'j': "师", 'i': "旅", 'h': "团",
     'g': "营", 'f': "连", 'e': "排", 'd': "工", 'c': "雷",
-    'b': "炸", 'a': "旗", '0': "空"
+    'b': "炸", 'a': "旗", '0': "空", '#': "  ",
 }
 
 STATE = ''
@@ -34,6 +34,14 @@ def board_coordinate_to_index(coordinates, total_columns=5):
         indexs.append(index)
     return indexs
 
+OPPO_COLOR = None
+def det_color(board):
+    global OPPO_COLOR
+    OPPO_COLOR = Back.RED
+    for i in range(60):
+        if board[i].islower() and board[i] != 'a':
+            OPPO_COLOR = Back.BLUE
+
 def draw_state(board_str):
     global STATE
     try:
@@ -41,6 +49,7 @@ def draw_state(board_str):
     except:
         board = board_str.split()[0]
         current_player, half_moves, total_moves = 0, 0, 0
+    det_color(board)
     STATE = copy.deepcopy(str(board))
     if len(board) != 60:
         print("Invalid string length!")
@@ -59,6 +68,8 @@ def draw_state(board_str):
                 row_str += Back.RED + Fore.WHITE + f"|{PIECE_NAMES[piece]}|" + Style.RESET_ALL
             elif piece.isupper():
                 row_str += Back.BLUE + Fore.WHITE + f"|{PIECE_NAMES[piece.lower()]}|" + Style.RESET_ALL
+            elif piece == "#":
+                row_str += OPPO_COLOR + Fore.WHITE + f"|{PIECE_NAMES[piece.lower()]}|" + Style.RESET_ALL
             else:
                 row_str += Back.BLACK + Fore.WHITE + f"|{PIECE_NAMES[piece]}|" + Style.RESET_ALL
         print(row_str)
