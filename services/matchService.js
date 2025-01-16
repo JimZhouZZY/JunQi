@@ -3,7 +3,6 @@ let io;
 // TODO: this is too ugly, refactor it!
 const socketsQueue = require('../sockets/queue');
 const JunqiGame = require('../src/logic/junqiLogic');
-const junqiGame = require('../src/logic/junqiLogic')
 
 const boards = new Map;
 

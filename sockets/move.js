@@ -1,4 +1,4 @@
-const boards = require('../services/matchService')
+const {boards} = require('../services/matchService')
 
 // move.js
 module.exports = (io, socket) => {
