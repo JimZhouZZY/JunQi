@@ -76,7 +76,7 @@ Example:
   >>> isLegalAction("0acc0Ljc0e0000000000000000000000000B000000000GB000JK000CACC0 r 30 149", "b2b3")
       False
 ```
-### 编写 getLegalActions() 函数
+### (已弃用) 编写 getLegalActions() 函数
 ```
 function getLegalActions()
 
@@ -90,7 +90,7 @@ Example:
   >>> getLegalAction("0acc0Ljc0e0000000000000000000000000B000000000GB000JK000CACC0 r 30 149")
       ["b2b1","b2c2","b5a5","b5b4", "b5c5", "b5d5", "b5e5", "b5f5", "b5g5", "b5h5", "b5i5", "b5j5", "b5k5"]
 ```
-### (已弃用) 编写 applyAction() 函数
+### 编写 applyAction() 函数
 ```
 function applyAction()
 
