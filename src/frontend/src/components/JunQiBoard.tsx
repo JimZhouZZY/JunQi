@@ -10,6 +10,8 @@ type Piece = {
 
 type MoveHandler = (move: string) => void;
 
+window.game_state = 'DEPLOYING';
+
 interface JunQiBoardProps {
   moveHandler?: MoveHandler;
 }
@@ -17,8 +19,6 @@ interface JunQiBoardProps {
 //window.moveHandler = (move) => {
 //  console.log(`Move ${move}`);
 //}
-
-window.jzn = '000000000000000000000000000000000000000000000000000000000000';
 
 const JunQiBoard: React.FC<JunQiBoardProps> = ({
   moveHandler = window.moveHandler
@@ -56,11 +56,27 @@ const JunQiBoard: React.FC<JunQiBoardProps> = ({
     setBoard(newBoard);
   };
 
+  function updatePiece(updates: { row: number, col: number, newPiece: Piece | null }[]) {
+    let newBoard = [...board]; // Create a copy of the board
+    const n = updates.length;
+    for (let i = 0; i < n; i++) {
+      const { row, col, newPiece } = updates[i];
+  
+      newBoard = newBoard.map((rowArray, j) =>
+        j === row ? rowArray.map((cell, k) => (k === col ? newPiece : cell)) : rowArray
+      );
+    }
+  
+    // Update the board state
+    setBoard(newBoard);
+  };
+
   function convertToChessNotation(row: number, col: number): string {
     const rowString = String.fromCharCode(97 + row); // 97 是 'a' 的 ASCII 值
     const colString = (col + 1).toString(); // 将 col 转换为从 1 开始
     return rowString + colString;
-}
+  }
+
   function handleClick(row: number, col: number) {
     const piece = board[row][col];
     if (selectedPiece && piece && selectedPiece.color != piece.color) {
@@ -71,8 +87,17 @@ const JunQiBoard: React.FC<JunQiBoardProps> = ({
         console.error("moveHandler function is not available");
       }
       setSelectedPiece(null);
+    }    
+    else if (window.game_state == 'DEPLOYING' && selectedPiece && piece && selectedPiece.color == piece.color) {
+      const temp_piece: Piece = {
+        type: piece.type,
+        color: piece.color,
+        row: piece.row,
+        col: piece.col,
+      }
+      updatePiece([{row:piece.row, col:piece.col, newPiece:selectedPiece},{row:selectedPiece.row, col:selectedPiece.col, newPiece:temp_piece}]);
     }
-    if (piece) {
+    else if (piece) {
       // If a piece is clicked, set it as selected
       setSelectedPiece(piece);
       console.log(`Piece selected: ${piece.type} (${piece.color}) at (${row}, ${col})`);

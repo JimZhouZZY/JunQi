@@ -19292,7 +19292,7 @@ var import_react2 = __toESM(require_react());
 
 // src/components/JunQiBoard.tsx
 var import_react = __toESM(require_react());
-window.jzn = "000000000000000000000000000000000000000000000000000000000000";
+window.game_state = "DEPLOYING";
 var JunQiBoard = ({
   moveHandler = window.moveHandler
 }) => {
@@ -19324,6 +19324,18 @@ var JunQiBoard = ({
     setBoard(newBoard);
   }
   ;
+  function updatePiece(updates) {
+    let newBoard = [...board];
+    const n = updates.length;
+    for (let i = 0; i < n; i++) {
+      const { row, col, newPiece } = updates[i];
+      newBoard = newBoard.map(
+        (rowArray, j) => j === row ? rowArray.map((cell, k) => k === col ? newPiece : cell) : rowArray
+      );
+    }
+    setBoard(newBoard);
+  }
+  ;
   function convertToChessNotation(row, col) {
     const rowString = String.fromCharCode(97 + row);
     const colString = (col + 1).toString();
@@ -19339,8 +19351,15 @@ var JunQiBoard = ({
         console.error("moveHandler function is not available");
       }
       setSelectedPiece(null);
-    }
-    if (piece) {
+    } else if (window.game_state == "DEPLOYING" && selectedPiece && piece && selectedPiece.color == piece.color) {
+      const temp_piece = {
+        type: piece.type,
+        color: piece.color,
+        row: piece.row,
+        col: piece.col
+      };
+      updatePiece([{ row: piece.row, col: piece.col, newPiece: selectedPiece }, { row: selectedPiece.row, col: selectedPiece.col, newPiece: temp_piece }]);
+    } else if (piece) {
       setSelectedPiece(piece);
       console.log(`Piece selected: ${piece.type} (${piece.color}) at (${row}, ${col})`);
     } else {

@@ -1,4 +1,5 @@
 // queueController.js
+// Deprecated
 const queueService = require('../services/queueService');
 
 exports.joinQueue = async (req, res) => {
