@@ -87,7 +87,7 @@ def test_isLegalAction():
         move = data[1]
         answer = data[2]
         result = subprocess.run(
-            ['node', '../tests/test_isLegalAction.js', state, move ],
+            ['node', 'test_isLegalAction.js', state, move ],
             cwd=test_path,
             capture_output=True,
             text=True)
