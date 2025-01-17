@@ -60,6 +60,7 @@ def test_applyAction():
             cwd=test_path,
             capture_output=True,
             text=True)
+        print(result.stdout)
         result = result.stdout.split(" ")[0]
         if result == answer:
             print(f"Case {idx} SUCCEED")
