@@ -6,5 +6,6 @@ const move = args[1];
 
 junqi_game = new JunqiGame(state);
 junqi_game.applyAction(move);
+const jzn = junqi_game.getJzn();
 
-console.log(junqi_game.jzn);
+console.log(jzn);
