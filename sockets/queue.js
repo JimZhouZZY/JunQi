@@ -10,6 +10,11 @@ module.exports = (io, socket) => {
         await queueService.tryStartMatch(queuename);
     });
 
+    socket.on('queues-leave', async (username, queuename) => {
+        console.log(`${username} removed from the queue`);
+        await queueService.leaveSpecificQueue(username, queuename);
+    });
+
     socket.on('disconnect', () => {
         // 查找并删除该 socket.id 对应的用户名映射
         for (const username in usernameSocketMap) {

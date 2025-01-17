@@ -10,6 +10,18 @@ async function joinQueue() {
     const username = USERNAME;
     const queuename = 'main'; // TODO: diferrent queue_type
     socket.emit('queues-join', username, queuename);
+    document.getElementById('start-button').classList.add('hidden');
+    document.getElementById('cancle-button').classList.remove('hidden');
+    // TODO: Recieve and show response
+    // TODO: Handle errors
+}
+
+async function leaveQueue() {
+    const username = USERNAME;
+    const queuename = 'main'; // TODO: diferrent queue_type
+    socket.emit('queues-leave', username, queuename);
+    document.getElementById('cancle-button').classList.add('hidden');
+    document.getElementById('start-button').classList.remove('hidden');
     // TODO: Recieve and show response
     // TODO: Handle errors
 }

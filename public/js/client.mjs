@@ -31,5 +31,3 @@ socket.on('move', function(move) {
     window.updateBoardFromFEN(window.jzn);
     console.log(`New JZN: ${window.jzn}`);
 });
-
-

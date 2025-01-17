@@ -4,7 +4,7 @@
 <head>
     <title>Realtime_chess</title>
     <!-- External CSS -->
-    <link rel="stylesheet" href="/js/lib/chessboard-0.3.0.min.css" />
+    <link rel="stylesheet" href="js/lib/chessboard-0.3.0.min.css" />
     <!-- Internal CSS -->
     <link rel="stylesheet" href="css/adressBar.css">
     <link rel="stylesheet" href="css/body.css">
@@ -20,8 +20,8 @@
     <div id="address-bar"><span>Welcome, <span id="span_username">Guest</span></span></div>
     <div id="junqi-app"></div>
     <div class="toggle-button">
-        <button onclick="joinQueue()">Start</button>
-        <button onclick="leaveQueue()">Cancle</button>
+        <button id="start-button" onclick="joinQueue()">Start</button>
+        <button id="cancle-button" onclick="leaveQueue()" class="hidden">Cancle</button>
     </div>
     <div class="login-window hidden" id="loginWindow">
         <h2>Login/Register</h2>
@@ -33,17 +33,17 @@
 </body>
 <!-- External Script -->
 <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
-<script src="/js/lib/chess.min.js"></script>
-<script src="/js/lib/jquery-1.11.1.js"></script>
+<script src="js/lib/chess.min.js"></script>
+<script src="js/lib/jquery-1.11.1.js"></script>
 <!-- Internal Script -->
-<script src="/js/socket.js"></script>
-<script src="/js/user.js"></script>
-<script type="module" src="/js/types/junqiNode.mjs"></script>
-<script type="module" src="/js/types/junqiGraph.mjs"></script>
-<script type="module" src="/js/types/junqiBoard.mjs"></script>
-<script type="module" src="/js/junqiLogic.mjs"></script>
-<script type="module" src="/js/client.mjs"></script>
-<script src="/js/junqi-app.js"></script>
+<script src="js/socket.js"></script>
+<script src="js/user.js"></script>
+<script type="module" src="js/types/junqiNode.mjs"></script>
+<script type="module" src="js/types/junqiGraph.mjs"></script>
+<script type="module" src="js/types/junqiBoard.mjs"></script>
+<script type="module" src="js/junqiLogic.mjs"></script>
+<script type="module" src="js/client.mjs"></script>
+<script src="js/junqi-app.js"></script>
 
 
 </html>
