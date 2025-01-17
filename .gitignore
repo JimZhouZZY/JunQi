@@ -2,6 +2,9 @@
 yelab
 yelab.pub
 
+# generated file
+package-lock.json
+
 # Logs
 logs
 *.log
