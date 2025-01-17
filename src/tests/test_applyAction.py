@@ -51,7 +51,7 @@ def test_applyAction():
     answers = []
     results = []
     for data in datas:
-        state = data[0]
+        state = data[0].replace("\n", "")
         move = data[1]
         # TODO: More strict check on tailing elements
         answer = data[2].split(" ")[0]
