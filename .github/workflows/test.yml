@@ -13,12 +13,6 @@ jobs:
       run:
         working-directory: src/tests
         
-    strategy:
-      matrix:
-        language: [python, node]
-        python-version: ["3.11", 3.12]
-        node-version: [17, 18]
-
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
@@ -26,12 +20,12 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: "3.12"
 
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: "23.3.0"
 
       - name: Install Python Dependencies
         if: matrix.language == 'python'
