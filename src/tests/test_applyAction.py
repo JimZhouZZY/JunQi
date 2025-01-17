@@ -56,7 +56,7 @@ def test_applyAction():
         # TODO: More strict check on tailing elements
         answer = data[2].split(" ")[0]
         result = subprocess.run(
-            ['node', '../tests/test_applyAction.js', state, move ],
+            ['node', 'test_applyAction.js', state, move ],
             cwd=test_path,
             capture_output=True,
             text=True)
