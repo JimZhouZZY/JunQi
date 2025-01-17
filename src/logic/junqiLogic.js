@@ -275,10 +275,10 @@ class JunqiGame {
     }
 
     isTerminal() {
-        const red_string = getMaskedJzn("r");
-        const blue_string = getMaskedJzn("b");
+        const red_string = this.getMaskedJzn("r");
+        const blue_string = this.getMaskedJzn("b");
     
-        length = this.rows * this.cols;
+        const length = this.rows * this.cols;
     
         if ((red_string[1] != "a" && red_string[3] != "a") 
             || (blue_string[56] != "A" && blue_string[58] != "A")) {
@@ -318,6 +318,8 @@ class JunqiGame {
         if (this.skipped_actions["r"] < 0 || this.skipped_actions["b"] < 0) {
             return true;
         }
+
+        return false;
     }
     
     getWinner() {
@@ -451,7 +453,7 @@ class JunqiGame {
             flag = "A";
         }
     
-        length = this.row * this.cols;
+        const length = this.row * this.cols;
         let masked_jzn = this.jzn;
     
         for (let i = 0; i < length; i++) {
@@ -493,7 +495,18 @@ class JunqiGame {
 }
 
 /* DEBUG */
-// a = new JunqiGame("0acc0Ljc0e000000000000000000e000D00B000000000GB000JK00DCACC0 0 0 0");
-// console.log(a.isLegalAction('f4g4'));
+a = new JunqiGame("0acc0Ljc0e000000000000000000e000D00B000000000GB000JK00DCACC0 r 0 0");
+console.log(a.isLegalAction('f4g4'));
+a = new JunqiGame("0Lcc00jc0e0000000000000000000000000B000000000GB000JK000CACC0 r 0 0");
+console.log(a.isTerminal());
+a = new JunqiGame("0Lcc00jc0e0000000000000000000000000B000000000GB000JK000CACC0 r 0 0");
+console.log(a.getWinner());
+a = new JunqiGame();
+console.log(a.isLegalLayout('0acc00acc00acc00acc00acc00acc0'));
+a = new JunqiGame();
+console.log(a.applyLayout('caccbbdddee0e0fff0ggh0h0iijjkl'));
+a = new JunqiGame();
+console.log(a.skipAction('r'));
+/* DEBUG */
 
 module.exports = JunqiGame;
