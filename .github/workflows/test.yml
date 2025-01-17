@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  test:
+  test_python3_12_node23:
     runs-on: ubuntu-22.04
     
     defaults:
