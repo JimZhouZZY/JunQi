@@ -8,7 +8,7 @@ class JunqiGame {
         this.jzn = jzn; // JZN stands for 'Jim-Zhou Notation'
         this.board = new JunqiBoard();
     }
- 
+
     isLegalAction(request) {
         const blocked = new Set();
         const s = this.jzn;
@@ -18,20 +18,20 @@ class JunqiGame {
             if (!start.type === 'railway' || !end.type === 'railway') {
                 return false; // 起点或终点必须是铁路节点
             }
-    
+
             // BFS
-    
+
             let queue = [start];
             let visited = new Set();
             visited.add(start);
-    
+
             while (queue.length > 0) {
                 const current = queue.shift();
-    
+
                 if (current === end) {
                     return true; // 找到通路
                 }
-    
+
                 // 遍历所有邻接节点
                 for (const neighbor of this.board.getNeighbors(current)) {
                     if (
@@ -46,20 +46,20 @@ class JunqiGame {
             }
             return false; // 未找到通路
         }
-    
+
         function splitBySpace(inputString) {
             return inputString.split(" ");
         }
 
         const result = splitBySpace(s);
         const s1 = result[0]; const s2 = result[1]; const s3 = result[2]; const s4 = result[3];
-    
+
         const headi = request.charCodeAt(0) - 97; const headj = Number(request[1]) - 1;
         const head = String(headi) + "-" + String(headj);
-    
+
         const taili = request.charCodeAt(2) - 97; const tailj = Number(request[3]) - 1;
         const tail = String(taili) + "-" + String(tailj);
-        
+
         for (let i = 0; i < 12; i++) {
             for (let j = 0; j < 5; j++) {
                 if (s1[i * 5 + j] != "0") {
@@ -101,9 +101,9 @@ class JunqiGame {
             flag = false;
         } else {
             if (this.board.adjList.has(node(head, 'railway')) && this.board.adjList.has(node(tail, 'railway'))) {
-                if ((!(headi === taili) && !(headj === tailj)) 
+                if ((!(headi === taili) && !(headj === tailj))
                     || ((headi === taili) && ([1, 5, 6, 10].indexOf(headi) === -1))
-                    || ((headj === tailj) && ([0, 4].indexOf(headj) === -1)) 
+                    || ((headj === tailj) && ([0, 4].indexOf(headj) === -1))
                     ) {
                     flag = false;
                 } else {
@@ -146,7 +146,7 @@ class JunqiGame {
                             }
                         }
                     }
-    
+
                 }
             } else {
                 flag = false;
@@ -233,6 +233,10 @@ class JunqiGame {
         this.jzn = st;
         console.log(this.jzn);
         return st;
+    }
+
+    getJzn() {
+        return this.jzn;
     }
 }
 
