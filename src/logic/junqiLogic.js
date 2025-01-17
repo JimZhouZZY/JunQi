@@ -2,11 +2,18 @@ const { node } = require('./types/junqiNode.js');
 const JunqiBoard = require('./types/junqiBoard');
 
 class JunqiGame {
-    constructor(jzn='0'.repeat(60)+' 0 0 0') {
+    constructor(jzn='0'.repeat(60)+' r 0 0') {
         this.rows = 12;
         this.cols = 5;
         this.jzn = jzn; // JZN stands for 'Jim-Zhou Notation'
         this.board = new JunqiBoard();
+        this.is_terminal = false;
+        this.winner = "";
+        this.skipped_actions = new Map([['r', 3],['b', 3]]);
+        this.layout = new Map;
+    }
+    StringChange(s,index,change){ //method
+        return s.slice(0,index)+change+s.slice(index+1);
     }
 
     isLegalAction(request) {
@@ -155,7 +162,6 @@ class JunqiGame {
         }
         return flag;
     }
-
     applyAction(request){
         function splitBySpace(inputString) {
             // 使用空格分割字符串
@@ -169,9 +175,6 @@ class JunqiGame {
         const Target = s1[headi * 5 + headj];
         const Goal = s1[taili * 5 + tailj];
         let flag=true;
-        function StringChange(s,index,change){
-            return s.slice(0,index)+change+s.slice(index+1);
-        }
         //console.log(s1[59])
         if (Target === "d" || Target === "D") {
             if (Goal === "d" || Goal === "D") {
@@ -202,7 +205,6 @@ class JunqiGame {
             b=b+32;
         }
         const T2=String.fromCharCode(a);const G2=String.fromCharCode(b);
-        //console.log(T2,G2)
         if (T2>G2){
             s1=StringChange(s1,headi * 5 + headj,"0");
             s1=StringChange(s1,taili * 5 + tailj,Target);
@@ -217,9 +219,6 @@ class JunqiGame {
                 flag=false;
             }
         }
-        //console.log(flag);
-        //s1[0]="w"
-       // console.log(s1);
         s4=s4+1;
         if (flag!==true){
             s3=1;
@@ -235,6 +234,183 @@ class JunqiGame {
         return st;
     }
 
+    isTerminal(){
+        const red_string=getMaskedJzn("r");
+        const blue_string=getMaskedJzn("b");
+        length=this.rows*this.cols;
+        let flag=false;
+        if ((red_string[1] !="a" && red_string[3] !="a") || (blue_string[56] !="A" && blue_string[58] !="A")){
+                return(true);
+        }
+        let red_count=0;  let blue_count=0;
+        for (let i=0; i<length; i++){
+                if (red_string[i]!="0" && red_string[i]!="#" 
+                && red_string[i] != "c"
+                && i !=1 && i !=3
+                && i !=56 && i !=58){
+                        red_count++;
+                }
+                if (blue_string[i]!="0" && blue_string[i]!="#" 
+                && blue_string[i] != "C"
+                && i !=1 && i !=3
+                && i !=56 && i !=58){
+                        blue_count++;
+                }
+        }
+        if (red_count ===0 || blue_count ===0 ){
+                return(true);
+        }
+        const red_result = splitBySpace(red_string);
+        const blue_result = splitBySpace(blue_string);
+        if (Number(red_result[2]) ===31 || Number(blue_result[2]) ===31){
+                return(true);
+        }
+        if (this.skipped_actions["r"] <0 || this.skipped_actions["b"] <0){
+                return(true);
+        }
+    }
+    getWinner(){
+        const red_string=getMaskedJzn("r");
+        const blue_string=getMaskedJzn("b");
+        length=this.rows*this.cols;
+        let flag=false;
+        if (red_string[1] !="a" && red_string[3] !="a"){
+                return("b");
+        }
+        if (blue_string[56] !="A" && blue_string[58] !="A"){
+                return("r");
+        }
+        let red_count=0;  let blue_count=0;
+        for (let i=0; i<length; i++){
+                if (red_string[i]!="0" && red_string[i]!="#" 
+                    && red_string[i] != "c"
+                    && i !=1 && i !=3
+                    && i !=56 && i !=58){
+                        red_count++;
+                }
+                if (blue_string[i]!="0" && blue_string[i]!="#" 
+                    && blue_string[i] != "C"
+                    && i !=1 && i !=3
+                    && i !=56 && i !=58){
+                        blue_count++;
+                }
+        }
+        if (red_count ===0 && blue_count >0 ){
+                return("b");
+        }
+        if (red_count > 0 && blue_count === 0 ){
+                return("r");
+        }
+        if (red_count === 0 && blue_count === 0 ){
+                return("0");
+        }
+        const red_result = splitBySpace(red_string);
+        const blue_result = splitBySpace(blue_string);
+        if (Number(red_result[2]) === 31 ){
+                return("b");
+        }
+        if (Number(blue_result[2]) === 31 ){
+                return("r");
+        }
+
+    }
+    isLegalLayout(layout){
+        function Checkout(busket){
+            const chess1=["l","L","k","K","a","A"];
+            const chess2=["j","J","i","I","h","H","g","G","b","B"];
+            const chess3=["f","F","e","E","d","D","c","C"];
+            for (const key of busket.keys()){
+                    let number_eachchess=busket.get(key);
+                    if (chess1.includes(key)){
+                            if (number_eachchess !== 1 ){
+                                    return false;
+                            }
+                    }
+                    if (chess2.includes(key)){
+                            if (number_eachchess !== 2 ){
+                                    return false;
+                            }
+                    }
+                    if (chess3.includes(key)){
+                            if (number_eachchess !== 3 ){
+                                    return false;
+                            }
+                    }
+            }
+            return true;
+        }
+        let busket= new Map();
+        board_number=layout.length;
+        if (board_number>30){
+                return false;
+        }
+        for (let i=0; i<board_number; i++){
+                if (busket.get(layout[i])==undefined){
+                        busket.set(layout[i], 1);
+                }else{
+                        let old_number=busket.get(layout[i]);
+                        busket.set(layout[i], old_number+1);
+                }
+        }
+        return(Checkout(busket));   
+    }   
+    applyLayout(layout){
+        const ASCll_number = layout.charCodeAt(0);
+        if (ASCll_number < 97){
+            const player = "b";
+            const strat = 30;
+        }else{
+            const player = "r";
+            const strat = 0;
+        }
+        for (let i=strat; i<strat+30; i++){
+            this.jzn = JunqiGame.StringChange(this.jzn, i, layout[i-strat]);
+        }
+        this.layout = this.layout.set(player,layout);
+    }
+    getMaskedJzn(player){
+        if (player === "b"){
+            const ASCLL_min="a".charCodeAt(0);
+            const ASCLL_max="z".charCodeAt(0);
+            const commander="c";
+            const flag="a";
+        }else{
+            const ASCLL_min="A".charCodeAt(0);
+            const ASCLL_max="Z".charCodeAt(0);
+            const commander="C";
+            const flag="A";
+        }
+        length=this.row*this.cols;
+        let masked_jzn=this.jzn;
+        for (let i=0; i<length; i++){
+            if (masked_jzn[i] === flag){
+                const position=i;
+            }
+            if (masked_jzn[i].charCodeAt(0) >= ASCLL_min && masked_jzn[i].charCodeAt(0) <= ASCLL_max){
+                masked_jzn=JunqiGame.StringChange(masked_jzn,i,"#");
+            }
+        }
+        commander_state=false;
+        for (let i=0; i<length; i++){
+            if (masked_jzn[i] === commander){
+                commander_state=true;
+                break;
+            }
+        }
+        if (commander_state === false){
+            if (player === "r"){
+                masked_jzn=JunqiGame.StringChange(masked_jzn,position,"a");
+            }else{
+                masked_jzn=JunqiGame.StringChange(masked_jzn,position,"A");
+            }
+        }
+        return masked_jzn;
+    }
+  
+    skipAction(player) {
+        let number = this.skipped_actions.get(player);
+        this.skipped_actions.set(player, number - 1);
+    }
     getJzn() {
         return this.jzn;
     }
