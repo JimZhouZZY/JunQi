@@ -8,7 +8,11 @@ on:
 jobs:
   test:
     runs-on: ubuntu-22.04
-
+    
+    defaults:
+      run:
+        working-directory: src/test
+        
     strategy:
       matrix:
         language: [python, node]
