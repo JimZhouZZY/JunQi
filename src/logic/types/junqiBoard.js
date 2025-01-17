@@ -71,7 +71,7 @@ class JunqiBoard extends JunqiGraph {
         this.addNode(node("7-0", 'railway')); this.addNode(node("3-4", 'railway')); this.addNode(node("9-4", 'railway'));
 
         // 添加铁路的连接边
-        for (let i = 0; i < 5; i++) {
+        for (let i = 0; i < 4; i++) {
             let str1 = String(i); let str2 = String(i + 1);
             this.addEdge(node("1-"+str1, 'railway'), node("1-"+str2, 'railway'));
             this.addEdge(node("5-"+str1, 'railway'), node("5-"+str2, 'railway'));

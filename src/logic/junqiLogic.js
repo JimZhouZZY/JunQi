@@ -101,7 +101,10 @@ class JunqiGame {
             flag = false;
         } else {
             if (this.board.adjList.has(node(head, 'railway')) && this.board.adjList.has(node(tail, 'railway'))) {
-                if (!(headi === taili) && !(headj === tailj)) {
+                if ((!(headi === taili) && !(headj === tailj)) 
+                    || ((headi === taili) && ([1, 5, 6, 10].indexOf(headi) === -1))
+                    || ((headj === tailj) && ([0, 4].indexOf(headj) === -1)) 
+                    ) {
                     flag = false;
                 } else {
                     if (headi === taili) {
@@ -122,6 +125,11 @@ class JunqiGame {
                         }
                     }
                     if (headj === tailj) {
+                        if ((headj == 1 || headj == 3)
+                            && (headi == 5 && taili == 6) || (taili == 5 && headi == 6)
+                        ) {
+                            flag = false;
+                        }
                         if (taili > headi){
                             for (let i = headi + 1; i < taili; i++) {
                                 let point = node(String(i) + "-" + String(headj), 'railway');
@@ -140,7 +148,9 @@ class JunqiGame {
                     }
     
                 }
-            } 
+            } else {
+                flag = false;
+            }
             flag = flag || this.board.areAdjacent(node(head), node(tail));
         }
         return flag;
@@ -225,5 +235,8 @@ class JunqiGame {
         return st;
     }
 }
+
+a = new JunqiGame("0acc0Ljc0e000000000000000000e000D00B000000000GB000JK00DCACC0 0 0 0");
+//console.log(a.isLegalAction('f4g4'));
 
 module.exports = JunqiGame;
