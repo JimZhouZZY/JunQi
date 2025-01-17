@@ -318,6 +318,8 @@ export default class JunqiGame {
         if (this.skipped_actions["r"] < 0 || this.skipped_actions["b"] < 0) {
             return true;
         }
+
+        return false;
     }
     
     getWinner() {
