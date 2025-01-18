@@ -1,11 +1,15 @@
+/*
+ * Copyright (C) 2025 Zhiyu Zhou (jimzhouzzy@gmail.com)
+ * This file is part of Web-JunQi.
+ * Licensed under the GPLv3 License.
+ */
+
 import JunqiGame from "./junqiLogic.mjs";
 
 var game;
 
 var initGame = function() {
     game = new JunqiGame();
-    /** DEBUG **/
-    game.jzn = '0acc0Ljc0e0000000000000000000000000B000000000GB000JK000CACC0 r 30 149'
 };
 
 window.addEventListener('load', () => {
