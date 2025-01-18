@@ -156,9 +156,9 @@ const JunQiBoard: React.FC<JunQiBoardProps> = ({
       fillColor = selected ? 'purple' : fillColor;
 
       return (
-        <svg width="30" height="30" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <svg style={{userSelect: 'none'}} width="30" height="30" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
           <rect x="10" y="10" width="80" height="80" fill={fillColor} />
-          <text x="50%" y="50%" fontSize="30" textAnchor="middle" dy=".3em" fill="white">
+          <text style={{pointerEvents: 'none'}} x="50%" y="50%" fontSize="30" textAnchor="middle" dy=".3em" fill="white">
             {type}
           </text>
         </svg>
