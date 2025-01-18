@@ -17,7 +17,6 @@ def modify_state(coor, piece, print_out=True, use_idx=False, idx=0):
     if print_out:
         print("State")
         draw_state(STATE+" 0 0 0")
-        print(STATE)
 
 
 def board_coordinate_to_index(coordinates, total_columns=5, print_out=True):
@@ -76,6 +75,7 @@ def draw_state(board_str):
         print(row_str)
         print("  +" + "---+" * 5)
 
+    print(STATE)
     print(f"\nCurrent Player {'RED' if current_player == 'r' else 'BLUE'}")
     print(f"Semi Moves: {half_moves}")
     print(f"Total Moves: {total_moves}")
