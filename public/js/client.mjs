@@ -6,12 +6,15 @@ var initGame = function() {
     game = new JunqiGame();
     /** DEBUG **/
     game.jzn = '0acc0Ljc0e0000000000000000000000000B000000000GB000JK000CACC0 r 30 149'
-    window.jzn = '0acc0Ljc0e0000000000000000000000000B000000000GB000JK000CACC0 r 30 149'
 };
 
 window.addEventListener('load', () => {
     initGame();
     console.log("Initializing client.mjs");
+    window.game_phase = "DEPLOYING";
+    window.oppo_color = 'red';
+    window.jzn = '##############################LKJJII0H0HGG0FFF0E0EEDDDBBCCAC'
+    // window.updateBoardFromFEN(window.jzn);
     window.moveHandler = (move) => {
         const canMove = game.isLegalAction(move);
         console.log(`Move ${move} - ${canMove}`);

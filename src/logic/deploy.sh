@@ -1,1 +1,1 @@
-cp junqiLogic.js ../../public/js/junqiLogic.js
+cp junqiLogic.js ../../public/js/junqiLogic.mjs

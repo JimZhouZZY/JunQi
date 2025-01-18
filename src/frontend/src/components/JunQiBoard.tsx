@@ -6,11 +6,12 @@ type Piece = {
   color: 'red' | 'blue';
   row: number;
   col: number;
+  selected: boolean;
 };
 
 type MoveHandler = (move: string) => void;
 
-window.game_state = 'DEPLOYING';
+window.game_phase = 'DEPLOYING';
 
 interface JunQiBoardProps {
   moveHandler?: MoveHandler;
@@ -28,7 +29,7 @@ const JunQiBoard: React.FC<JunQiBoardProps> = ({
 
   function updateBoardFromFEN(fen: string) {
     const jzn_splitted = fen.split(" ")[0];
-    const pieces = jzn_splitted.split('').filter(char => /^[a-zA-Z0-9]$/.test(char));
+    const pieces = jzn_splitted.split('').filter(char => /^[#a-zA-Z0-9]$/.test(char));
 
     const newBoard: (Piece | null)[][] = Array(12)
       .fill(null)
@@ -46,9 +47,16 @@ const JunQiBoard: React.FC<JunQiBoardProps> = ({
         } else {
           const row = Math.floor(idx / 5);
           const col = idx % 5;
-          const color = char === char.toUpperCase() ? 'blue' : 'red';
+          let color: 'red' | 'blue' = 'red';
+          if (char != '#'){
+            color = char === char.toUpperCase() ? 'blue' : 'red';
+          }
+          else {
+            color = window.oppo_color;
+          }
           const type = char.toUpperCase(); // Use uppercase letters for piece type
-          newBoard[row][col] = { type, color, row, col };
+          const selected = false;
+          newBoard[row][col] = { type, color, row, col , selected};
           idx++;
         }
       }
@@ -88,22 +96,25 @@ const JunQiBoard: React.FC<JunQiBoardProps> = ({
       }
       setSelectedPiece(null);
     }    
-    else if (window.game_state == 'DEPLOYING' && selectedPiece && piece && selectedPiece.color == piece.color) {
+    else if (window.game_phase == 'DEPLOYING' && selectedPiece && piece && selectedPiece.color == piece.color) {
       const temp_piece: Piece = {
         type: piece.type,
         color: piece.color,
         row: piece.row,
         col: piece.col,
+        selected: piece.selected,
       }
       updatePiece([{row:piece.row, col:piece.col, newPiece:selectedPiece},{row:selectedPiece.row, col:selectedPiece.col, newPiece:temp_piece}]);
+      setSelectedPiece(null);
     }
     else if (piece) {
       // If a piece is clicked, set it as selected
       setSelectedPiece(piece);
+      updatePiece([{row:piece!.row, col:piece!.col, newPiece: {type: piece!.type, color: piece!.color, row: piece!.row, col: piece!.col, selected: true} }]);
       console.log(`Piece selected: ${piece.type} (${piece.color}) at (${row}, ${col})`);
     } else {
       // If no piece is clicked, handle an empty space click (e.g., move the selected piece)
-      if (selectedPiece) {
+      if (selectedPiece && window.game_phase == 'MOVING') {
         const move = convertToChessNotation(selectedPiece.row, selectedPiece.col) + convertToChessNotation(row, col);
         if (window.moveHandler) {
           window.moveHandler(move);
@@ -131,8 +142,9 @@ const JunQiBoard: React.FC<JunQiBoardProps> = ({
 
     // Function to render SVG based on piece type and color
     const renderPieceSVG = (piece: Piece) => {
-      const { color, type } = piece;
-      const fillColor = color === 'red' ? 'red' : 'blue';
+      const { color, type, selected } = piece;
+      var fillColor = color === 'red' ? 'red' : 'blue';
+      fillColor = selected ? 'yellow' : fillColor;
 
       return (
         <svg width="30" height="30" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
@@ -143,7 +155,6 @@ const JunQiBoard: React.FC<JunQiBoardProps> = ({
         </svg>
       );
     };
-
     return (
       <div
         key={`${row}-${col}`}
@@ -172,21 +183,18 @@ const JunQiBoard: React.FC<JunQiBoardProps> = ({
 
 
   useEffect(() => {
+    default_setup();
     window.updateBoardFromFEN = updateBoardFromFEN; // 可选：暴露到全局对象
   }, []);
+
+  function default_setup(){
+    const default_jzn = '000000000000000000000000000000LKJJII0H0HGG0FFF0E0EEDDDBBCCAC r 0 0';
+    updateBoardFromFEN(default_jzn);
+  }
 
   return (
     <div className="chess-board" style={{ display: 'inline-block' }}>
       {Array.from({ length: 12 }).map((_, row) => renderRow(row))}
-      <button
-        onClick={() =>
-          updateBoardFromFEN(
-            '0acc0Ljc0e0000000000000000000000000B000000000GB000JK000CACC0' // Example FEN string
-          )
-        }
-      >
-        Set Board
-      </button>
     </div>
   );
 };

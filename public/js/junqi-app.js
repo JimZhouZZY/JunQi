@@ -19292,7 +19292,7 @@ var import_react2 = __toESM(require_react());
 
 // src/components/JunQiBoard.tsx
 var import_react = __toESM(require_react());
-window.game_state = "DEPLOYING";
+window.game_phase = "DEPLOYING";
 var JunQiBoard = ({
   moveHandler = window.moveHandler
 }) => {
@@ -19300,7 +19300,7 @@ var JunQiBoard = ({
   const [selectedPiece, setSelectedPiece] = (0, import_react.useState)(null);
   function updateBoardFromFEN(fen) {
     const jzn_splitted = fen.split(" ")[0];
-    const pieces = jzn_splitted.split("").filter((char) => /^[a-zA-Z0-9]$/.test(char));
+    const pieces = jzn_splitted.split("").filter((char) => /^[#a-zA-Z0-9]$/.test(char));
     const newBoard = Array(12).fill(null).map(() => Array(5).fill(null));
     let idx = 0;
     pieces.forEach((piece) => {
@@ -19314,9 +19314,15 @@ var JunQiBoard = ({
         } else {
           const row = Math.floor(idx / 5);
           const col = idx % 5;
-          const color = char === char.toUpperCase() ? "blue" : "red";
+          let color = "red";
+          if (char != "#") {
+            color = char === char.toUpperCase() ? "blue" : "red";
+          } else {
+            color = window.oppo_color;
+          }
           const type = char.toUpperCase();
-          newBoard[row][col] = { type, color, row, col };
+          const selected = false;
+          newBoard[row][col] = { type, color, row, col, selected };
           idx++;
         }
       }
@@ -19351,19 +19357,22 @@ var JunQiBoard = ({
         console.error("moveHandler function is not available");
       }
       setSelectedPiece(null);
-    } else if (window.game_state == "DEPLOYING" && selectedPiece && piece && selectedPiece.color == piece.color) {
+    } else if (window.game_phase == "DEPLOYING" && selectedPiece && piece && selectedPiece.color == piece.color) {
       const temp_piece = {
         type: piece.type,
         color: piece.color,
         row: piece.row,
-        col: piece.col
+        col: piece.col,
+        selected: piece.selected
       };
       updatePiece([{ row: piece.row, col: piece.col, newPiece: selectedPiece }, { row: selectedPiece.row, col: selectedPiece.col, newPiece: temp_piece }]);
+      setSelectedPiece(null);
     } else if (piece) {
       setSelectedPiece(piece);
+      updatePiece([{ row: piece.row, col: piece.col, newPiece: { type: piece.type, color: piece.color, row: piece.row, col: piece.col, selected: true } }]);
       console.log(`Piece selected: ${piece.type} (${piece.color}) at (${row}, ${col})`);
     } else {
-      if (selectedPiece) {
+      if (selectedPiece && window.game_phase == "MOVING") {
         const move = convertToChessNotation(selectedPiece.row, selectedPiece.col) + convertToChessNotation(row, col);
         if (window.moveHandler) {
           window.moveHandler(move);
@@ -19379,8 +19388,9 @@ var JunQiBoard = ({
     const isBlack = (row + col) % 2 === 1;
     const piece = board[row][col];
     const renderPieceSVG = (piece2) => {
-      const { color, type } = piece2;
-      const fillColor = color === "red" ? "red" : "blue";
+      const { color, type, selected } = piece2;
+      var fillColor = color === "red" ? "red" : "blue";
+      fillColor = selected ? "yellow" : fillColor;
       return /* @__PURE__ */ import_react.default.createElement("svg", { width: "30", height: "30", viewBox: "0 0 100 100", xmlns: "http://www.w3.org/2000/svg" }, /* @__PURE__ */ import_react.default.createElement("rect", { x: "10", y: "10", width: "80", height: "80", fill: fillColor }), /* @__PURE__ */ import_react.default.createElement("text", { x: "50%", y: "50%", fontSize: "30", textAnchor: "middle", dy: ".3em", fill: "white" }, type));
     };
     return /* @__PURE__ */ import_react.default.createElement(
@@ -19405,18 +19415,14 @@ var JunQiBoard = ({
   ;
   const renderRow = (row) => /* @__PURE__ */ import_react.default.createElement("div", { key: row, className: "row", style: { display: "flex" } }, Array.from({ length: 5 }).map((_, col) => renderSquare(row, col)));
   (0, import_react.useEffect)(() => {
+    default_setup();
     window.updateBoardFromFEN = updateBoardFromFEN;
   }, []);
-  return /* @__PURE__ */ import_react.default.createElement("div", { className: "chess-board", style: { display: "inline-block" } }, Array.from({ length: 12 }).map((_, row) => renderRow(row)), /* @__PURE__ */ import_react.default.createElement(
-    "button",
-    {
-      onClick: () => updateBoardFromFEN(
-        "0acc0Ljc0e0000000000000000000000000B000000000GB000JK000CACC0"
-        // Example FEN string
-      )
-    },
-    "Set Board"
-  ));
+  function default_setup() {
+    const default_jzn = "000000000000000000000000000000LKJJII0H0HGG0FFF0E0EEDDDBBCCAC r 0 0";
+    updateBoardFromFEN(default_jzn);
+  }
+  return /* @__PURE__ */ import_react.default.createElement("div", { className: "chess-board", style: { display: "inline-block" } }, Array.from({ length: 12 }).map((_, row) => renderRow(row)));
 };
 var JunQiBoard_default = JunQiBoard;
 

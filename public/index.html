@@ -18,7 +18,7 @@
 
 <body>
     <div id="address-bar"><span>Welcome, <span id="span_username">Guest</span></span></div>
-    <div id="junqi-app"></div>
+    <div id="junqi-app"></div><script src="js/junqi-app.js"></script>
     <div class="toggle-button">
         <button id="start-button" onclick="joinQueue()">Start</button>
         <button id="cancle-button" onclick="leaveQueue()" class="hidden">Cancle</button>
@@ -42,8 +42,7 @@
 <script type="module" src="js/types/junqiGraph.mjs"></script>
 <script type="module" src="js/types/junqiBoard.mjs"></script>
 <script type="module" src="js/junqiLogic.mjs"></script>
-<script type="module" src="js/client.mjs"></script>
-<script src="js/junqi-app.js"></script>
+<script type="module" src="js/client.mjs" defer></script>
 
 
 </html>
