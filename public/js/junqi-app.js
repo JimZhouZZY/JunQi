@@ -19335,8 +19335,15 @@ var JunQiBoard = ({
     const n = updates.length;
     for (let i = 0; i < n; i++) {
       const { row, col, newPiece } = updates[i];
+      const update_piece = {
+        type: newPiece.type,
+        row,
+        col,
+        color: newPiece.color,
+        selected: newPiece.selected
+      };
       newBoard = newBoard.map(
-        (rowArray, j) => j === row ? rowArray.map((cell, k) => k === col ? newPiece : cell) : rowArray
+        (rowArray, j) => j === row ? rowArray.map((cell, k) => k === col ? update_piece : cell) : rowArray
       );
     }
     setBoard(newBoard);
@@ -19356,14 +19363,15 @@ var JunQiBoard = ({
       } else {
         console.error("moveHandler function is not available");
       }
+      updatePiece([{ row: selectedPiece.row, col: selectedPiece.col, newPiece: { type: selectedPiece.type, color: selectedPiece.color, row: selectedPiece.row, col: selectedPiece.col, selected: false } }]);
       setSelectedPiece(null);
     } else if (window.game_phase == "DEPLOYING" && selectedPiece && piece && selectedPiece.color == piece.color) {
       const temp_piece = {
         type: piece.type,
-        color: piece.color,
         row: piece.row,
         col: piece.col,
-        selected: piece.selected
+        color: piece.color,
+        selected: false
       };
       updatePiece([{ row: piece.row, col: piece.col, newPiece: selectedPiece }, { row: selectedPiece.row, col: selectedPiece.col, newPiece: temp_piece }]);
       setSelectedPiece(null);
@@ -19379,6 +19387,7 @@ var JunQiBoard = ({
         } else {
           console.error("moveHandler function is not available");
         }
+        updatePiece([{ row: selectedPiece.row, col: selectedPiece.col, newPiece: { type: selectedPiece.type, color: selectedPiece.color, row: selectedPiece.row, col: selectedPiece.col, selected: false } }]);
         setSelectedPiece(null);
       }
     }
@@ -19390,7 +19399,7 @@ var JunQiBoard = ({
     const renderPieceSVG = (piece2) => {
       const { color, type, selected } = piece2;
       var fillColor = color === "red" ? "red" : "blue";
-      fillColor = selected ? "yellow" : fillColor;
+      fillColor = selected ? "purple" : fillColor;
       return /* @__PURE__ */ import_react.default.createElement("svg", { width: "30", height: "30", viewBox: "0 0 100 100", xmlns: "http://www.w3.org/2000/svg" }, /* @__PURE__ */ import_react.default.createElement("rect", { x: "10", y: "10", width: "80", height: "80", fill: fillColor }), /* @__PURE__ */ import_react.default.createElement("text", { x: "50%", y: "50%", fontSize: "30", textAnchor: "middle", dy: ".3em", fill: "white" }, type));
     };
     return /* @__PURE__ */ import_react.default.createElement(
