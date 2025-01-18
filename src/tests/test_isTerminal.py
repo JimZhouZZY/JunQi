@@ -31,7 +31,7 @@ datas = [
     ["0acc00jc0e000000000000000000000000000000000000000000000CEkA0" + tailing_state, str_true],
 ]
 
-def test_isLegalAction():
+def test_isTerminal():
     idx = 0
     answers = []
     results = []
@@ -39,7 +39,7 @@ def test_isLegalAction():
         state = data[0]
         answer = data[1]
         result = subprocess.run(
-            ['node', 'test_isLegalAction.js', state ],
+            ['node', 'test_isTerminal.js', state ],
             cwd=test_path,
             capture_output=True,
             text=True)
