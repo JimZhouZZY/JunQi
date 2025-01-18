@@ -20,7 +20,12 @@ export default class JunqiGame {
     }
 
     static changeString(str, index, change){
-        return str.slice(0, index) + change + s.slice(index + 1);
+        return str.slice(0, index) + change + str.slice(index + 1);
+    }
+
+    static splitBySpace(inputString) {
+        // 使用空格分割字符串
+        return inputString.split(" ");
     }
 
     isLegalAction(request) {
@@ -61,11 +66,8 @@ export default class JunqiGame {
             return false; // 未找到通路
         };
     
-        const splitBySpace = (inputString) => {
-            return inputString.split(" ");
-        };
-    
-        const boardArray = splitBySpace(boardState);
+
+        const boardArray = JunqiGame.splitBySpace(boardState);
         const row1 = boardArray[0];
         const row2 = boardArray[1];
         const row3 = boardArray[2];
@@ -184,13 +186,9 @@ export default class JunqiGame {
     }
 
     applyAction(request) {
-        function splitBySpace(inputString) {
-            // 使用空格分割字符串
-            return inputString.split(" ");
-        }
     
         const boardState = this.jzn;
-        const splitResult = splitBySpace(boardState);
+        const splitResult = JunqiGame.splitBySpace(boardState);
         let row1 = splitResult[0];
         let row2 = splitResult[1];
         let row3 = Number(splitResult[2]);
@@ -281,11 +279,16 @@ export default class JunqiGame {
     }
 
     isTerminal() {
-        const red_string = getMaskedJzn("r");
-        const blue_string = getMaskedJzn("b");
-    
-        length = this.rows * this.cols;
-    
+        const red_string = this.getMaskedJzn("r");
+        const blue_string = this.getMaskedJzn("b");
+        const length = this.rows * this.cols;
+        
+        const splitResult = JunqiGame.splitBySpace(this.jzn);
+        let special_check = splitResult[0];
+        if (special_check === "0".repeat(length)){
+            return false;
+        }
+
         if ((red_string[1] != "a" && red_string[3] != "a") 
             || (blue_string[56] != "A" && blue_string[58] != "A")) {
             return true;
@@ -315,8 +318,8 @@ export default class JunqiGame {
             return true; 
         }
     
-        const red_result = splitBySpace(red_string);
-        const blue_result = splitBySpace(blue_string);
+        const red_result = JunqiGame.splitBySpace(red_string);
+        const blue_result = JunqiGame.splitBySpace(blue_string);
     
         if (Number(red_result[2]) === 31 || Number(blue_result[2]) === 31) {
             return true;
@@ -329,18 +332,16 @@ export default class JunqiGame {
     }
     
     getWinner() {
-        const red_string = getMaskedJzn("r");
-        const blue_string = getMaskedJzn("b");
-    
-        length = this.rows * this.cols;
+        const red_string = this.getMaskedJzn("r");
+        const blue_string = this.getMaskedJzn("b");
+        const length = this.rows * this.cols;
     
         if (red_string[1] != "a" && red_string[3] != "a") {
             return "b";
         }
         if (blue_string[56] != "A" && blue_string[58] != "A") {
             return "r";
-        }
-    
+        } 
         let red_count = 0;
         let blue_count = 0;
     
@@ -370,7 +371,6 @@ export default class JunqiGame {
         if (red_count === 0 && blue_count === 0) {
             return "0";
         }
-    
         const red_result = splitBySpace(red_string);
         const blue_result = splitBySpace(blue_string);
     
@@ -382,13 +382,17 @@ export default class JunqiGame {
         }
     }
     
-    isLegalLayout(layout) {
+    isLegalLayout(layout_original) {
 
         function Checkout(busket) {
             const chess1 = ["l", "L", "k", "K", "a", "A"];
             const chess2 = ["j", "J", "i", "I", "h", "H", "g", "G", "b", "B"];
             const chess3 = ["f", "F", "e", "E", "d", "D", "c", "C"];
-    
+            
+            let number_eachchess = busket.get("0");
+            if (number_eachchess !==5 ){
+                return false;
+            }
             for (const key of busket.keys()) {
                 let number_eachchess = busket.get(key);
                 if (chess1.includes(key)) {
@@ -409,14 +413,39 @@ export default class JunqiGame {
             }
             return true;
         }
-    
+        
+        function reverseString(str) {
+            return str.split('').reverse().join('');
+        }
+        let layout;
+        if (layout_original.charCodeAt(0) < 97 && layout_original[0] != "0") {
+            layout = reverseString(layout_original);
+        }else{
+            layout = layout_original;
+        }
         let busket = new Map();
-        board_number = layout.length;
+        const board_number = layout.length;
         if (board_number > 30) {
             return false;
         }
-    
+        let flag = false;
+        if (layout[1] === "a" || layout[3] === "a" || layout[1] === "A" || layout[3] === "A") {
+            flag = true;
+        }
+        if (flag != true) {
+            return false;
+        }
+        if (layout[11] != "0" || layout[13] != "0" || layout[17] != "0" || layout[21] != "0" || layout[23] != "0" ){
+            return false;
+        }
+
         for (let i = 0; i < board_number; i++) {
+            if (i > 9 && (layout[i] === "c" || layout[i] === "C")) {
+                return false;
+            }
+            if (i > 24 && (layout[i] === "b" || layout[i] === "B")) {
+                return false;
+            }
             if (busket.get(layout[i]) == undefined) {
                 busket.set(layout[i], 1);
             } else {
@@ -440,37 +469,37 @@ export default class JunqiGame {
         }
     
         for (let i = strat; i < strat + 30; i++) {
-            this.jzn = JunqiGame.StringChange(this.jzn, i, layout[i - strat]);
+            this.jzn = JunqiGame.changeString(this.jzn, i, layout[i - strat]);
         }
         this.layout = this.layout.set(player, layout);
     }
     
     getMaskedJzn(player) {
-        let ASCLL_min, ASCLL_max, commander, flag;
+        let ASCII_min, ASCII_max, commander, flag;
         if (player === "b") {
-            ASCLL_min = "a".charCodeAt(0);
-            ASCLL_max = "z".charCodeAt(0);
+            ASCII_min = "a".charCodeAt(0);
+            ASCII_max = "z".charCodeAt(0);
             commander = "c";
             flag = "a";
         } else {
-            ASCLL_min = "A".charCodeAt(0);
-            ASCLL_max = "Z".charCodeAt(0);
+            ASCII_min = "A".charCodeAt(0);
+            ASCII_max = "Z".charCodeAt(0);
             commander = "C";
             flag = "A";
         }
     
-        length = this.row * this.cols;
+        const length = this.rows * this.cols;
         let masked_jzn = this.jzn;
-    
+        let position = 100; //a number that is not in the range of 0-59
         for (let i = 0; i < length; i++) {
             if (masked_jzn[i] === flag) {
-                const position = i;
+                position = i;
             }
-            if (masked_jzn[i].charCodeAt(0) >= ASCLL_min && masked_jzn[i].charCodeAt(0) <= ASCLL_max) {
-                masked_jzn = JunqiGame.StringChange(masked_jzn, i, "#");
+
+            if (masked_jzn[i].charCodeAt(0) >= ASCII_min && masked_jzn[i].charCodeAt(0) <= ASCII_max) {
+                masked_jzn = JunqiGame.changeString(masked_jzn, i, "#");
             }
-        }
-    
+        } 
         let commander_state = false;
         for (let i = 0; i < length; i++) {
             if (masked_jzn[i] === commander) {
@@ -478,12 +507,11 @@ export default class JunqiGame {
                 break;
             }
         }
-    
-        if (!commander_state) {
+        if (!commander_state && position != 100) {
             if (player === "r") {
-                masked_jzn = JunqiGame.StringChange(masked_jzn, position, "a");
+                masked_jzn = JunqiGame.changeString(masked_jzn, position, "A");
             } else {
-                masked_jzn = JunqiGame.StringChange(masked_jzn, position, "A");
+                masked_jzn = JunqiGame.changeString(masked_jzn, position, "a");
             }
         }
     
