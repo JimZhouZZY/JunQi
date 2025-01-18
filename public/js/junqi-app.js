@@ -1,3 +1,9 @@
+/*
+ * Copyright (C) 2025 Zhiyu Zhou (jimzhouzzy@gmail.com)
+ * This file is part of Web-JunQi.
+ * Licensed under the GPLv3 License.
+ */
+
 var __create = Object.create;
 var __defProp = Object.defineProperty;
 var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
@@ -19400,7 +19406,7 @@ var JunQiBoard = ({
       const { color, type, selected } = piece2;
       var fillColor = color === "red" ? "red" : "blue";
       fillColor = selected ? "purple" : fillColor;
-      return /* @__PURE__ */ import_react.default.createElement("svg", { width: "30", height: "30", viewBox: "0 0 100 100", xmlns: "http://www.w3.org/2000/svg" }, /* @__PURE__ */ import_react.default.createElement("rect", { x: "10", y: "10", width: "80", height: "80", fill: fillColor }), /* @__PURE__ */ import_react.default.createElement("text", { x: "50%", y: "50%", fontSize: "30", textAnchor: "middle", dy: ".3em", fill: "white" }, type));
+      return /* @__PURE__ */ import_react.default.createElement("svg", { style: { userSelect: "none" }, width: "30", height: "30", viewBox: "0 0 100 100", xmlns: "http://www.w3.org/2000/svg" }, /* @__PURE__ */ import_react.default.createElement("rect", { x: "10", y: "10", width: "80", height: "80", fill: fillColor }), /* @__PURE__ */ import_react.default.createElement("text", { style: { pointerEvents: "none" }, x: "50%", y: "50%", fontSize: "30", textAnchor: "middle", dy: ".3em", fill: "white" }, type));
     };
     return /* @__PURE__ */ import_react.default.createElement(
       "div",

@@ -1,3 +1,9 @@
+/*
+ * Copyright (C) 2025 Zhiyu Zhou (jimzhouzzy@gmail.com)
+ * This file is part of Web-JunQi.
+ * Licensed under the GPLv3 License.
+ */
+
 module.exports = (io, socket) => {
     // 玩家加入房间
     socket.on('joinRoom', (roomName) => {
