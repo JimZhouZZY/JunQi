@@ -9,15 +9,15 @@ PIECE_NAMES = {
     'b': "炸", 'a': "旗", '0': "空", '#': "  ",
 }
 
-STATE = ''
-
-def modify_state(coor, piece):
+def modify_state(coor, piece, print_out=True, use_idx=False, idx=0):
     global STATE
-    print("State")
-    idx = board_coordinate_to_index([coor])[0]
+    if not use_idx:
+        idx = board_coordinate_to_index([coor])[0]
     STATE = STATE[:idx] + piece + STATE[idx+1:]
-    draw_state(STATE+" 0 0 0")
-    print(STATE)
+    if print_out:
+        print("State")
+        draw_state(STATE+" 0 0 0")
+        print(STATE)
 
 
 def board_coordinate_to_index(coordinates, total_columns=5):
@@ -116,6 +116,8 @@ def welcome():
 import traceback
 import readline
 if __name__ == "__main__":
+    global STATE
+    STATE = '0' * 60
     welcome()
     while True:
         try:
@@ -127,11 +129,20 @@ if __name__ == "__main__":
                 break
             elif ((user_input.lower().split(" ")[0] == "idx" or user_input.lower().split(" ")[0] == "index")):
                 board_coordinate_to_index(user_input.lower().split(" "))
-            elif user_input.lower().split(" ")[0] == "mod":
+            elif user_input.lower().split(" ")[0] in ["modify", "mod", "md", "m"]:
                 coor = user_input.lower().split(" ")[1]
                 piece = user_input.split(" ")[2]
                 modify_state(coor, piece)
+            elif user_input.lower().split(" ")[0] in ["swap","sw", "s"]:
+                coor = [user_input.lower().split(" ")[1], user_input.lower().split(" ")[2]]
+                idx = board_coordinate_to_index(coor)
+                tmp_piece = STATE[idx[0]]
+                modify_state(coor[0], STATE[idx[1]], False)
+                modify_state(coor[1], tmp_piece)
             else:
+                STATE = '0' * 60
+                for i in range(min(60, len(str(user_input)))):
+                    modify_state(0, str(user_input)[i], True, True, i)
                 draw_state(str(user_input))
             print("=============================================================================")
         except KeyboardInterrupt:
