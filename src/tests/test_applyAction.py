@@ -6,8 +6,8 @@ test_path = os.path.dirname(os.path.abspath(__file__))
 
 str_true = "true\n"
 str_false = "false\n"
-tailing_state = " r 30 149\n"
-res_tailing_state = " b 31 150\n"
+tailing_state = " r 15 139\n"
+res_tailing_state = " b 16 140\n"
 # TODO: isLegalPlayer
 
 datas = [

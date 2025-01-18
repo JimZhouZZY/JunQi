@@ -494,7 +494,7 @@ class JunqiGame {
     }
 }
 
-/* DEBUG */
+/* DEBUG 
 a = new JunqiGame("0acc0Ljc0e000000000000000000e000D00B000000000GB000JK00DCACC0 r 0 0");
 console.log(a.isLegalAction('f4g4'));
 a = new JunqiGame("0Lcc00jc0e0000000000000000000000000B000000000GB000JK000CACC0 r 0 0");
