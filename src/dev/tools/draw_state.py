@@ -12,7 +12,7 @@ PIECE_NAMES = {
 def modify_state(coor, piece, print_out=True, use_idx=False, idx=0):
     global STATE
     if not use_idx:
-        idx = board_coordinate_to_index([coor])[0]
+        idx = board_coordinate_to_index([coor], print_out=False)[0]
     STATE = STATE[:idx] + piece + STATE[idx+1:]
     if print_out:
         print("State")
@@ -20,7 +20,7 @@ def modify_state(coor, piece, print_out=True, use_idx=False, idx=0):
         print(STATE)
 
 
-def board_coordinate_to_index(coordinates, total_columns=5):
+def board_coordinate_to_index(coordinates, total_columns=5, print_out=True):
     indexs = []
     for coordinate in coordinates:
         if len(coordinate) != 2:
@@ -30,7 +30,8 @@ def board_coordinate_to_index(coordinates, total_columns=5):
         row_index = ord(column) - ord('a')
         column_index = row - 1
         index = row_index * total_columns + column_index
-        print(index)
+        if print_out:
+            print(index)
         indexs.append(index)
     return indexs
 
@@ -113,8 +114,28 @@ def welcome():
     draw_state(state_str)
     print("----------------------------------------------------------------------------")
 
+def offset(user_input):
+    global STATE
+    STATE = '0' * 60
+    if len(str(user_input)) == 30:
+        color = 'r'
+        for i in range(min(60, len(str(user_input)))):
+            if str(user_input)[i].isupper():
+                color = 'b'
+                break
+        for i in range(min(60, len(str(user_input)))):
+            if color == 'b':
+                modify_state(0, str(user_input)[i], False, True, (i+30))
+            else:
+                modify_state(0, str(user_input)[i], False, True, i)
+        draw_state(STATE)
+    else:
+        draw_state(str(user_input))
+
 import traceback
 import readline
+import random
+
 if __name__ == "__main__":
     global STATE
     STATE = '0' * 60
@@ -135,15 +156,39 @@ if __name__ == "__main__":
                 modify_state(coor, piece)
             elif user_input.lower().split(" ")[0] in ["swap","sw", "s"]:
                 coor = [user_input.lower().split(" ")[1], user_input.lower().split(" ")[2]]
-                idx = board_coordinate_to_index(coor)
+                idx = board_coordinate_to_index(coor, print_out=False)
                 tmp_piece = STATE[idx[0]]
                 modify_state(coor[0], STATE[idx[1]], False)
                 modify_state(coor[1], tmp_piece)
+            elif user_input.lower().split(" ")[0] in ["random_layout","rndl", "rl"]:
+                init_layout = 'caccbbdddee0e0fff0ggh0h0iijjkl'
+                tmp = list(init_layout.replace('0', ''))
+                if len(user_input.lower().split(" ")) >= 2 and user_input.lower().split(" ")[-1] in ['exclusive', 'e']:
+                    my_list = tmp
+                    excluded_elements = {'0', 'c', 'a'}
+                    to_shuffle = [(i, elem) for i, elem in enumerate(my_list) if elem not in excluded_elements]
+                    indices, elements = zip(*to_shuffle) if to_shuffle else ([], [])
+                    shuffled_elements = list(elements)
+                    random.shuffle(shuffled_elements)
+                    shuffled_list = my_list[:]
+                    for idx, elem in zip(indices, shuffled_elements):
+                        shuffled_list[idx] = elem
+                    tmp = shuffled_list
+                else:
+                    random.shuffle(tmp)
+                tmp.insert(11, 0)
+                tmp.insert(13, 0)
+                tmp.insert(17, 0)
+                tmp.insert(21, 0)
+                tmp.insert(23, 0)
+                tmp_layout = ''.join(map(str, tmp))
+                if len(user_input.lower().split(" ")) >= 2 and user_input.lower().split(" ")[1] == 'b':
+                    tmp_layout = tmp_layout[::-1]
+                    tmp_layout = tmp_layout.upper()
+                print(f'Generated random layout: \n{tmp_layout}')
+                offset(tmp_layout)
             else:
-                STATE = '0' * 60
-                for i in range(min(60, len(str(user_input)))):
-                    modify_state(0, str(user_input)[i], True, True, i)
-                draw_state(str(user_input))
+                offset(user_input)
             print("=============================================================================")
         except KeyboardInterrupt:
             print("\nProgram interrupted by user. Exiting...")
