@@ -44,6 +44,11 @@ datas = [
     [tailing_state, "cccafbhbedd0f0jhf0dle0i0gijLGBFH0F0BKD0IDH0D0EJEEIFGCCAC", str_false],
     [tailing_state, "000000000000000000000000000000JLGBFH0F0BKD0IDH0D0EJEEIFGCCAC", str_false], # Maybe we can change the logic on this kind, just ignore 0 or #
     [tailing_state, "JLGBFH#F#BKD#IDH#D#EJEEIFGCCAC", str_false],
+    [tailing_state, "caccbbdddee0e0eff0ggh0h0iijjkl", str_false], # wrong count
+    [tailing_state, "baccbcdddee0e0fff0ggh0h0iiljkl", str_false],
+    [tailing_state, "baccbcdedee0e0fff0ggh0h0iiljkl", str_false],
+    [tailing_state, "JDFLGK0G0HDI0FHH0J0BEEEBDIACCC", str_false],
+    [tailing_state, "JDFLGK0G0HDI0FBH0J0BEEEBDIACCC", str_false],
 ]
 
 def test_isLegalLayout():
