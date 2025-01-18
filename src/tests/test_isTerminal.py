@@ -8,7 +8,6 @@ str_true = "true\n"
 str_false = "false\n"
 tailing_state = " r 30 149"
 
-# TODO: isLegalPlayer
 
 datas = [
     ["0acc0Ljc0e0000000000000000000000000B000000000GB000JK000CACC0" + tailing_state, str_false],
@@ -54,4 +53,4 @@ def test_isTerminal():
         idx += 1
     assert results == answers
 
-# test_isLegalAction()
+# test_isTerminal()
