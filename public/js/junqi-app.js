@@ -1,9 +1,3 @@
-/*
- * Copyright (C) 2025 Zhiyu Zhou (jimzhouzzy@gmail.com)
- * This file is part of Web-JunQi.
- * Licensed under the GPLv3 License.
- */
-
 var __create = Object.create;
 var __defProp = Object.defineProperty;
 var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
@@ -19328,6 +19322,7 @@ var JunQiBoard = ({
           }
           const type = char.toUpperCase();
           const selected = false;
+          console.log(`TEST: ${type}, ${color}, ${row}, ${col} , ${selected}`);
           newBoard[row][col] = { type, color, row, col, selected };
           idx++;
         }
@@ -19379,6 +19374,12 @@ var JunQiBoard = ({
         color: piece.color,
         selected: false
       };
+      const swap = convertToChessNotation(selectedPiece.row, selectedPiece.col) + convertToChessNotation(piece.row, piece.col);
+      if (window.swapHandler) {
+        window.swapHandler(swap);
+      } else {
+        console.error("swapHandler function is not available");
+      }
       updatePiece([{ row: piece.row, col: piece.col, newPiece: selectedPiece }, { row: selectedPiece.row, col: selectedPiece.col, newPiece: temp_piece }]);
       setSelectedPiece(null);
     } else if (piece) {

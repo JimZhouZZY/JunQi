@@ -8,7 +8,7 @@ const { node } = require('./types/junqiNode.js');
 const JunqiBoard = require('./types/junqiBoard');
 
 class JunqiGame {
-    constructor(jzn='0'.repeat(60)+' r 0 0') {
+    constructor(jzn='0'.repeat(60)+' r 0 0', color='0') {
         this.rows = 12;
         this.cols = 5;
         this.jzn = jzn; // JZN stands for 'Jim-Zhou Notation'
@@ -17,6 +17,7 @@ class JunqiGame {
         this.winner = "";
         this.skipped_actions = new Map([['r', 3],['b', 3]]);
         this.layout = new Map;
+        this.color = color;
     }
 
     static changeString(str, index, change){

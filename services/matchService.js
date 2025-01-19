@@ -19,13 +19,25 @@ function setIo(newIo) {
 async function startMatch(usernames) {
     const roomName = `gameRoom-${usernames.join('-')}`;
     console.log(`Created room ${roomName}`);
+    const colors = ['r', 'b']; // Colors to assign
+    // Shuffle the colors
+    for (let i = colors.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [colors[i], colors[j]] = [colors[j], colors[i]];
+    }
+    // Create the map
+    const usernameToColor = new Map();
+    usernames.forEach((username, index) => {
+      usernameToColor.set(username, colors[index]);
+    });
     usernames.forEach(username => {
         const socketId = socketsQueue.usernameSocketMap[username];
         // TODO: this is too ugly, refactor it!
         io.sockets.sockets.get(socketId).join(roomName); // 加入房间
         io.to(socketId).emit('room-name', roomName);
+        io.to(socketId).emit('request-layout', usernameToColor.get(username));
     });
-    boards[roomName] = new JunqiGame('0acc0Ljc0e0000000000000000000000000B000000000GB000JK000CACC0 r 30 149');
+    boards[roomName] = new JunqiGame('0acc0Ljc0e0000000000000000000000000B000000000GB000JK000CACC0 r 0 0');
 }
 
 

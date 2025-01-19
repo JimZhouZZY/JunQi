@@ -7,6 +7,7 @@
 const roomHandler = require('./room');
 const moveHandler = require('./move');
 const queueHandler = require('./queue');
+const layoutHandler = require('./layout');
 
 module.exports = (io) => {
     io.on('connection', (socket) => {
@@ -16,6 +17,7 @@ module.exports = (io) => {
         roomHandler(io, socket);
         moveHandler(io, socket);
         queueHandler(io, socket);
+        layoutHandler(io, socket);
 
         socket.on('disconnect', () => {
             console.log(`User disconnected: ${socket.id}`);
