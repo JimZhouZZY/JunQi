@@ -62,6 +62,7 @@ const JunQiBoard: React.FC<JunQiBoardProps> = ({
           }
           const type = char.toUpperCase(); // Use uppercase letters for piece type
           const selected = false;
+          console.log(`TEST: ${type}, ${color}, ${row}, ${col} , ${selected}`);
           newBoard[row][col] = { type, color, row, col , selected};
           idx++;
         }
@@ -118,6 +119,12 @@ const JunQiBoard: React.FC<JunQiBoardProps> = ({
         color: piece.color,
         selected: false,
       }
+      const swap = convertToChessNotation(selectedPiece.row, selectedPiece.col) + convertToChessNotation(piece.row, piece.col);
+      if (window.swapHandler) {
+        window.swapHandler(swap);
+      } else {
+        console.error("swapHandler function is not available");
+      } 
       updatePiece([{row:piece.row, col:piece.col, newPiece:selectedPiece},{row:selectedPiece.row, col:selectedPiece.col, newPiece:temp_piece}]);
       setSelectedPiece(null);
     }

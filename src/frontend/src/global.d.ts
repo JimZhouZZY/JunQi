@@ -4,6 +4,7 @@ export {};
 declare global {
   interface Window {
     moveHandler?: (move: string) => void;
+    swapHandler?: (move: string) => void;
     jzn?: string;
     game_phase?: string;
     updateBoardFromFEN;
