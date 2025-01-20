@@ -62,7 +62,7 @@ const JunQiBoard: React.FC<JunQiBoardProps> = ({
           }
           const type = char.toUpperCase(); // Use uppercase letters for piece type
           const selected = false;
-          console.log(`TEST: ${type}, ${color}, ${row}, ${col} , ${selected}`);
+          // console.log(`TEST: ${type}, ${color}, ${row}, ${col} , ${selected}`);
           newBoard[row][col] = { type, color, row, col , selected};
           idx++;
         }
@@ -101,7 +101,8 @@ const JunQiBoard: React.FC<JunQiBoardProps> = ({
 
   function handleClick(row: number, col: number) {
     const piece = board[row][col];
-    if (selectedPiece && piece && selectedPiece.color != piece.color) {
+    if (selectedPiece && piece && selectedPiece.color != piece.color && window.game_phase == "MOVING") {
+      // Attack another piece 
       const move = convertToChessNotation(selectedPiece.row, selectedPiece.col) + convertToChessNotation(row, col);
       if (window.moveHandler) {
         window.moveHandler(move);
@@ -112,6 +113,7 @@ const JunQiBoard: React.FC<JunQiBoardProps> = ({
       setSelectedPiece(null);
     }    
     else if (window.game_phase == 'DEPLOYING' && selectedPiece && piece && selectedPiece.color == piece.color) {
+      // Swap pieces during deployment phase
       const temp_piece: Piece = {
         type: piece.type,
         row: piece.row,
@@ -128,14 +130,18 @@ const JunQiBoard: React.FC<JunQiBoardProps> = ({
       updatePiece([{row:piece.row, col:piece.col, newPiece:selectedPiece},{row:selectedPiece.row, col:selectedPiece.col, newPiece:temp_piece}]);
       setSelectedPiece(null);
     }
-    else if (piece) {
+    else if (piece && piece.color != window.oppo_color) {
       // If a piece is clicked, set it as selected
+      var updates = [];
+      if (selectedPiece){
+        updates.push({row:selectedPiece.row, col:selectedPiece.col, newPiece: {type: selectedPiece.type, color: selectedPiece.color, row: selectedPiece.row, col: selectedPiece.col, selected: false}});
+      }
       setSelectedPiece(piece);
-      updatePiece([{row:piece!.row, col:piece!.col, newPiece: {type: piece!.type, color: piece!.color, row: piece!.row, col: piece!.col, selected: true} }]);
+      updates.push({row:piece!.row, col:piece!.col, newPiece: {type: piece!.type, color: piece!.color, row: piece!.row, col: piece!.col, selected: true} });
+      updatePiece(updates);
       console.log(`Piece selected: ${piece.type} (${piece.color}) at (${row}, ${col})`);
-    } else {
-      // If no piece is clicked, handle an empty space click (e.g., move the selected piece)
-      if (selectedPiece && window.game_phase == 'MOVING') {
+    } else if (selectedPiece && window.game_phase == 'MOVING') {
+        // Move to an empty square
         const move = convertToChessNotation(selectedPiece.row, selectedPiece.col) + convertToChessNotation(row, col);
         if (window.moveHandler) {
           window.moveHandler(move);
@@ -153,8 +159,7 @@ const JunQiBoard: React.FC<JunQiBoardProps> = ({
         newBoard[selectedPiece.row!][selectedPiece.col!] = null; // Remove piece from previous position
         setBoard(newBoard);
         setSelectedPiece(null); // Deselect the piece after moving
-        */
-      }
+        */ 
     }
   };
 
