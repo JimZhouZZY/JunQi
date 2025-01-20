@@ -39,7 +39,7 @@ jobs:
         run: pytest
 
   test_python3_6_node18:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-18.04
 
     defaults:
       run:
