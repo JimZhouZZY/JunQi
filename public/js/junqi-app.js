@@ -19322,7 +19322,6 @@ var JunQiBoard = ({
           }
           const type = char.toUpperCase();
           const selected = false;
-          console.log(`TEST: ${type}, ${color}, ${row}, ${col} , ${selected}`);
           newBoard[row][col] = { type, color, row, col, selected };
           idx++;
         }
@@ -19357,7 +19356,7 @@ var JunQiBoard = ({
   }
   function handleClick(row, col) {
     const piece = board[row][col];
-    if (selectedPiece && piece && selectedPiece.color != piece.color) {
+    if (selectedPiece && piece && selectedPiece.color != piece.color && window.game_phase == "MOVING") {
       const move = convertToChessNotation(selectedPiece.row, selectedPiece.col) + convertToChessNotation(row, col);
       if (window.moveHandler) {
         window.moveHandler(move);
@@ -19382,21 +19381,24 @@ var JunQiBoard = ({
       }
       updatePiece([{ row: piece.row, col: piece.col, newPiece: selectedPiece }, { row: selectedPiece.row, col: selectedPiece.col, newPiece: temp_piece }]);
       setSelectedPiece(null);
-    } else if (piece) {
-      setSelectedPiece(piece);
-      updatePiece([{ row: piece.row, col: piece.col, newPiece: { type: piece.type, color: piece.color, row: piece.row, col: piece.col, selected: true } }]);
-      console.log(`Piece selected: ${piece.type} (${piece.color}) at (${row}, ${col})`);
-    } else {
-      if (selectedPiece && window.game_phase == "MOVING") {
-        const move = convertToChessNotation(selectedPiece.row, selectedPiece.col) + convertToChessNotation(row, col);
-        if (window.moveHandler) {
-          window.moveHandler(move);
-        } else {
-          console.error("moveHandler function is not available");
-        }
-        updatePiece([{ row: selectedPiece.row, col: selectedPiece.col, newPiece: { type: selectedPiece.type, color: selectedPiece.color, row: selectedPiece.row, col: selectedPiece.col, selected: false } }]);
-        setSelectedPiece(null);
+    } else if (piece && piece.color != window.oppo_color) {
+      var updates = [];
+      if (selectedPiece) {
+        updates.push({ row: selectedPiece.row, col: selectedPiece.col, newPiece: { type: selectedPiece.type, color: selectedPiece.color, row: selectedPiece.row, col: selectedPiece.col, selected: false } });
       }
+      setSelectedPiece(piece);
+      updates.push({ row: piece.row, col: piece.col, newPiece: { type: piece.type, color: piece.color, row: piece.row, col: piece.col, selected: true } });
+      updatePiece(updates);
+      console.log(`Piece selected: ${piece.type} (${piece.color}) at (${row}, ${col})`);
+    } else if (selectedPiece && window.game_phase == "MOVING") {
+      const move = convertToChessNotation(selectedPiece.row, selectedPiece.col) + convertToChessNotation(row, col);
+      if (window.moveHandler) {
+        window.moveHandler(move);
+      } else {
+        console.error("moveHandler function is not available");
+      }
+      updatePiece([{ row: selectedPiece.row, col: selectedPiece.col, newPiece: { type: selectedPiece.type, color: selectedPiece.color, row: selectedPiece.row, col: selectedPiece.col, selected: false } }]);
+      setSelectedPiece(null);
     }
   }
   ;

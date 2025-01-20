@@ -29,6 +29,10 @@ class JunqiGame {
         return inputString.split(" ");
     }
 
+    static getColor(piece) {
+        return piece === piece.toLowerCase() ? 'r' : 'b';
+    }
+
     isLegalAction(request) {
         const blockedNodes = new Set();
         const boardState = this.jzn;
@@ -77,6 +81,9 @@ class JunqiGame {
         const headI = request.charCodeAt(0) - 97;
         const headJ = Number(request[1]) - 1;
         const headPosition = `${headI}-${headJ}`;
+        if (JunqiGame.getColor(this.jzn[headI * 5 + headJ]) !== this.getCurrentPlayer()) {
+            return false;
+        }
     
         const tailI = request.charCodeAt(2) - 97;
         const tailJ = Number(request[3]) - 1;
@@ -542,6 +549,10 @@ class JunqiGame {
     
     getJzn() {
         return this.jzn;
+    }
+
+    getCurrentPlayer() {
+        return this.jzn.split(" ")[1];
     }
 }
 
