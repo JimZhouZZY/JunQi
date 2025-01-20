@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "type": "commonjs",
   "scripts": {
-    "start": "node app.js"
+    "start": "node app.js",
+    "test": "node test.js"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
