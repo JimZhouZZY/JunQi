@@ -10,10 +10,9 @@ app.stdout.on('data', (data) => {
   stdoutData += data.toString();
   if (stdoutData.includes('listening on port: ')) {
     console.log('App started successfully');
-    app.kill(); // 关闭应用
-    // 这里用 assert 来确认启动信息出现
     assert(stdoutData.includes('listening on port: '), 'App did not start correctly');
     console.log('Test passed');
+    app.kill('SIGTERM');
   }
 });
 
