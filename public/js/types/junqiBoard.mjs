@@ -30,6 +30,7 @@ export default class JunqiBoard extends JunqiGraph {
         }
         
         // Camp edges
+        this.addEdge(node('2-1'), node('1-0'));
         this.addEdge(node('2-1'), node('1-2'));
         this.addEdge(node('2-1'), node('3-2'));
         this.addEdge(node('2-1'), node('3-0'));

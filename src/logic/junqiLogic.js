@@ -190,50 +190,25 @@ class JunqiGame {
     
         const boardState = this.jzn;
         const splitResult = JunqiGame.splitBySpace(boardState);
-        let row1 = splitResult[0];
-        let row2 = splitResult[1];
-        let row3 = Number(splitResult[2]);
-        let row4 = Number(splitResult[3]);
+        let short_jzn = splitResult[0];
+        let curr_player = splitResult[1];
+        let semi_moves = Number(splitResult[2]);
+        let total_moves = Number(splitResult[3]);
     
         const headI = request.charCodeAt(0) - 97;
         const headJ = Number(request[1]) - 1;
         const tailI = request.charCodeAt(2) - 97;
         const tailJ = Number(request[3]) - 1;
     
-        const targetPiece = row1[headI * 5 + headJ];
-        const goalPiece = row1[tailI * 5 + tailJ];
-        let moveValid = true;
+        const currPiece = short_jzn[headI * 5 + headJ];
+        const goalPiece = short_jzn[tailI * 5 + tailJ];
+        let peaceMove = true;
     
         function updateStringAtIndex(str, index, newChar) {
             return str.slice(0, index) + newChar + str.slice(index + 1);
         }
-    
-        // 处理棋子 "d" 或 "D"
-        if (targetPiece === "d" || targetPiece === "D") {
-            if (goalPiece === "d" || goalPiece === "D") {
-                row1 = updateStringAtIndex(row1, headI * 5 + headJ, "0");
-                row1 = updateStringAtIndex(row1, tailI * 5 + tailJ, "0");
-                moveValid = false;
-            } else {
-                if (goalPiece === "c" || goalPiece === "C") {
-                    row1 = updateStringAtIndex(row1, headI * 5 + headJ, "0");
-                    row1 = updateStringAtIndex(row1, tailI * 5 + tailJ, targetPiece);
-                    moveValid = false;
-                } else {
-                    row1 = updateStringAtIndex(row1, headI * 5 + headJ, "0");
-                    moveValid = false;
-                }
-            }
-        }
-    
-        // 处理棋子 "b" 或 "B"
-        if (targetPiece === "b" || targetPiece === "B") {
-            row1 = updateStringAtIndex(row1, headI * 5 + headJ, "0");
-            row1 = updateStringAtIndex(row1, tailI * 5 + tailJ, "0");
-            moveValid = false;
-        }
-    
-        let targetCharCode = targetPiece.charCodeAt(0);
+
+        let targetCharCode = currPiece.charCodeAt(0);
         let goalCharCode = goalPiece.charCodeAt(0);
     
         // 转为小写字母
@@ -247,32 +222,73 @@ class JunqiGame {
         const targetLower = String.fromCharCode(targetCharCode);
         const goalLower = String.fromCharCode(goalCharCode);
     
-        // 比较目标棋子的大小
-        if (targetLower > goalLower) {
-            row1 = updateStringAtIndex(row1, headI * 5 + headJ, "0");
-            row1 = updateStringAtIndex(row1, tailI * 5 + tailJ, targetPiece);
-            moveValid = false;
-        } else {
-            if (targetLower < goalLower) {
-                row1 = updateStringAtIndex(row1, headI * 5 + headJ, "0");
-                moveValid = false;
+        if (goalPiece === "0"){
+            short_jzn = updateStringAtIndex(short_jzn, headI * 5 + headJ, "0");
+            short_jzn = updateStringAtIndex(short_jzn, tailI * 5 + tailJ, currPiece);
+            peaceMove = false; 
+        } 
+        // 处理棋子 "d" 或 "D"
+        else if (currPiece === "d" || currPiece === "D") {
+            if (goalPiece === "d" || goalPiece === "D") {
+                short_jzn = updateStringAtIndex(short_jzn, headI * 5 + headJ, "0");
+                short_jzn = updateStringAtIndex(short_jzn, tailI * 5 + tailJ, "0");
+                peaceMove = false;
             } else {
-                row1 = updateStringAtIndex(row1, headI * 5 + headJ, "0");
-                row1 = updateStringAtIndex(row1, tailI * 5 + tailJ, "0");
-                moveValid = false;
+                if (goalPiece === "c" || goalPiece === "C") {
+                    short_jzn = updateStringAtIndex(short_jzn, headI * 5 + headJ, "0");
+                    short_jzn = updateStringAtIndex(short_jzn, tailI * 5 + tailJ, currPiece);
+                    peaceMove = false;
+                } else if (goalPiece === 'b' || goalPiece === 'B') {
+                    short_jzn = updateStringAtIndex(short_jzn, headI * 5 + headJ, "0");
+                    short_jzn = updateStringAtIndex(short_jzn, tailI * 5 + tailJ, "0");
+                    peaceMove = false;
+                }
+                else {
+                    short_jzn = updateStringAtIndex(short_jzn, headI * 5 + headJ, "0");
+                    peaceMove = false;
+                }
             }
         }
     
-        // 更新 row4 和 row3
-        row4 += 1;
-        if (!moveValid) {
-            row3 = 1;
+        // 处理棋子 "b" 或 "B"
+        else if (currPiece === "b" || currPiece === "B" || goalPiece === 'b' || goalPiece === 'B') {
+            short_jzn = updateStringAtIndex(short_jzn, headI * 5 + headJ, "0");
+            short_jzn = updateStringAtIndex(short_jzn, tailI * 5 + tailJ, "0");
+            peaceMove = false;
+        }
+
+        else if (goalPiece === "c" || goalPiece === "C") {
+            short_jzn = updateStringAtIndex(short_jzn, headI * 5 + headJ, "0");
+            peaceMove = false; 
+        }
+    
+        // 比较目标棋子的大小
+        else {
+            if (targetLower > goalLower) {
+                short_jzn = updateStringAtIndex(short_jzn, headI * 5 + headJ, "0");
+                short_jzn = updateStringAtIndex(short_jzn, tailI * 5 + tailJ, currPiece);
+                peaceMove = false;
+            } else {
+                if (targetLower < goalLower) {
+                    short_jzn = updateStringAtIndex(short_jzn, headI * 5 + headJ, "0");
+                    peaceMove = false;
+                } else {
+                    short_jzn = updateStringAtIndex(short_jzn, headI * 5 + headJ, "0");
+                    short_jzn = updateStringAtIndex(short_jzn, tailI * 5 + tailJ, "0");
+                    peaceMove = false;
+                }
+            }
+        }
+    
+        total_moves += 1;
+        if (!peaceMove) {
+            semi_moves = 1;
         }
     
         // 切换当前玩家
-        row2 = (row2 === "r") ? "b" : "r";
+        curr_player = (curr_player === "r") ? "b" : "r";
     
-        const updatedState = `${row1} ${row2} ${String(row3)} ${String(row4)}`;
+        const updatedState = `${short_jzn} ${curr_player} ${String(semi_moves)} ${String(total_moves)}`;
         this.jzn = updatedState;
     
         console.log(this.jzn);
@@ -503,7 +519,7 @@ class JunqiGame {
         } 
         let commander_state = false;
         for (let i = 0; i < length; i++) {
-            if (masked_jzn[i] === commander) {
+            if (this.jzn[i] === commander) {
                 commander_state = true;
                 break;
             }
