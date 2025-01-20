@@ -18,7 +18,7 @@ app.use('/users', userRoutes);
 app.use('/queues', queueRoutes);
 
 const http = require('http').Server(app);
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 8424;
 http.listen(port, function () {
     console.log('listening on port: ' + port);
 });

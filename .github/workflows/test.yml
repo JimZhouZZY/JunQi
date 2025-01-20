@@ -1,4 +1,4 @@
-name: Junqi Logic Test
+name: Junqi Test
 
 on:
   pull_request:
@@ -6,23 +6,23 @@ on:
       - main
 
 jobs:
-  test_python3_12_node23:
+  test_logic_python3_12_node23:
     runs-on: ubuntu-22.04
-    
+
     defaults:
       run:
         working-directory: src/tests
-        
+
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      - name: Set up Python
+      - name: Set up Python 3.12
         uses: actions/setup-python@v4
         with:
           python-version: "3.12"
 
-      - name: Set up Node.js
+      - name: Set up Node.js 23.3.0
         uses: actions/setup-node@v3
         with:
           node-version: "23.3.0"
@@ -37,3 +37,47 @@ jobs:
 
       - name: Run Python Tests
         run: pytest
+        
+  test_compatibility_node23:
+    runs-on: ubuntu-22.04
+
+    defaults:
+      run:
+        working-directory: .
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js 23
+        uses: actions/setup-node@v3
+        with:
+          node-version: "23"
+
+      - name: Install Node.js Dependencies
+        run: npm install
+
+      - name: Test-run app
+        run: node test
+
+  test_compatibility_node18:
+    runs-on: ubuntu-20.04
+
+    defaults:
+      run:
+        working-directory: .
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js 18
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+
+      - name: Install Node.js Dependencies
+        run: npm install
+
+      - name: Test-run app
+        run: node test
