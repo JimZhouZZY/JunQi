@@ -46,7 +46,7 @@ window.addEventListener('load', () => {
             // return 'snapback';
         } else {
             // 验证输入格式是否正确，例如 "a1b3"
-            if (!/^([a-e][1-5]){2}$/.test(input)) {
+            if (!/^([a-e][1-5]){2}$/.test(swap)) {
                 throw new Error("Input must be in the format 'a1b3'.");
             }
             // 定义一个辅助函数，将行列转换为索引
@@ -57,8 +57,8 @@ window.addEventListener('load', () => {
             }
 
             // 提取位置
-            const pos1 = input.slice(0, 2); 
-            const pos2 = input.slice(2);
+            const pos1 = swap.slice(0, 2); 
+            const pos2 = swap.slice(2);
 
             // 获取索引
             const index1 = getIndex(pos1);
