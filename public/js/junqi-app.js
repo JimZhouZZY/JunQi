@@ -19374,13 +19374,16 @@ var JunQiBoard = ({
         selected: false
       };
       const swap = convertToChessNotation(selectedPiece.row, selectedPiece.col) + convertToChessNotation(piece.row, piece.col);
+      var canSwap = false;
       if (window.swapHandler) {
-        window.swapHandler(swap);
+        canSwap = window.swapHandler(swap);
       } else {
         console.error("swapHandler function is not available");
       }
-      updatePiece([{ row: piece.row, col: piece.col, newPiece: selectedPiece }, { row: selectedPiece.row, col: selectedPiece.col, newPiece: temp_piece }]);
-      setSelectedPiece(null);
+      if (canSwap) {
+        updatePiece([{ row: piece.row, col: piece.col, newPiece: selectedPiece }, { row: selectedPiece.row, col: selectedPiece.col, newPiece: temp_piece }]);
+        setSelectedPiece(null);
+      }
     } else if (piece && piece.color != window.oppo_color) {
       var updates = [];
       if (selectedPiece) {
