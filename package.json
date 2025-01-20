@@ -1,6 +1,6 @@
 {
   "name": "web-junqi",
-  "version": "1.0.0",
+  "version": "0.0.2",
   "type": "commonjs",
   "scripts": {
     "start": "node app.js",
