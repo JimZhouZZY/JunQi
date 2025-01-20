@@ -86,7 +86,8 @@ socket.on('move', function (move, new_jzn) {
     game.jzn = new_jzn;
     window.jzn = game.getMaskedJzn(game.color);
     window.updateBoardFromFEN(window.jzn);
-    console.log(`New JZN: ${window.jzn}`);
+    console.log(`New Masked JZN: ${window.jzn}`);
+    console.log(`New JZN: ${new_jzn}`);
 });
 
 socket.on('request-layout', function (color) {
