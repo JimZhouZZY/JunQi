@@ -476,16 +476,16 @@ class JunqiGame {
     }
     
     getMaskedJzn(player) {
-        let ASCII_min, ASCII_max, commander, flag;
+        let ascii_min, ascii_max, commander, flag;
         if (player === "b") {
-            ASCII_min = "a".charCodeAt(0);
-            ASCII_max = "z".charCodeAt(0);
-            commander = "c";
+            ascii_min = "a".charCodeAt(0);
+            ascii_max = "z".charCodeAt(0);
+            commander = "l";
             flag = "a";
         } else {
-            ASCII_min = "A".charCodeAt(0);
-            ASCII_max = "Z".charCodeAt(0);
-            commander = "C";
+            ascii_min = "A".charCodeAt(0);
+            ascii_max = "Z".charCodeAt(0);
+            commander = "L";
             flag = "A";
         }
     
@@ -497,7 +497,7 @@ class JunqiGame {
                 position = i;
             }
 
-            if (masked_jzn[i].charCodeAt(0) >= ASCII_min && masked_jzn[i].charCodeAt(0) <= ASCII_max) {
+            if (masked_jzn[i].charCodeAt(0) >= ascii_min && masked_jzn[i].charCodeAt(0) <= ascii_max) {
                 masked_jzn = JunqiGame.changeString(masked_jzn, i, "#");
             }
         } 
