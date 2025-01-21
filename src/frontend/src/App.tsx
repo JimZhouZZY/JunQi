@@ -5,14 +5,23 @@
  */
 
 import React from 'react';
-import JunQiBoard from './components/JunQiBoard';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import HomePage from './pages/HomePage'
+import LoginPage from './pages/LoginPage'
+import { ThemeProvider } from '@mui/material/styles';
+import theme from './util/Theme';
+
 
 const App: React.FC = () => {
   return (
-    <div style={{ textAlign: 'center', marginTop: '50px' }}>
-      <h1>Junqi Demo</h1>
-      <JunQiBoard />
-    </div>
+    <ThemeProvider theme={theme}>
+      <Router>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/login" element={<LoginPage />} />
+        </Routes>
+      </Router>
+    </ThemeProvider>
   );
 };
 
