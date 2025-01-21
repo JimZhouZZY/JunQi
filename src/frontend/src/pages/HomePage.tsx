@@ -7,8 +7,9 @@ import Grid from '@mui/material/Grid2';
 import Box from '@mui/material/Box';
 import { VerticalAlignBottom } from '@mui/icons-material';
 import Paper from '@mui/material/Paper';
-import { styled } from '@mui/material/styles';
+import { styled, useTheme } from '@mui/material/styles';
 import ChatBox from '../components/ChatBox';
+
 
 const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: '#fff',
@@ -22,6 +23,7 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 const HomePage: React.FC = () => {
+    const theme = useTheme();
     const navigate = useNavigate();
 
     const handleClick = () => {
@@ -29,7 +31,7 @@ const HomePage: React.FC = () => {
     }
 
     return (
-        <div style={{ textAlign: 'center', marginTop: '0px', backgroundColor: '#f0f0f0' }}>
+        <div style={{ textAlign: 'center', marginTop: '0px', backgroundColor: '#f0f0f0', minHeight: '100vh' }}>
             <AppBar />
             <Grid
                 container columns={2}
@@ -38,7 +40,7 @@ const HomePage: React.FC = () => {
                 wrap='nowrap'
                 justifyContent="center"  // Center horizontally
                 alignItems="flex-start"      // Center vertically
-                sx={{ marginTop: '20px', marginBottom: '20px' }}
+                sx={{ marginTop: '20px' }}
             >
 
                 <Grid size={1}>

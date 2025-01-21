@@ -170,6 +170,7 @@ const JunQiBoard: React.FC<JunQiBoardProps> = ({
     const isBlack = (row + col) % 2 === 1;
     const piece = board[row][col];
 
+    const size_mult = 1.5;
     // Function to render SVG based on piece type and color
     const renderPieceSVG = (piece: Piece) => {
       const { color, type, selected } = piece;
@@ -191,8 +192,8 @@ const JunQiBoard: React.FC<JunQiBoardProps> = ({
         className="square"
         style={{
           backgroundColor: isBlack ? 'black' : 'white',
-          width: '50px',
-          height: '50px',
+          width: `${size_mult * 50}px`,
+          height: `${size_mult * 30}px`,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
