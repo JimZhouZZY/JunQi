@@ -73,10 +73,7 @@ export default class JunqiGame {
     
 
         const boardArray = JunqiGame.splitBySpace(boardState);
-        const row1 = boardArray[0];
-        const row2 = boardArray[1];
-        const row3 = boardArray[2];
-        const row4 = boardArray[3];
+        const short_jzn = boardArray[0];
     
         const headI = request.charCodeAt(0) - 97;
         const headJ = Number(request[1]) - 1;
@@ -92,15 +89,15 @@ export default class JunqiGame {
         // 记录被阻挡的节点
         for (let i = 0; i < 12; i++) {
             for (let j = 0; j < 5; j++) {
-                if (row1[i * 5 + j] !== "0") {
+                if (short_jzn[i * 5 + j] !== "0") {
                     blockedNodes.add(node(`${i}-${j}`, 'railway'));
                 }
             }
         }
     
         // 判断目标和当前位置的兵种
-        const target = row1[headI * 5 + headJ];
-        const goal = row1[tailI * 5 + tailJ];
+        const target = short_jzn[headI * 5 + headJ];
+        const goal = short_jzn[tailI * 5 + tailJ];
     
         // 同类相吃
         const targetCode = target.charCodeAt(0) - 65;
