@@ -9,6 +9,7 @@ import { VerticalAlignBottom } from '@mui/icons-material';
 import Paper from '@mui/material/Paper';
 import { styled, useTheme } from '@mui/material/styles';
 import ChatBox from '../components/ChatBox';
+import { useAuthContext } from '../utils/AuthContext';
 
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -39,12 +40,17 @@ const ItemWithoutPadding = styled(Paper)(({ theme }) => ({
 const HomePage: React.FC = () => {
     type GamePhase = 'DEPLOYING' | 'MOVING';
     const [gamePhase, setGamePhase] = useState<GamePhase>('DEPLOYING');
+    const {isLoggedIn, setIsLoggedIn} = useAuthContext();
 
     const theme = useTheme();
     const navigate = useNavigate();
 
-    const handleClick = () => {
-        navigate('/login');
+    function ClickRouter(event: React.MouseEvent<HTMLButtonElement>) {
+        const buttonId = (event.target as Element).id;
+        console.log("Button ID:", buttonId);
+        if (!isLoggedIn) {
+            navigate('/login');
+        }
     }
 
     const renderButtonGrid = () => {
@@ -52,10 +58,10 @@ const HomePage: React.FC = () => {
             return (
                 <Item>
                     <Grid container columns={1} rowSpacing={1} wrap='nowrap' direction={"column"}>
-                        <Button variant="contained" sx={{ width: '100%', maxWidth: '1000px' }} onClick={handleClick}>Start</Button>
+                        <Button variant="contained" sx={{ width: '100%', maxWidth: '1000px' }} onClick={ClickRouter}>Start</Button>
                         <Grid container width={'100%'} columns={2} rowSpacing={1} columnSpacing={{ xs: 0.25, sm: 0.5, md: 0.75 }} wrap='nowrap' direction={"row"}>
-                            <ItemWithoutPadding><Button variant="contained" sx={{ width: '100%', maxWidth: '1000px' }} onClick={handleClick}>Save Layout</Button></ItemWithoutPadding>
-                            <ItemWithoutPadding><Button variant="contained" sx={{ width: '100%', maxWidth: '1000px' }} onClick={handleClick}>Load Layout</Button></ItemWithoutPadding>
+                            <ItemWithoutPadding><Button variant="contained" sx={{ width: '100%', maxWidth: '1000px' }} onClick={ClickRouter}>Save Layout</Button></ItemWithoutPadding>
+                            <ItemWithoutPadding><Button variant="contained" sx={{ width: '100%', maxWidth: '1000px' }} onClick={ClickRouter}>Load Layout</Button></ItemWithoutPadding>
                         </Grid>
                     </Grid>
                 </Item>
@@ -65,12 +71,12 @@ const HomePage: React.FC = () => {
                 <Item>
                     <Grid container columns={1} rowSpacing={1} wrap='nowrap' direction={"column"}>                        
                         <Grid container width={'100%'} columns={2} rowSpacing={1} columnSpacing={{ xs: 0.25, sm: 0.5, md: 0.75 }} wrap='nowrap' direction={"row"}>
-                            <ItemWithoutPadding><Button variant="contained" sx={{ width: '100%', maxWidth: '1000px' }} onClick={handleClick}>Draw</Button></ItemWithoutPadding>
-                            <ItemWithoutPadding><Button variant="contained" sx={{ width: '100%', maxWidth: '1000px' }} onClick={handleClick}>Skip</Button></ItemWithoutPadding>
+                            <ItemWithoutPadding><Button variant="contained" sx={{ width: '100%', maxWidth: '1000px' }} onClick={ClickRouter}>Draw</Button></ItemWithoutPadding>
+                            <ItemWithoutPadding><Button variant="contained" sx={{ width: '100%', maxWidth: '1000px' }} onClick={ClickRouter}>Skip</Button></ItemWithoutPadding>
                         </Grid>
                         <Grid container width={'100%'} columns={2} rowSpacing={1} columnSpacing={{ xs: 0.25, sm: 0.5, md: 0.75 }} wrap='nowrap' direction={"row"}>
-                            <ItemWithoutPadding><Button variant="contained" sx={{ width: '100%', maxWidth: '1000px' }} onClick={handleClick}>Save Layout</Button></ItemWithoutPadding>
-                            <ItemWithoutPadding><Button variant="contained" sx={{ width: '100%', maxWidth: '1000px' }} onClick={handleClick}>Surrender</Button></ItemWithoutPadding>
+                            <ItemWithoutPadding><Button variant="contained" sx={{ width: '100%', maxWidth: '1000px' }} onClick={ClickRouter}>Save Layout</Button></ItemWithoutPadding>
+                            <ItemWithoutPadding><Button variant="contained" sx={{ width: '100%', maxWidth: '1000px' }} onClick={ClickRouter}>Surrender</Button></ItemWithoutPadding>
                         </Grid>
                     </Grid>
                 </Item>
