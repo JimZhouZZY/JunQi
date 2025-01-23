@@ -11,12 +11,14 @@ import LoginPage from './pages/LoginPage'
 import { ThemeProvider } from '@mui/material/styles';
 import theme from './utils/Theme';
 import { AuthProvider } from './utils/AuthContext';
+import { AuthToken }  from './utils/AuthToken'
 
 
 const App: React.FC = () => {
   return (
     <AuthProvider>
     <ThemeProvider theme={theme}>
+    <AuthToken />
       <Router>
         <Routes>
           <Route path="/" element={<HomePage />} />
