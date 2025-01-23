@@ -1,32 +1,21 @@
 import { useGameContext } from "../contexts/GameContext";
+import JunqiGame from "./logic/junqiLogic";
 
 const GameService = () => {
     const {
         roomName,
         setRoomName,
-        gamePhase,
-        setGamePhase,
-        selfColor,
-        setSelfColor,
-        oppoColor,
-        setOppoColor,
-        isLoggedIn,
-        setIsLoggedIn,
-        username,
-        setUsername,
         game,
         setGame,
     } = useGameContext();
     
     const initGame = () => {
-        newGame = new JunqiGame();
-        // Default layout
-        newGame.applyLayout('LKJJII0H0HGG0FFF0E0EEDDDBBCCAC');
+        const newGame = new JunqiGame();
+        newGame.applyLayout('LKJJII0H0HGG0FFF0E0EEDDDBBCCAC'); // Default layout
         newGame.applyLayout('caccbbdddee0e0fff0ggh0h0iijjkl');
-        setGame(newGame);    
-
-        setGamePhase("DEPLOYING");
-        setOppoColor('red');
+        newGame.game_phase = "DEPLOYING";
+        newGame.color = 'b';
+        setGame(newGame); 
     }
 }
 
