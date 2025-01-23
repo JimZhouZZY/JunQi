@@ -13,7 +13,7 @@ export default class JunqiNode {
 
 const nodeCache = new Map();
 
-function node(name, type='normal') {
+export function node(name, type='normal') {
     const key = `${name}-${type}`;        
     if (!nodeCache.has(key)) {
         nodeCache.set(key, new JunqiNode(name, type));

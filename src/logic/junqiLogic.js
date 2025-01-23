@@ -398,8 +398,8 @@ class JunqiGame {
         if (red_count === 0 && blue_count === 0) {
             return "0";
         }
-        const red_result = splitBySpace(red_string);
-        const blue_result = splitBySpace(blue_string);
+        const red_result = JunqiGame.splitBySpace(red_string);
+        const blue_result = JunqiGame.splitBySpace(blue_string);
 
         if (Number(red_result[2]) === 31) {
             return "b";

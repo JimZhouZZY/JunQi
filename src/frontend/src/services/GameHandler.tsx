@@ -1,18 +1,10 @@
 import { useGameContext } from "../contexts/GameContext";
 import socket from "../sockets/socket";
 
-const GameHandler = () => {
+const useGameHandler = () => {
     const {
         roomName,
         setRoomName,
-        gamePhase,
-        setGamePhase,
-        oppoColor,
-        setOppoColor,
-        isLoggedIn,
-        setIsLoggedIn,
-        username,
-        setUsername,
         game,
         setGame,
     } = useGameContext();
@@ -75,7 +67,7 @@ const GameHandler = () => {
             new_jzn = swapPieces(new_jzn, 59 - index1, 59 - index2);
 
             if (game.isLegalLayout(new_jzn.slice(0, 30)) && game.isLegalLayout(new_jzn.slice(30))) {
-                console.log(`JZN after swapping: ${new_jzn}`);
+                console.log(`sJZN after swapping: ${new_jzn}`);
                 return new_jzn + ' r 0 0';
             } else {
                 console.log(`Illegal layout after swaping: ${new_jzn}`);
@@ -84,13 +76,14 @@ const GameHandler = () => {
         }
         
         const new_jzn = swap_layout(swap);
-        if (!(game.jzn === new_jzn)) { canSwap = true; }
+        if (game.jzn !== new_jzn) { canSwap = true; }
         game.jzn = new_jzn;
         game.applyLayout(game.jzn.slice(0, 30));
         game.applyLayout(game.jzn.slice(30, 60));
-        console.log(canSwap);
         return canSwap;
     };
+
+    return { moveHandler, swapHandler };
 }
 
-export default GameHandler;
+export default useGameHandler;

@@ -1,7 +1,7 @@
 import { useGameContext } from "../contexts/GameContext";
 import JunqiGame from "./logic/junqiLogic";
 
-const GameService = () => {
+const useGameService = () => {
     const {
         roomName,
         setRoomName,
@@ -17,6 +17,8 @@ const GameService = () => {
         newGame.color = 'b';
         setGame(newGame); 
     }
+
+    return { initGame };
 }
 
-export default GameService;
+export default useGameService;

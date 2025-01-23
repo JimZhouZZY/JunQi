@@ -138,9 +138,10 @@ const LoginPage: React.FC = () => {
       // 解析响应数据
       const result: AuthResponse = await response.json();
       console.log(result);
-      localStorage.setItem('token', result.token!);
-      setUsername(email.toString());
-
+      if (formData.get("remember")) {
+        localStorage.setItem('token', result.token!);
+      }
+      setUsername(email.toString()); // TODO: change variable name 'email' to 'username'
       setIsLoggedIn(true);
       navigate('/');
 

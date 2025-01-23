@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import AppBar from '../components/AppBar'
 import JunQiBoard from '../components/JunQiBoard';
 import Button from '@mui/material/Button';
@@ -11,7 +11,7 @@ import { styled, useTheme } from '@mui/material/styles';
 import ChatBox from '../components/ChatBox';
 import { useAuthContext } from '../contexts/AuthContext';
 import useQueueSocket from '../sockets/queue';
-
+import useGameService from '../services/GameService';
 
 const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: '#fff',
@@ -39,11 +39,28 @@ const ItemWithoutPadding = styled(Paper)(({ theme }) => ({
 
 
 const HomePage: React.FC = () => {
+    useEffect(() => {
+        const onPageLoad = () => {
+            console.log("Initializing game...");
+            initGame();
+        }
+        
+        // Check if the page has already loaded
+        if (document.readyState === 'complete') {
+          onPageLoad();
+        } else {
+          window.addEventListener('load', onPageLoad, false);
+          // Remove the event listener when component unmounts
+          return () => window.removeEventListener('load', onPageLoad);
+        }
+    }, []);
+
     type GamePhase = 'DEPLOYING' | 'MOVING';
     const [gamePhase, setGamePhase] = useState<GamePhase>('DEPLOYING');
     const [isInQueue, setIsInQueue] = useState(false);
     const { isLoggedIn, setIsLoggedIn } = useAuthContext();
     const { joinQueue, leaveQueue } = useQueueSocket();
+    const { initGame } = useGameService();
 
     const theme = useTheme();
     const navigate = useNavigate();
@@ -76,7 +93,7 @@ const HomePage: React.FC = () => {
             }
         }
     }
-
+    
     const renderButtonGrid = () => {
         if (gamePhase === "DEPLOYING") {
             return (

@@ -31,6 +31,7 @@ for SOURCE_FILE in "${SOURCE_FILES[@]}"; do
   # Apply transformations and save to the destination file
   sed -e 's|module.exports = [^;]*;||' "$SOURCE_FILE" | \
   sed -e 's|class [^ ]*|export default &|' | \
+  sed -e 's|function node|export function node|' | \
   sed -e "s|const { node } = require('./types/junqiNode.js')|import { node } from './types/junqiNode.mjs'|" | \
   sed -e "s|const JunqiBoard = require('./types/junqiBoard')|import JunqiBoard from './types/junqiBoard.mjs'|" | \
   sed -e "s|const { node } = require('./junqiNode.js')|import { node } from './junqiNode.mjs'|" | \
