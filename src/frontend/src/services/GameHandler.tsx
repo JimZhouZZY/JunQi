@@ -24,6 +24,7 @@ const GameHandler = () => {
         if (!canMove) {
             // return 'snapback';
         } else {
+            // TODO: move this to sockets/game.tsx
             socket.emit('move', move, roomName);
         };
     }
