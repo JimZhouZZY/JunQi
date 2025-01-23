@@ -22,6 +22,7 @@ export const AuthToken = () => {
       if (response.ok) {
         console.log('User is logged in');
         console.log(data);
+        
         setIsLoggedIn(true);
         const username_ = await fetchUserName(data.user.userId);
         setUsername(username_);

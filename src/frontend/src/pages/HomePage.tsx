@@ -10,6 +10,7 @@ import Paper from '@mui/material/Paper';
 import { styled, useTheme } from '@mui/material/styles';
 import ChatBox from '../components/ChatBox';
 import { useAuthContext } from '../utils/AuthContext';
+import useQueueSocket from '../sockets/queue';
 
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -40,16 +41,39 @@ const ItemWithoutPadding = styled(Paper)(({ theme }) => ({
 const HomePage: React.FC = () => {
     type GamePhase = 'DEPLOYING' | 'MOVING';
     const [gamePhase, setGamePhase] = useState<GamePhase>('DEPLOYING');
-    const {isLoggedIn, setIsLoggedIn} = useAuthContext();
+    const [isInQueue, setIsInQueue] = useState(false);
+    const { isLoggedIn, setIsLoggedIn } = useAuthContext();
+    const { joinQueue, leaveQueue } = useQueueSocket();
 
     const theme = useTheme();
     const navigate = useNavigate();
 
     function ClickRouter(event: React.MouseEvent<HTMLButtonElement>) {
         const buttonId = (event.target as Element).id;
-        console.log("Button ID:", buttonId);
+        console.log("Clicked button with ID:", buttonId);
         if (!isLoggedIn) {
             navigate('/login');
+        } else {
+            switch (buttonId) {
+                case 'button-start':
+                    joinQueue();
+                    setIsInQueue(true);
+                    break;
+                case 'button-cancle':
+                    leaveQueue();
+                    setIsInQueue(false);
+                    break;
+                case 'button-save_layout':
+                    break;
+                case 'button-load_layout':
+                    break;
+                case 'button-draw':
+                    break
+                case 'button-surrender':
+                    break;;
+                default:
+                    break
+            }
         }
     }
 
@@ -58,10 +82,16 @@ const HomePage: React.FC = () => {
             return (
                 <Item>
                     <Grid container columns={1} rowSpacing={1} wrap='nowrap' direction={"column"}>
-                        <Button variant="contained" sx={{ width: '100%', maxWidth: '1000px' }} onClick={ClickRouter}>Start</Button>
+                        {
+                            isInQueue ? (
+                                <Button id="button-cancle" variant="contained" sx={{ width: '100%', maxWidth: '1000px' }} onClick={ClickRouter}>Cancle</Button>
+                            ) : (
+                                <Button id="button-start" variant="contained" sx={{ width: '100%', maxWidth: '1000px' }} onClick={ClickRouter}>Start</Button>
+                            )
+                        }
                         <Grid container width={'100%'} columns={2} rowSpacing={1} columnSpacing={{ xs: 0.25, sm: 0.5, md: 0.75 }} wrap='nowrap' direction={"row"}>
-                            <ItemWithoutPadding><Button variant="contained" sx={{ width: '100%', maxWidth: '1000px' }} onClick={ClickRouter}>Save Layout</Button></ItemWithoutPadding>
-                            <ItemWithoutPadding><Button variant="contained" sx={{ width: '100%', maxWidth: '1000px' }} onClick={ClickRouter}>Load Layout</Button></ItemWithoutPadding>
+                            <ItemWithoutPadding><Button id="button-save_layout" style={{ textDecoration: 'line-through' }} variant="contained" sx={{ width: '100%', maxWidth: '1000px' }} onClick={ClickRouter}>Save Layout</Button></ItemWithoutPadding>
+                            <ItemWithoutPadding><Button id="button-load_layout" style={{ textDecoration: 'line-through' }} variant="contained" sx={{ width: '100%', maxWidth: '1000px' }} onClick={ClickRouter}>Load Layout</Button></ItemWithoutPadding>
                         </Grid>
                     </Grid>
                 </Item>
@@ -69,14 +99,14 @@ const HomePage: React.FC = () => {
         } else if (gamePhase === "MOVING") {
             return (
                 <Item>
-                    <Grid container columns={1} rowSpacing={1} wrap='nowrap' direction={"column"}>                        
+                    <Grid container columns={1} rowSpacing={1} wrap='nowrap' direction={"column"}>
                         <Grid container width={'100%'} columns={2} rowSpacing={1} columnSpacing={{ xs: 0.25, sm: 0.5, md: 0.75 }} wrap='nowrap' direction={"row"}>
-                            <ItemWithoutPadding><Button variant="contained" sx={{ width: '100%', maxWidth: '1000px' }} onClick={ClickRouter}>Draw</Button></ItemWithoutPadding>
-                            <ItemWithoutPadding><Button variant="contained" sx={{ width: '100%', maxWidth: '1000px' }} onClick={ClickRouter}>Skip</Button></ItemWithoutPadding>
+                            <ItemWithoutPadding><Button id="button-draw" style={{ textDecoration: 'line-through' }} variant="contained" sx={{ width: '100%', maxWidth: '1000px' }} onClick={ClickRouter}>Draw</Button></ItemWithoutPadding>
+                            <ItemWithoutPadding><Button id="button-skip" style={{ textDecoration: 'line-through' }} variant="contained" sx={{ width: '100%', maxWidth: '1000px' }} onClick={ClickRouter}>Skip</Button></ItemWithoutPadding>
                         </Grid>
                         <Grid container width={'100%'} columns={2} rowSpacing={1} columnSpacing={{ xs: 0.25, sm: 0.5, md: 0.75 }} wrap='nowrap' direction={"row"}>
-                            <ItemWithoutPadding><Button variant="contained" sx={{ width: '100%', maxWidth: '1000px' }} onClick={ClickRouter}>Save Layout</Button></ItemWithoutPadding>
-                            <ItemWithoutPadding><Button variant="contained" sx={{ width: '100%', maxWidth: '1000px' }} onClick={ClickRouter}>Surrender</Button></ItemWithoutPadding>
+                            <ItemWithoutPadding><Button id="button-save_layout" style={{ textDecoration: 'line-through' }} variant="contained" sx={{ width: '100%', maxWidth: '1000px' }} onClick={ClickRouter}>Save Layout</Button></ItemWithoutPadding>
+                            <ItemWithoutPadding><Button id="button-surrender" style={{ textDecoration: 'line-through' }} variant="contained" sx={{ width: '100%', maxWidth: '1000px' }} onClick={ClickRouter}>Surrender</Button></ItemWithoutPadding>
                         </Grid>
                     </Grid>
                 </Item>

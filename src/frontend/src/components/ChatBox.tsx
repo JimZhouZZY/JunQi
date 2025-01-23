@@ -76,7 +76,7 @@ function ChatBox() {
                         },
                     }}
                 />
-                <Button variant="contained" color="primary">
+                <Button variant="contained" color="primary" style={{ textDecoration: 'line-through' }}>
                     Send
                 </Button>
             </Box>

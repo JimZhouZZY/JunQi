@@ -12,6 +12,7 @@ import { ThemeProvider } from '@mui/material/styles';
 import theme from './utils/Theme';
 import { AuthProvider } from './utils/AuthContext';
 import { AuthToken }  from './utils/AuthToken'
+import io from './sockets/socket'
 
 
 const App: React.FC = () => {
