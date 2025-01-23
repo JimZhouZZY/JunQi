@@ -8,7 +8,7 @@ import { useTheme } from '@mui/material/styles';
 import { Box, SxProps, TextField, TextFieldProps, Theme, Typography } from '@mui/material'; // 引入 Box 组件
 import { Co2Sharp } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
-import { useAuthContext } from '../utils/AuthContext';
+import { useAuthContext } from '../contexts/AuthContext';
 
 interface AuthResponse {
   /**

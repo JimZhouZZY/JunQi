@@ -22,7 +22,7 @@ import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import { useNavigate } from 'react-router-dom';
-import { useAuthContext } from '../utils/AuthContext';
+import { useAuthContext } from '../contexts/AuthContext';
 import Stack from '@mui/material/Stack';
 import theme from '../utils/Theme';
 

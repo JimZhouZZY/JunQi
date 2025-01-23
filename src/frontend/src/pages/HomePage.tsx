@@ -9,7 +9,7 @@ import { VerticalAlignBottom } from '@mui/icons-material';
 import Paper from '@mui/material/Paper';
 import { styled, useTheme } from '@mui/material/styles';
 import ChatBox from '../components/ChatBox';
-import { useAuthContext } from '../utils/AuthContext';
+import { useAuthContext } from '../contexts/AuthContext';
 import useQueueSocket from '../sockets/queue';
 
 

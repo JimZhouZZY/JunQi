@@ -1,11 +1,25 @@
 import socket from './socket';  // Assuming socket is initialized elsewhere
-import { useAuthContext } from '../utils/AuthContext';  // Assuming your context hook is here
+import { useAuthContext } from '../contexts/AuthContext';  // Assuming your context hook is here
+import { useEffect } from 'react';
 
 const useQueueSocket = () => {
   const { username } = useAuthContext(); // Access username from context
 
   // Join queue function
   const joinQueue = async () => {
+
+    useEffect(() => {
+        socket.on('room-name', (roomName: string) => {
+            roomName = roomName;
+            window.game_phase == 'MOVING';
+            console.log(`Client started game in room: ${roomName}`)
+        });
+    
+        return () => {
+          socket.disconnect();
+        };
+      }, []);
+
     if (!username) {
       console.error('Username is not available');
       return;

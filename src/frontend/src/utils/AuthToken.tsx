@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useAuthContext } from './AuthContext';
+import { useAuthContext } from '../contexts/AuthContext';
 import { fetchUserId, fetchUserName } from './UserProfile';
 
 export const AuthToken = () => {
@@ -22,7 +22,7 @@ export const AuthToken = () => {
       if (response.ok) {
         console.log('User is logged in');
         console.log(data);
-        
+
         setIsLoggedIn(true);
         const username_ = await fetchUserName(data.user.userId);
         setUsername(username_);
