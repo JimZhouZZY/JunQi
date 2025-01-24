@@ -4,10 +4,10 @@
  * Licensed under the GPLv3 License.
  */
 
-const { node } = require('./types/junqiNode.js');
-const JunqiBoard = require('./types/junqiBoard');
+import { node } from './types/junqiNode.mjs';
+import JunqiBoard from './types/junqiBoard.mjs';
 
-class JunqiGame {
+export default class JunqiGame {
     constructor(
         jzn = '0'.repeat(60) + ' r 0 0',
         color = '0',
@@ -574,7 +574,7 @@ class JunqiGame {
 //console.log(a.skipAction('r'));
 /* DEBUG */
 
-module.exports = JunqiGame;
+
 
 
 

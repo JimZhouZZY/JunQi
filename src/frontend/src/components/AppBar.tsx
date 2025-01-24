@@ -22,6 +22,9 @@ import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import { useNavigate } from 'react-router-dom';
+import { useAuthContext } from '../contexts/AuthContext';
+import Stack from '@mui/material/Stack';
+import theme from '../utils/Theme';
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -65,6 +68,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 export default function PrimarySearchAppBar() {
     const navigate = useNavigate();
+    const { isLoggedIn, setIsLoggedIn, username, setUsername} = useAuthContext();
 
     const [anchorProfileMenuLogged, setAnchorProfileMenuLogged] = React.useState<null | HTMLElement>(null);
     const [anchorProfileMenuUnlogged, setAnchorProfileMenuUnlogged] = React.useState<null | HTMLElement>(null);
@@ -74,13 +78,8 @@ export default function PrimarySearchAppBar() {
     const isMenuOpen = Boolean(anchorProfileMenuLogged);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
-    const isLoggedIn = () => {
-        // TODO: check whether the user is logged in 
-        return false;
-    }
-
     const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
-        if (isLoggedIn()) {
+        if (isLoggedIn) {
             setAnchorProfileMenuLogged(event.currentTarget);
         } else {
             navigate('/login');
@@ -230,6 +229,9 @@ export default function PrimarySearchAppBar() {
                             color="inherit"
                         >
                             <AccountCircle />
+                            <Typography variant="body1" color={'rgb(255,255,255)'} sx={{ marginLeft: '7px' }}>
+                                {username ? username : 'Guest'}
+                            </Typography>
                         </IconButton>
                     </Box>
                     <Box sx={{ display: { xs: 'flex', md: 'none' } }}>

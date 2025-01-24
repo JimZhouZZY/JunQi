@@ -1,39 +1,89 @@
 import * as React from 'react';
 import { AppProvider } from '@toolpad/core/AppProvider';
 import {
-  SignInPage,
   type AuthProvider,
-  type AuthResponse,
+  SignInPage,
 } from '@toolpad/core/SignInPage';
 import { useTheme } from '@mui/material/styles';
-import { Box } from '@mui/material'; // 引入 Box 组件
+import { Box, SxProps, TextField, TextFieldProps, Theme, Typography } from '@mui/material'; // 引入 Box 组件
+import { Co2Sharp } from '@mui/icons-material';
+import { useNavigate } from 'react-router-dom';
+import { useAuthContext } from '../contexts/AuthContext';
+
+interface AuthResponse {
+  /**
+   * The error message if the sign-in failed.
+   * @default ''
+   */
+  error?: string;
+  /**
+   * The type of error if the sign-in failed.
+   * @default ''
+   */
+  type?: string;
+  /**
+   * The success notification if the sign-in was successful.
+   * @default ''
+   * Only used for magic link sign-in.
+   * @example 'Check your email for a magic link.'
+   */
+  success?: string;
+  messagge?: string;
+  token?: string;
+}
 
 const providers = [{ id: 'credentials', name: 'Email and password' }];
 
-const signIn: (
-  provider: AuthProvider,
-  formData?: FormData,
-) => Promise<AuthResponse> | void = async (provider, formData) => {
-  const promise = new Promise<AuthResponse>((resolve) => {
-    setTimeout(() => {
-      const email = formData?.get('email');
-      const password = formData?.get('password');
-      alert(
-        `Signing in with "${provider.name}" and credentials: ${email}, ${password}`,
-      );
-      // preview-start
-      resolve({
-        type: 'CredentialsSignin',
-        error: 'Invalid credentials.',
-      });
-      // preview-end
-    }, 300);
-  });
-  return promise;
+const mergeSlotSx = (defaultSx: SxProps<Theme>, slotProps?: { sx?: SxProps<Theme> }) => {
+  if (Array.isArray(slotProps?.sx)) {
+    return [defaultSx, ...slotProps!.sx];
+  }
+
+  if (slotProps?.sx) {
+    return [defaultSx, slotProps?.sx];
+  }
+
+  return [defaultSx];
 };
 
+const getCommonTextFieldProps = (theme: Theme, baseProps: TextFieldProps = {}): TextFieldProps => ({
+  required: true,
+  fullWidth: true,
+  ...baseProps,
+  slotProps: {
+    ...baseProps.slotProps,
+    htmlInput: {
+      ...baseProps.slotProps?.htmlInput,
+      sx: mergeSlotSx(
+        {
+          paddingTop: theme.spacing(1),
+          paddingBottom: theme.spacing(1),
+        },
+        typeof baseProps.slotProps?.htmlInput === 'function' ? {} : baseProps.slotProps?.htmlInput,
+      ),
+    },
+    inputLabel: {
+      ...baseProps.slotProps?.inputLabel,
+      sx: mergeSlotSx(
+        {
+          lineHeight: theme.typography.pxToRem(12),
+          fontSize: theme.typography.pxToRem(14),
+        },
+        typeof baseProps.slotProps?.inputLabel === 'function'
+          ? {}
+          : baseProps.slotProps?.inputLabel,
+      ),
+    },
+  },
+});
+
+
+
 const LoginPage: React.FC = () => {
+  const navigate = useNavigate();
   const theme = useTheme();
+  const { isLoggedIn, setIsLoggedIn, username, setUsername} = useAuthContext();
+
   const gridPattern = `
     <svg width="200" height="200" xmlns="http://www.w3.org/2000/svg">
       <rect width="100" height="100" fill="${theme.palette.primary.main}" />
@@ -43,6 +93,90 @@ const LoginPage: React.FC = () => {
     </svg>
   `;
   const encodedPattern = encodeURIComponent(gridPattern);
+
+  const signIn: (
+    provider?: AuthProvider,
+    formData?: FormData,
+    callbackUrl?: string,
+  ) => Promise<AuthResponse> = async (provider, formData, callbackUrl) => {
+    /* DEBUG */
+    for (let [key, value] of formData!.entries()) {
+      console.log(`${key}: ${value}`);
+    }
+    /* DEBUG */
+
+    if (!formData) {
+      throw new Error("Form data is required.");
+    }
+
+    const email = formData.get("email");
+    const password = formData.get("password");
+    const remember = formData.get("remember");
+
+    if (!email || !password) {
+      throw new Error("Email and password are required.");
+    }
+
+    try {
+      // 使用 fetch 发送 POST 请求
+      const response = await fetch('/users/login-register', {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: email,
+          password: password,
+        }),
+      });
+
+      // 检查响应状态
+      if (!response.ok) {
+        throw new Error(`Server error: ${response.status}`);
+      }
+
+      // 解析响应数据
+      const result: AuthResponse = await response.json();
+      console.log(result);
+      if (formData.get("remember")) {
+        localStorage.setItem('token', result.token!);
+      }
+      setUsername(email.toString()); // TODO: change variable name 'email' to 'username'
+      setIsLoggedIn(true);
+      navigate('/');
+
+      return result;
+    } catch (error) {
+      console.error("Sign-in failed:", error);
+      return {
+        type: "CredentialsSignin",
+        error: "Unknown error.",
+      };
+    }
+  };
+
+  const SignUpLink = () => (
+    <Typography align="center" sx={{ mt: 2 }}>
+      Don't have an account?{" "}
+      <a href="/signup" style={{ textDecoration: "none", color: "blue" }}>
+        Sign Up
+      </a>
+    </Typography>
+  );
+
+  const UsernameField = () => {
+    return <TextField
+      {...getCommonTextFieldProps(theme, {
+        label: 'Username',
+        placeholder: 'Your username',
+        id: 'email-passkey',
+        name: 'email',
+        type: 'text',
+        autoComplete: 'email-webauthn',
+        autoFocus: false,
+      })}
+    />
+  }
 
   return (
     // preview-start
@@ -74,8 +208,14 @@ const LoginPage: React.FC = () => {
         <SignInPage
           signIn={signIn}
           providers={providers}
-          slotProps={{ emailField: { autoFocus: false } }}
-          sx = {{
+          slotProps={{
+            rememberMe: {},
+          }}
+          slots={{
+            emailField: UsernameField,
+            signUpLink: SignUpLink
+          }}
+          sx={{
             zIndex: 1,
           }}
         />

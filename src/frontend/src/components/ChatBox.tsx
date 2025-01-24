@@ -1,8 +1,11 @@
 import React from 'react';
 import { Box, Button, TextField, Typography, useTheme} from '@mui/material';
+import { useGameContext } from '../contexts/GameContext';
 
 function ChatBox() {
     const theme = useTheme();
+
+    const { roomName } = useGameContext();
     return (
         <Box
             sx={{
@@ -35,7 +38,7 @@ function ChatBox() {
                         marginBottom: '5px',
                     }}
                 >
-                    System: Welcome to the chat!
+                    System: Welcome to the chat! Room: {roomName}.
                 </Typography>
                 <Typography
                     sx={{
@@ -76,7 +79,7 @@ function ChatBox() {
                         },
                     }}
                 />
-                <Button variant="contained" color="primary">
+                <Button variant="contained" color="primary" style={{ textDecoration: 'line-through' }}>
                     Send
                 </Button>
             </Box>

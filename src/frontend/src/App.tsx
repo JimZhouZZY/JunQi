@@ -9,19 +9,30 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import HomePage from './pages/HomePage'
 import LoginPage from './pages/LoginPage'
 import { ThemeProvider } from '@mui/material/styles';
-import theme from './util/Theme';
+import theme from './utils/Theme';
+import { AuthProvider } from './contexts/AuthContext';
+import { AuthToken } from './utils/AuthToken'
+import { GameProvider } from './contexts/GameContext';
+import { SocketProvider } from './contexts/SocketContext';
 
 
 const App: React.FC = () => {
   return (
-    <ThemeProvider theme={theme}>
-      <Router>
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/login" element={<LoginPage />} />
-        </Routes>
-      </Router>
-    </ThemeProvider>
+    <AuthProvider>
+      <SocketProvider>
+        <GameProvider>
+          <ThemeProvider theme={theme}>
+            <AuthToken />
+            <Router>
+              <Routes>
+                <Route path="/" element={<HomePage />} />
+                <Route path="/login" element={<LoginPage />} />
+              </Routes>
+            </Router>
+          </ThemeProvider>
+        </GameProvider>
+      </SocketProvider>
+    </AuthProvider>
   );
 };
 

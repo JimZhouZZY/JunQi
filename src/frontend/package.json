@@ -8,12 +8,14 @@
     "@fontsource/roboto": "^5.1.1",
     "@mui/icons-material": "^6.4.0",
     "@mui/material": "^6.4.0",
+    "@mui/toolpad": "^0.1.51",
     "@toolpad/core": "^0.12.0",
     "cra-template-typescript": "1.2.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-router-dom": "^7.1.3",
-    "react-scripts": "5.0.1"
+    "react-scripts": "5.0.1",
+    "socket.io-client": "^4.8.1"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -43,6 +45,7 @@
   "devDependencies": {
     "@types/react": "^19.0.5",
     "@types/react-dom": "^19.0.3",
+    "@types/socket.io-client": "^1.4.36",
     "@types/testing-library__react": "^10.0.1",
     "esbuild": "^0.24.2"
   }

@@ -4,8 +4,10 @@
  * Licensed under the GPLv3 License.
  */
 
-import React, { useState, useRef, useEffect } from "react";
-import './JunQiBoard.css';
+import React, { useState, useRef, useEffect, useContext, forwardRef, useImperativeHandle } from "react";
+import './JunqiBoard.css';
+import { useGameContext } from "../contexts/GameContext";
+import useGameHandler from "../services/GameHandler"
 
 type Piece = {
   type: string;
@@ -15,23 +17,16 @@ type Piece = {
   selected: boolean;
 };
 
-type MoveHandler = (move: string) => void;
-
-window.game_phase = 'DEPLOYING';
-
-interface JunQiBoardProps {
-  moveHandler?: MoveHandler;
+// Define the type for the external API
+export interface JunqiBoardRef {
+  updateBoardFromFEN: (fen: string) => void;
 }
 
-//window.moveHandler = (move) => {
-//  console.log(`Move ${move}`);
-//}
-
-const JunQiBoard: React.FC<JunQiBoardProps> = ({
-  moveHandler = window.moveHandler
-}) => {
+const JunqiBoard = forwardRef<JunqiBoardRef>((props, ref) => {
   const [board, setBoard] = useState<(Piece | null)[][]>(Array(12).fill(null).map(() => Array(5).fill(null)));
   const [selectedPiece, setSelectedPiece] = useState<Piece | null>(null);
+  const {game, setGame} = useGameContext();
+  const { moveHandler, swapHandler } = useGameHandler();
 
   function updateBoardFromFEN(fen: string) {
     const jzn_splitted = fen.split(" ")[0];
@@ -58,7 +53,7 @@ const JunQiBoard: React.FC<JunQiBoardProps> = ({
             color = char === char.toUpperCase() ? 'blue' : 'red';
           }
           else {
-            color = window.oppo_color;
+            color = game.oppo_color === 'r' ? 'red' : 'blue';
           }
           const type = char.toUpperCase(); // Use uppercase letters for piece type
           const selected = false;
@@ -70,6 +65,10 @@ const JunQiBoard: React.FC<JunQiBoardProps> = ({
     });
     setBoard(newBoard);
   };
+  
+  useImperativeHandle(ref, () => ({
+    updateBoardFromFEN,
+  }));
 
   function updatePiece(updates: { row: number, col: number, newPiece: Piece | null }[]) {
     let newBoard = [...board]; // Create a copy of the board
@@ -101,18 +100,18 @@ const JunQiBoard: React.FC<JunQiBoardProps> = ({
 
   function handleClick(row: number, col: number) {
     const piece = board[row][col];
-    if (selectedPiece && piece && selectedPiece.color != piece.color && window.game_phase == "MOVING") {
+    if (selectedPiece && piece && selectedPiece.color != piece.color && game.game_phase == "MOVING") {
       // Attack another piece 
       const move = convertToChessNotation(selectedPiece.row, selectedPiece.col) + convertToChessNotation(row, col);
-      if (window.moveHandler) {
-        window.moveHandler(move);
+      if (moveHandler) {
+        moveHandler(move);
       } else {
         console.error("moveHandler function is not available");
       }
       updatePiece([{row:selectedPiece!.row, col:selectedPiece!.col, newPiece: {type: selectedPiece!.type, color: selectedPiece!.color, row: selectedPiece!.row, col: selectedPiece!.col, selected: false} }]);
       setSelectedPiece(null);
     }    
-    else if (window.game_phase == 'DEPLOYING' && selectedPiece && piece && selectedPiece.color == piece.color) {
+    else if (game.game_phase == 'DEPLOYING' && selectedPiece && piece && selectedPiece.color == piece.color) {
       // Swap pieces during deployment phase
       const temp_piece: Piece = {
         type: piece.type,
@@ -123,8 +122,8 @@ const JunQiBoard: React.FC<JunQiBoardProps> = ({
       }
       const swap = convertToChessNotation(selectedPiece.row, selectedPiece.col) + convertToChessNotation(piece.row, piece.col);
       var canSwap = false;
-      if (window.swapHandler) {
-        canSwap = window.swapHandler(swap);
+      if (swapHandler) {
+        canSwap = swapHandler(swap);
       } else {
         console.error("swapHandler function is not available");
       } 
@@ -133,7 +132,7 @@ const JunQiBoard: React.FC<JunQiBoardProps> = ({
         setSelectedPiece(null);
       }
     }
-    else if (piece && piece.color != window.oppo_color) {
+    else if (piece && piece.color != game.oppo_color) {
       // If a piece is clicked, set it as selected
       var updates = [];
       if (selectedPiece){
@@ -143,11 +142,11 @@ const JunQiBoard: React.FC<JunQiBoardProps> = ({
       updates.push({row:piece!.row, col:piece!.col, newPiece: {type: piece!.type, color: piece!.color, row: piece!.row, col: piece!.col, selected: true} });
       updatePiece(updates);
       console.log(`Piece selected: ${piece.type} (${piece.color}) at (${row}, ${col})`);
-    } else if (selectedPiece && window.game_phase == 'MOVING') {
+    } else if (selectedPiece && game.game_phase == 'MOVING') {
         // Move to an empty square
         const move = convertToChessNotation(selectedPiece.row, selectedPiece.col) + convertToChessNotation(row, col);
-        if (window.moveHandler) {
-          window.moveHandler(move);
+        if (moveHandler) {
+          moveHandler(move);
         } else {
           console.error("moveHandler function is not available");
         }
@@ -215,7 +214,6 @@ const JunQiBoard: React.FC<JunQiBoardProps> = ({
 
   useEffect(() => {
     default_setup();
-    window.updateBoardFromFEN = updateBoardFromFEN; // 可选：暴露到全局对象
   }, []);
 
   function default_setup(){
@@ -228,6 +226,6 @@ const JunQiBoard: React.FC<JunQiBoardProps> = ({
       {Array.from({ length: 12 }).map((_, row) => renderRow(row))}
     </div>
   );
-};
+});
 
-export default JunQiBoard;
+export default JunqiBoard;
