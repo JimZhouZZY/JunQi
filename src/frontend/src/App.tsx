@@ -12,24 +12,26 @@ import { ThemeProvider } from '@mui/material/styles';
 import theme from './utils/Theme';
 import { AuthProvider } from './contexts/AuthContext';
 import { AuthToken } from './utils/AuthToken'
-import io from './sockets/socket'
 import { GameProvider } from './contexts/GameContext';
+import { SocketProvider } from './contexts/SocketContext';
 
 
 const App: React.FC = () => {
   return (
     <AuthProvider>
-      <GameProvider>
-        <ThemeProvider theme={theme}>
-          <AuthToken />
-          <Router>
-            <Routes>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/login" element={<LoginPage />} />
-            </Routes>
-          </Router>
-        </ThemeProvider>
-      </GameProvider>
+      <SocketProvider>
+        <GameProvider>
+          <ThemeProvider theme={theme}>
+            <AuthToken />
+            <Router>
+              <Routes>
+                <Route path="/" element={<HomePage />} />
+                <Route path="/login" element={<LoginPage />} />
+              </Routes>
+            </Router>
+          </ThemeProvider>
+        </GameProvider>
+      </SocketProvider>
     </AuthProvider>
   );
 };

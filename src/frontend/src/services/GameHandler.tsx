@@ -1,13 +1,11 @@
 import { useGameContext } from "../contexts/GameContext";
-import socket from "../sockets/socket";
+import { useSocketContext } from "../contexts/SocketContext";
+import { useRef } from "react";
+import useGameSocket from "../sockets/game"
 
 const useGameHandler = () => {
-    const {
-        roomName,
-        setRoomName,
-        game,
-        setGame,
-    } = useGameContext();
+    const { roomName, setRoomName, game, setGame } = useGameContext();
+    const { emitMove } = useGameSocket();
 
     const moveHandler = (move: string) => {
         const canMove = game.isLegalAction(move);
@@ -17,7 +15,7 @@ const useGameHandler = () => {
             // return 'snapback';
         } else {
             // TODO: move this to sockets/game.tsx
-            socket.emit('move', move, roomName);
+            emitMove(move, roomName);
         };
     }
 

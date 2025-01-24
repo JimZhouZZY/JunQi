@@ -22,5 +22,10 @@ module.exports = (io) => {
         socket.on('disconnect', () => {
             console.log(`User disconnected: ${socket.id}`);
         });
+
+        setInterval(() => {
+            // io.emit('test', 'This is a broadcast message every second');
+          }, 1000); // Broadcast every 1000 milliseconds (1 second)
+          
     });
 };

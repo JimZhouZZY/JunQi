@@ -4,8 +4,8 @@
  * Licensed under the GPLv3 License.
  */
 
-import React, { useState, useRef, useEffect, useContext } from "react";
-import './JunQiBoard.css';
+import React, { useState, useRef, useEffect, useContext, forwardRef, useImperativeHandle } from "react";
+import './JunqiBoard.css';
 import { useGameContext } from "../contexts/GameContext";
 import useGameHandler from "../services/GameHandler"
 
@@ -17,7 +17,12 @@ type Piece = {
   selected: boolean;
 };
 
-const JunQiBoard: React.FC = () => {
+// Define the type for the external API
+export interface JunqiBoardRef {
+  updateBoardFromFEN: (fen: string) => void;
+}
+
+const JunqiBoard = forwardRef<JunqiBoardRef>((props, ref) => {
   const [board, setBoard] = useState<(Piece | null)[][]>(Array(12).fill(null).map(() => Array(5).fill(null)));
   const [selectedPiece, setSelectedPiece] = useState<Piece | null>(null);
   const {game, setGame} = useGameContext();
@@ -60,6 +65,10 @@ const JunQiBoard: React.FC = () => {
     });
     setBoard(newBoard);
   };
+  
+  useImperativeHandle(ref, () => ({
+    updateBoardFromFEN,
+  }));
 
   function updatePiece(updates: { row: number, col: number, newPiece: Piece | null }[]) {
     let newBoard = [...board]; // Create a copy of the board
@@ -217,6 +226,6 @@ const JunQiBoard: React.FC = () => {
       {Array.from({ length: 12 }).map((_, row) => renderRow(row))}
     </div>
   );
-};
+});
 
-export default JunQiBoard;
+export default JunqiBoard;

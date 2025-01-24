@@ -11,14 +11,16 @@ const socketsQueue = require('../sockets/queue');
 const JunqiGame = require('../src/logic/junqiLogic');
 
 const boards = new Map;
+const rooms = new Map;
 
 function setIo(newIo) {
     io = newIo; // 注入 io 实例
 }
 
-async function startMatch(usernames) {
+function startMatch(usernames) {
     const roomName = `gameRoom-${usernames.join('-')}`;
     console.log(`Created room ${roomName}`);
+    boards.set(roomName, new JunqiGame('0acc0Ljc0e0000000000000000000000000B000000000GB000JK000CACC0 r 0 0'));
     const colors = ['r', 'b']; // Colors to assign
     // Shuffle the colors
     for (let i = colors.length - 1; i > 0; i--) {
@@ -30,15 +32,17 @@ async function startMatch(usernames) {
     usernames.forEach((username, index) => {
       usernameToColor.set(username, colors[index]);
     });
+    const playerSocketIds = [];
+    rooms.set(roomName, playerSocketIds);
     usernames.forEach(username => {
         const socketId = socketsQueue.usernameSocketMap[username];
+        rooms.get(roomName).push(socketId);
         // TODO: this is too ugly, refactor it!
         io.sockets.sockets.get(socketId).join(roomName); // 加入房间
         io.to(socketId).emit('room-name', roomName);
         io.to(socketId).emit('request-layout', usernameToColor.get(username));
     });
-    boards[roomName] = new JunqiGame('0acc0Ljc0e0000000000000000000000000B000000000GB000JK000CACC0 r 0 0');
 }
 
 
-module.exports = { setIo, startMatch, boards };
+module.exports = { setIo, startMatch, boards, rooms};

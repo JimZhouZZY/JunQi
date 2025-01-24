@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import AppBar from '../components/AppBar'
-import JunQiBoard from '../components/JunQiBoard';
 import Button from '@mui/material/Button';
 import { useNavigate } from 'react-router-dom';
 import Grid from '@mui/material/Grid2';
@@ -12,6 +11,10 @@ import ChatBox from '../components/ChatBox';
 import { useAuthContext } from '../contexts/AuthContext';
 import useQueueSocket from '../sockets/queue';
 import useGameService from '../services/GameService';
+import useSocket from '../sockets/socket';
+import { useSocketContext } from '../contexts/SocketContext';
+import JunqiBoard, { JunqiBoardRef } from '../components/JunqiBoard';
+import { useGameContext } from '../contexts/GameContext';
 
 const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: '#fff',
@@ -42,9 +45,10 @@ const HomePage: React.FC = () => {
     useEffect(() => {
         const onPageLoad = () => {
             console.log("Initializing game...");
+            initSocket();
             initGame();
         }
-        
+
         // Check if the page has already loaded
         if (document.readyState === 'complete') {
           onPageLoad();
@@ -61,6 +65,11 @@ const HomePage: React.FC = () => {
     const { isLoggedIn, setIsLoggedIn } = useAuthContext();
     const { joinQueue, leaveQueue } = useQueueSocket();
     const { initGame } = useGameService();
+    const { initSocket } = useSocket();
+    const { socket } = useSocketContext();
+    const { roomName } = useGameContext();
+
+    const junQiBoardRef = useRef<JunqiBoardRef>(null);
 
     const theme = useTheme();
     const navigate = useNavigate();
@@ -143,8 +152,8 @@ const HomePage: React.FC = () => {
                 alignItems="flex-start"      // Center vertically
                 sx={{ marginTop: '20px' }}
             >
-                <Grid size={1}>
-                    <Item><JunQiBoard /></Item>
+                <Grid columns={1} size={1}>
+                    <Item><JunqiBoard /></Item>
                 </Grid>
 
                 <Grid columns={1} rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} wrap='nowrap' direction={"column"}>
