@@ -33,7 +33,7 @@ const useGameService = () => {
         const newGame = new JunqiGame(new_jzn, color);
         newGame.applyLayout(layout);
         console.log(`Updating board with new JZN: ${new_jzn}`)
-        junqiBoardRef.current?.updateBoardFromFEN(new_jzn);
+        junqiBoardRef.current!.updateBoardFromFEN(new_jzn);
         newGame.game_phase = 'MOVING';
         setGame(newGame);
     }
