@@ -25,7 +25,8 @@ export const AuthToken = () => {
 
         setIsLoggedIn(true);
         const username_ = await fetchUserName(data.user.userId);
-        setUsername(username_);
+        console.log(username_);
+        setUsername(String(username_));
       } else {
         console.log('Invalid or expired token');
         localStorage.removeItem('token'); // Remove invalid token

@@ -13,7 +13,7 @@ import useQueueSocket from '../sockets/queue';
 import useGameService from '../services/GameService';
 import useSocket from '../sockets/socket';
 import { useSocketContext } from '../contexts/SocketContext';
-import JunqiBoard, { JunqiBoardRef } from '../components/JunqiBoard';
+import JunqiBoard from '../components/JunqiBoard';
 import { useGameContext } from '../contexts/GameContext';
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -61,15 +61,12 @@ const HomePage: React.FC = () => {
 
     type GamePhase = 'DEPLOYING' | 'MOVING';
     const [gamePhase, setGamePhase] = useState<GamePhase>('DEPLOYING');
-    const [isInQueue, setIsInQueue] = useState(false);
     const { isLoggedIn, setIsLoggedIn } = useAuthContext();
     const { joinQueue, leaveQueue } = useQueueSocket();
     const { initGame } = useGameService();
     const { initSocket } = useSocket();
     const { socket } = useSocketContext();
-    const { roomName } = useGameContext();
-
-    const junQiBoardRef = useRef<JunqiBoardRef>(null);
+    const { roomName, game, isInQueue, setIsInQueue } = useGameContext();
 
     const theme = useTheme();
     const navigate = useNavigate();
@@ -104,7 +101,7 @@ const HomePage: React.FC = () => {
     }
     
     const renderButtonGrid = () => {
-        if (gamePhase === "DEPLOYING") {
+        if (game.game_phase === "DEPLOYING") {
             return (
                 <Item>
                     <Grid container columns={1} rowSpacing={1} wrap='nowrap' direction={"column"}>
@@ -122,7 +119,7 @@ const HomePage: React.FC = () => {
                     </Grid>
                 </Item>
             )
-        } else if (gamePhase === "MOVING") {
+        } else if (game.game_phase === "MOVING") {
             return (
                 <Item>
                     <Grid container columns={1} rowSpacing={1} wrap='nowrap' direction={"column"}>

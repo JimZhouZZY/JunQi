@@ -22,13 +22,13 @@ export interface JunqiBoardRef {
   updateBoardFromFEN: (fen: string) => void;
 }
 
-const JunqiBoard = forwardRef<JunqiBoardRef>((props, ref) => {
+const JunqiBoard = () => {
   const [board, setBoard] = useState<(Piece | null)[][]>(Array(12).fill(null).map(() => Array(5).fill(null)));
   const [selectedPiece, setSelectedPiece] = useState<Piece | null>(null);
-  const {game, setGame} = useGameContext();
+  const {game, setGame, color} = useGameContext();
   const { moveHandler, swapHandler } = useGameHandler();
 
-  function updateBoardFromFEN(fen: string) {
+  window.updateBoardFromFEN = function (fen: string) {
     const jzn_splitted = fen.split(" ")[0];
     const pieces = jzn_splitted.split('').filter(char => /^[#a-zA-Z0-9]$/.test(char));
 
@@ -37,6 +37,18 @@ const JunqiBoard = forwardRef<JunqiBoardRef>((props, ref) => {
       .map(() => Array(5).fill(null));
 
     let idx = 0;
+
+    var def_color = '0'
+    function defColor() {
+      pieces.forEach((piece) => {
+        for (const char of piece) {
+          if (char !== '#' && char !== '0') {
+            def_color = char === char.toUpperCase() ? 'b' : 'r';
+          } 
+        }
+      });
+    }
+
     pieces.forEach((piece) => {
       for (const char of piece) {
         if (!isNaN(Number(char)) && Number(char) <= 5) {
@@ -48,17 +60,24 @@ const JunqiBoard = forwardRef<JunqiBoardRef>((props, ref) => {
         } else {
           const row = Math.floor(idx / 5);
           const col = idx % 5;
-          let color: 'red' | 'blue' = 'red';
+          let curr_color: 'red' | 'blue';
           if (char != '#'){
-            color = char === char.toUpperCase() ? 'blue' : 'red';
+            curr_color = char === char.toUpperCase() ? 'blue' : 'red';
           }
           else {
-            color = game.oppo_color === 'r' ? 'red' : 'blue';
+            if (color === '0') {
+              defColor();
+              console.log(`[JunqiBoard]: Unknown pieces displays in color: ${color}`);
+              curr_color = def_color === 'r' ? 'blue' : 'red';
+            } else {
+              console.log(`[JunqiBoard]: Unknown pieces displays in color: ${color}`);
+              curr_color = color === 'r' ? 'blue' : 'red';
+            }
           }
           const type = char.toUpperCase(); // Use uppercase letters for piece type
           const selected = false;
           // console.log(`TEST: ${type}, ${color}, ${row}, ${col} , ${selected}`);
-          newBoard[row][col] = { type, color, row, col , selected};
+          newBoard[row][col] = { type, color: curr_color, row, col , selected};
           idx++;
         }
       }
@@ -66,10 +85,6 @@ const JunqiBoard = forwardRef<JunqiBoardRef>((props, ref) => {
     setBoard(newBoard);
   };
   
-  useImperativeHandle(ref, () => ({
-    updateBoardFromFEN,
-  }));
-
   function updatePiece(updates: { row: number, col: number, newPiece: Piece | null }[]) {
     let newBoard = [...board]; // Create a copy of the board
     const n = updates.length;
@@ -218,7 +233,7 @@ const JunqiBoard = forwardRef<JunqiBoardRef>((props, ref) => {
 
   function default_setup(){
     const default_jzn = '000000000000000000000000000000LKJJII0H0HGG0FFF0E0EEDDDBBCCAC r 0 0';
-    updateBoardFromFEN(default_jzn);
+    window.updateBoardFromFEN(default_jzn);
   }
 
   return (
@@ -226,6 +241,6 @@ const JunqiBoard = forwardRef<JunqiBoardRef>((props, ref) => {
       {Array.from({ length: 12 }).map((_, row) => renderRow(row))}
     </div>
   );
-});
+};
 
 export default JunqiBoard;
