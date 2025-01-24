@@ -10,9 +10,13 @@ const {boards} = require('../services/matchService')
 module.exports = (io, socket) => {
     socket.on('move', function (move, roomName) {
         console.log(`[${roomName}]: Move received: ${JSON.stringify(move)}`);
-        if (boards[roomName].isLegalAction(move)){
-            boards[roomName].applyAction(move);
-            io.to(roomName).emit('move', move, boards[roomName].jzn); // TODO: 服务端更严格的检查，直接传送JZN
+        if (boards.get(roomName).isLegalAction(move)){
+            boards.get(roomName).applyAction(move);
+            io.to(roomName).emit('move', move, boards.get(roomName).jzn); // TODO: 服务端更严格的检查，直接传送JZN
+            if (boards.get(roomName).isTerminal()){
+                io.to(roomName).emit('terminal');
+                // TODO: a more effective way
+            }
         }
     });
 };

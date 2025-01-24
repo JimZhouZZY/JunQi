@@ -6,6 +6,12 @@ type GameContextType = {
     setRoomName: (value: string) => void;
     game: JunqiGame;
     setGame: (game: JunqiGame) => void;
+    color: 'r' | 'b' | '0'
+    setColor: (color: 'r' | 'b' | '0') => void;
+    gamePhase: 'MOVING' | 'DEPLPYING';
+    setGamePhase: (gamePhase: 'MOVING' | 'DEPLPYING') => void;
+    isInQueue: boolean;
+    setIsInQueue: (value: boolean) => void;
 };
 
 const GameContext = createContext<GameContextType | undefined>(undefined);
@@ -17,9 +23,12 @@ interface Props {
 export const GameProvider: React.FC<Props> = ({ children }) => {
     const [roomName, setRoomName] = useState<string>('');
     const [game, setGame] = useState<JunqiGame>(new JunqiGame());
+    const [color, setColor] = useState<'r' | 'b' | '0'>('0');
+    const [gamePhase, setGamePhase] = useState<'MOVING' | 'DEPLPYING'> ('DEPLPYING');
+    const [isInQueue, setIsInQueue] = useState(false);
 
     return (
-        <GameContext.Provider value={{ roomName, setRoomName, game, setGame}}>
+        <GameContext.Provider value={{ roomName, setRoomName, game, setGame, color, setColor, gamePhase, setGamePhase, isInQueue, setIsInQueue}}>
             {children}
         </GameContext.Provider>
     );

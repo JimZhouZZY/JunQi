@@ -5,30 +5,8 @@ import { useSocketContext } from '../contexts/SocketContext';
 
 const useQueueSocket = () => {
   const { username } = useAuthContext(); // Access username from context
-  const { game, setRoomName } = useGameContext();
+  const { game, setRoomName, isInQueue, setIsInQueue } = useGameContext();
   const { socket, setSocket } = useSocketContext();  
-
-  useEffect(() => {
-    if (!socket) {
-      console.log('socket is not available')
-      return;
-    }
-
-    console.log(`Initializing queue socket.on with socket: ${socket}`);
-    socket?.on('room-name', (roomName: string) => {
-      setRoomName(roomName);
-      game.game_phase = 'MOVING';
-      console.log(`Client started game in room: ${roomName}`)
-    });
-
-    socket?.on('test', () => {
-      console.log("queue.tsx: socket.on test okay")
-    })
-
-    return () => {
-      socket?.disconnect();
-    };
-  }, [socket]);
 
   // Join queue function
   const joinQueue = async () => {
@@ -40,24 +18,51 @@ const useQueueSocket = () => {
     const queuename = 'main'; // Queue name, can be dynamic later
     socket?.emit('queues-join', username, queuename);
 
+    setIsInQueue(true);
     // TODO: Handle server response
     // TODO: Handle errors
   };
 
   // Leave queue function
   const leaveQueue = async () => {
-    if (!username) {
+    console.log(username);
+    if (username === undefined) {
       console.error('Username is not available');
       return;
     }
 
+    console.log('User left current queue')
+
     const queuename = 'main'; // Queue name, can be dynamic later
     socket?.emit('queues-leave', username, queuename);
 
+    setIsInQueue(false)
     // TODO: Handle server response
     // TODO: Handle errors
   };
 
+
+  useEffect(() => {
+    if (!socket) {
+      console.log('socket is not available')
+      return;
+    }
+
+    console.log(`Initializing queue socket.on with socket: ${socket}`);
+    socket?.on('room-name', (roomName: string) => {
+      setRoomName(roomName);
+      leaveQueue();
+      console.log(`Client started game in room: ${roomName}`)
+    });
+
+    socket?.on('test', () => {
+      console.log("queue.tsx: socket.on test okay")
+    })
+
+    return () => {
+      socket?.disconnect();
+    };
+  }, [socket]);
   return { joinQueue, leaveQueue };
 };
 

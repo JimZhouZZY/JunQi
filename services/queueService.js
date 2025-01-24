@@ -17,12 +17,14 @@ exports.tryStartMatch = async function (queuename) {
     locks[queuename] = true;
 
     try {
-        if (queues[queuename].isReady()){
+        if (queues[queuename].isReady()) {
             usernames = await exports.dequeueSpecificQueue(queuename);
 
             // TODO: multiple match types
-            matchService.startMatch(usernames);
-            return true;
+            if (usernames[0] !== usernames[1]) {
+                matchService.startMatch(usernames);
+                return true;
+            }
         }
     } finally {
         locks[queuename] = false;
@@ -30,18 +32,18 @@ exports.tryStartMatch = async function (queuename) {
     }
 }
 
-exports.joinSpecificQueue = async function(username, queuename) {
+exports.joinSpecificQueue = async function (username, queuename) {
     queues[queuename].enqueueUser(username);
 }
 
-exports.leaveSpecificQueue = async function(username, queuename) {
+exports.leaveSpecificQueue = async function (username, queuename) {
     queues[queuename].dequeueUser(username);
 }
 
-exports.dequeueSpecificQueue = async function(queuename) {
+exports.dequeueSpecificQueue = async function (queuename) {
     let queue = queues[queuename];
     let usernames = [];
-    for (let i=0; i < queue.group_size; i++) {
+    for (let i = 0; i < queue.group_size; i++) {
         usernames.push(queue.peek());
         queue.dequeue();
     }
