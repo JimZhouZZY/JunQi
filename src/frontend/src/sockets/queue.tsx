@@ -18,6 +18,7 @@ const useQueueSocket = () => {
     const queuename = 'main'; // Queue name, can be dynamic later
     socket?.emit('queues-join', username, queuename);
 
+    console.log(`User ${username} joined queue ${queuename}.`)
     setIsInQueue(true);
     // TODO: Handle server response
     // TODO: Handle errors
@@ -31,11 +32,10 @@ const useQueueSocket = () => {
       return;
     }
 
-    console.log('User left current queue')
-
     const queuename = 'main'; // Queue name, can be dynamic later
     socket?.emit('queues-leave', username, queuename);
 
+    console.log(`User ${username} joined queue ${queuename}.`)
     setIsInQueue(false)
     // TODO: Handle server response
     // TODO: Handle errors
@@ -60,7 +60,7 @@ const useQueueSocket = () => {
     })
 
     return () => {
-      socket?.disconnect();
+      // socket?.disconnect();
     };
   }, [socket]);
   return { joinQueue, leaveQueue };

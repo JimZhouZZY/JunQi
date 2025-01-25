@@ -15,6 +15,7 @@ import useSocket from '../sockets/socket';
 import { useSocketContext } from '../contexts/SocketContext';
 import JunqiBoard from '../components/JunqiBoard';
 import { useGameContext } from '../contexts/GameContext';
+import useAuthToken from '../utils/AuthToken';
 
 const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: '#fff',
@@ -51,13 +52,20 @@ const HomePage: React.FC = () => {
 
         // Check if the page has already loaded
         if (document.readyState === 'complete') {
-          onPageLoad();
+            onPageLoad();
         } else {
-          window.addEventListener('load', onPageLoad, false);
-          // Remove the event listener when component unmounts
-          return () => window.removeEventListener('load', onPageLoad);
+            window.addEventListener('load', onPageLoad, false);
+            // Remove the event listener when component unmounts
+            return () => window.removeEventListener('load', onPageLoad);
         }
     }, []);
+
+
+    const { checkAuthToken } = useAuthToken();
+    useEffect(() => {
+        // Check token when the component mounts
+        checkAuthToken();
+    }, []); // This ensures it runs once
 
     type GamePhase = 'DEPLOYING' | 'MOVING';
     const [gamePhase, setGamePhase] = useState<GamePhase>('DEPLOYING');
@@ -99,7 +107,7 @@ const HomePage: React.FC = () => {
             }
         }
     }
-    
+
     const renderButtonGrid = () => {
         if (game.game_phase === "DEPLOYING") {
             return (
