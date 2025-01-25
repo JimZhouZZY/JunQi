@@ -38,15 +38,22 @@ const JunqiBoard = () => {
 
     let idx = 0;
 
-    var def_color = '0'
-    function defColor() {
+    var det_color = '0'
+    function detColor() {
       pieces.forEach((piece) => {
         for (const char of piece) {
           if (char !== '#' && char !== '0') {
-            def_color = char === char.toUpperCase() ? 'b' : 'r';
+            det_color = char === char.toUpperCase() ? 'b' : 'r';
           } 
         }
       });
+    }
+    detColor();
+
+    function getDirection(idx: number, mode: 'row'|'col') {
+      if (mode === 'row') return (det_color === 'b') ? idx : (11-idx);
+      else if (mode === 'col') return (det_color === 'b') ? idx : (4-idx);
+      else return idx; 
     }
 
     pieces.forEach((piece) => {
@@ -66,9 +73,8 @@ const JunqiBoard = () => {
           }
           else {
             if (color === '0') {
-              defColor();
               console.log(`[JunqiBoard]: Unknown pieces displays in color: ${color}`);
-              curr_color = def_color === 'r' ? 'blue' : 'red';
+              curr_color = det_color === 'r' ? 'blue' : 'red';
             } else {
               console.log(`[JunqiBoard]: Unknown pieces displays in color: ${color}`);
               curr_color = color === 'r' ? 'blue' : 'red';
@@ -77,7 +83,7 @@ const JunqiBoard = () => {
           const type = char.toUpperCase(); // Use uppercase letters for piece type
           const selected = false;
           // console.log(`TEST: ${type}, ${color}, ${row}, ${col} , ${selected}`);
-          newBoard[row][col] = { type, color: curr_color, row, col , selected};
+          newBoard[getDirection(row, 'row')][getDirection(col, 'col')] = { type, color: curr_color, row, col , selected};
           idx++;
         }
       }
