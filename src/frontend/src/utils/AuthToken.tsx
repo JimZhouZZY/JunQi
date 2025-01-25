@@ -1,11 +1,8 @@
 import { useEffect } from 'react';
-import { useAuthContext } from '../contexts/AuthContext';
 import { fetchUserId, fetchUserName } from './UserProfile';
 
-export const AuthToken = () => {
-  const { isLoggedIn, setIsLoggedIn, username, setUsername } = useAuthContext();
+const useAuthToken = () => {
 
-  useEffect(() => {
     const checkAuthToken = async () => {
       const token = localStorage.getItem('token');
       if (!token) {
@@ -23,18 +20,19 @@ export const AuthToken = () => {
         console.log('User is logged in');
         console.log(data);
 
-        setIsLoggedIn(true);
-        const username_ = await fetchUserName(data.user.userId);
+        const username_: string = await fetchUserName(data.user.userId);
         console.log(username_);
-        setUsername(String(username_));
+        return {status: true, username_:username_};
       } else {
         console.log('Invalid or expired token');
         localStorage.removeItem('token'); // Remove invalid token
+        return {status: false, username_: undefined};
+
       }
     };
 
-    checkAuthToken();
-  }, [setIsLoggedIn, setUsername]); // Dependencies to ensure it only runs on initial render
 
-  return null; // Since this is for checking auth, it doesn't need to render anything
+  return {checkAuthToken}; // Since this is for checking auth, it doesn't need to render anything
 };
+
+export default useAuthToken;

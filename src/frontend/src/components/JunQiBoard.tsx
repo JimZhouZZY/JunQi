@@ -147,7 +147,7 @@ const JunqiBoard = () => {
         setSelectedPiece(null);
       }
     }
-    else if (piece && piece.color != game.oppo_color) {
+    else if (piece && piece.type !== '#') {
       // If a piece is clicked, set it as selected
       var updates = [];
       if (selectedPiece){
