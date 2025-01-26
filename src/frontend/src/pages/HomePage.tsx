@@ -74,7 +74,7 @@ const HomePage: React.FC = () => {
     const { initGame } = useGameService();
     const { initSocket } = useSocket();
     const { socket } = useSocketContext();
-    const { roomName, game, isInQueue, setIsInQueue } = useGameContext();
+    const { roomName, gameRef, isInQueue, setIsInQueue } = useGameContext();
 
     const theme = useTheme();
     const navigate = useNavigate();
@@ -110,7 +110,7 @@ const HomePage: React.FC = () => {
     }
 
     const renderButtonGrid = () => {
-        if (game.game_phase === "DEPLOYING") {
+        if (gameRef.current.game_phase === "DEPLOYING") {
             return (
                 <Item>
                     <Grid container columns={1} rowSpacing={1} wrap='nowrap' direction={"column"}>
@@ -128,7 +128,7 @@ const HomePage: React.FC = () => {
                     </Grid>
                 </Item>
             )
-        } else if (game.game_phase === "MOVING") {
+        } else if (gameRef.current.game_phase === "MOVING") {
             return (
                 <Item>
                     <Grid container columns={1} rowSpacing={1} wrap='nowrap' direction={"column"}>
@@ -175,7 +175,7 @@ const HomePage: React.FC = () => {
         const reader = new FileReader();
         reader.onload = (e) => {
             if (typeof e.target?.result === "string") {
-                setFileContent(e.target.result); // 将文件内容设置为状态变量
+                setFileContent(e.target.result.trimEnd().trimStart()); // 将文件内容设置为状态变量
             }
         };
         reader.onerror = (e) => {

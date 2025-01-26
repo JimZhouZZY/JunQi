@@ -5,7 +5,7 @@ import { useSocketContext } from '../contexts/SocketContext';
 
 const useQueueSocket = () => {
   const { username } = useAuthContext(); // Access username from context
-  const { game, setRoomName, isInQueue, setIsInQueue } = useGameContext();
+  const { setRoomName, isInQueue, setIsInQueue } = useGameContext();
   const { socket, setSocket } = useSocketContext();  
 
   // Join queue function

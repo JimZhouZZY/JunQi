@@ -486,18 +486,21 @@ export default class JunqiGame {
 
     applyLayout(layout) {
         const ascii_number = layout.charCodeAt(0);
-        let player, strat;
+        console.log(ascii_number);
+        let player, start;
         if (ascii_number < 97) {
             player = "b";
-            strat = 30;
+            start = 30;
         } else {
             player = "r";
-            strat = 0;
+            start = 0;
         }
 
-        for (let i = strat; i < strat + 30; i++) {
-            this.jzn = JunqiGame.changeString(this.jzn, i, layout[i - strat]);
+        for (let i = start; i < start + 30; i++) {
+            this.jzn = JunqiGame.changeString(this.jzn, i, layout[i - start]);
         }
+        console.log(player, start);
+        console.log(`Recieved layout ${layout} and updated jzn to ${this.jzn}`);
         this.layout = this.layout.set(player, layout);
     }
 

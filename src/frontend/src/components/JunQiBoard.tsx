@@ -25,7 +25,7 @@ export interface JunqiBoardRef {
 const JunqiBoard = () => {
   const [board, setBoard] = useState<(Piece | null)[][]>(Array(12).fill(null).map(() => Array(5).fill(null)));
   const [selectedPiece, setSelectedPiece] = useState<Piece | null>(null);
-  const {game, setGame, color} = useGameContext();
+  const {gameRef, setGame, color} = useGameContext();
   const { moveHandler, swapHandler } = useGameHandler();
 
   window.updateBoardFromFEN = function (fen: string) {
@@ -121,7 +121,7 @@ const JunqiBoard = () => {
 
   function handleClick(row: number, col: number) {
     const piece = board[row][col];
-    if (selectedPiece && piece && selectedPiece.color != piece.color && game.game_phase == "MOVING") {
+    if (selectedPiece && piece && selectedPiece.color != piece.color && gameRef.current.game_phase == "MOVING") {
       // Attack another piece 
       const move = convertToChessNotation(selectedPiece.row, selectedPiece.col) + convertToChessNotation(row, col);
       if (moveHandler) {
@@ -132,7 +132,7 @@ const JunqiBoard = () => {
       updatePiece([{row:selectedPiece!.row, col:selectedPiece!.col, newPiece: {type: selectedPiece!.type, color: selectedPiece!.color, row: selectedPiece!.row, col: selectedPiece!.col, selected: false} }]);
       setSelectedPiece(null);
     }    
-    else if (game.game_phase == 'DEPLOYING' && selectedPiece && piece && selectedPiece.color == piece.color) {
+    else if (gameRef.current.game_phase == 'DEPLOYING' && selectedPiece && piece && selectedPiece.color == piece.color) {
       // Swap pieces during deployment phase
       const temp_piece: Piece = {
         type: piece.type,
@@ -163,7 +163,7 @@ const JunqiBoard = () => {
       updates.push({row:piece!.row, col:piece!.col, newPiece: {type: piece!.type, color: piece!.color, row: piece!.row, col: piece!.col, selected: true} });
       updatePiece(updates);
       console.log(`Piece selected: ${piece.type} (${piece.color}) at (${row}, ${col})`);
-    } else if (selectedPiece && game.game_phase == 'MOVING') {
+    } else if (selectedPiece && gameRef.current.game_phase == 'MOVING') {
         // Move to an empty square
         const move = convertToChessNotation(selectedPiece.row, selectedPiece.col) + convertToChessNotation(row, col);
         if (moveHandler) {

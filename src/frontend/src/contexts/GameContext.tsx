@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useRef, useState } from "react";
 import JunqiGame from "../services/logic/junqiLogic";
 
 type GameContextType = {
@@ -12,6 +12,7 @@ type GameContextType = {
     setGamePhase: (gamePhase: 'MOVING' | 'DEPLPYING') => void;
     isInQueue: boolean;
     setIsInQueue: (value: boolean) => void;
+    gameRef: React.RefObject<JunqiGame>;
 };
 
 const GameContext = createContext<GameContextType | undefined>(undefined);
@@ -22,13 +23,15 @@ interface Props {
 
 export const GameProvider: React.FC<Props> = ({ children }) => {
     const [roomName, setRoomName] = useState<string>('');
-    const [game, setGame] = useState<JunqiGame>(new JunqiGame());
+    const [game, setGame] = useState<JunqiGame>(new JunqiGame(undefined, undefined, 'DEPLOYING'));
     const [color, setColor] = useState<'r' | 'b' | '0'>('0');
     const [gamePhase, setGamePhase] = useState<'MOVING' | 'DEPLPYING'> ('DEPLPYING');
     const [isInQueue, setIsInQueue] = useState(false);
 
+    const gameRef = useRef(game);
+
     return (
-        <GameContext.Provider value={{ roomName, setRoomName, game, setGame, color, setColor, gamePhase, setGamePhase, isInQueue, setIsInQueue}}>
+        <GameContext.Provider value={{ roomName, setRoomName, game, setGame, color, setColor, gamePhase, setGamePhase, isInQueue, setIsInQueue, gameRef}}>
             {children}
         </GameContext.Provider>
     );

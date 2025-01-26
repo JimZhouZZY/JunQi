@@ -7,7 +7,7 @@ import JunqiGame from "../services/logic/junqiLogic";
 
 const useGameSocket = () => {
     const { username } = useAuthContext(); // Access username from context
-    const { game, setGame ,roomName, setRoomName, color, setColor } = useGameContext();
+    const { gameRef, setGame ,roomName, setRoomName, color, setColor } = useGameContext();
     const { socket, setSocket } = useSocketContext();
     const { newGame, initGame } = useGameService();
 
@@ -34,8 +34,10 @@ const useGameSocket = () => {
         socket?.on('request-layout', function (req_color: string) {
             if (roomName !== undefined) {
                 console.log(`${roomName} Recieved color: ${req_color}`);
-                socket.emit('submit-layout', game.layout.get(req_color), roomName);
-                newGame(game.layout.get(req_color)!, req_color);
+                console.log(gameRef.current);
+                socket.emit('submit-layout', gameRef.current.layout.get(req_color), roomName);
+                console.log(`Submitted layout ${gameRef.current.layout.get(req_color)}`)
+                newGame(gameRef.current.layout.get(req_color)!, req_color);
             } else {
                 console.log('Room name is undefined, possibly not synced.')
             }
@@ -48,7 +50,7 @@ const useGameSocket = () => {
         });
 
         socket?.on('test', () => {
-            console.log("game.tsx: socket.on test okay")
+            console.log("gameRef.current.tsx: socket.on test okay")
         })
 
         return () => {
@@ -69,10 +71,10 @@ export default useGameSocket;
 // Handle move from the other side
 socket.on('move', function (move, new_jzn) {
     console.log(`Client recieved move: ${move}`)
-    game.applyAction(move);
+    gameRef.current.applyAction(move);
     // TODO: encrypt local jzn
-    game.jzn = new_jzn;
-    window.jzn = game.getMaskedJzn(game.color);
+    gameRef.current.jzn = new_jzn;
+    window.jzn = gameRef.current.getMaskedJzn(gameRef.current.color);
     window.updateBoardFromFEN(window.jzn);
     console.log(`New Masked JZN: ${window.jzn}`);
     console.log(`New JZN: ${new_jzn}`);
