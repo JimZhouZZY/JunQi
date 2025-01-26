@@ -18,10 +18,10 @@ const useGameService = () => {
         setColor
     } = useGameContext();
  
-    const initGame = () => {
+    const initGame = (layout: string='LKJJII0H0HGG0FFF0E0EEDDDBBCCAC') => {
         const newGame = new JunqiGame();
-        newGame.applyLayout('LKJJII0H0HGG0FFF0E0EEDDDBBCCAC'); // Default layout
-        newGame.applyLayout('caccbbdddee0e0fff0ggh0h0iijjkl');
+        newGame.applyLayout(layout.toLocaleUpperCase()); // Default layout
+        newGame.applyLayout(reverseString(layout.toLowerCase()));
         newGame.game_phase = "DEPLOYING";
         newGame.color = 'b';
         setGame(newGame); 
