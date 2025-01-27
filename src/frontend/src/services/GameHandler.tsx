@@ -1,3 +1,9 @@
+/*
+ * Copyright (C) 2025 Zhiyu Zhou (jimzhouzzy@gmail.com)
+ * This file is part of Web-JunQi.
+ * Licensed under the GPLv3 License.
+ */
+
 import { useGameContext } from "../contexts/GameContext";
 import { useSocketContext } from "../contexts/SocketContext";
 import { useRef } from "react";

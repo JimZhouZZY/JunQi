@@ -1,3 +1,9 @@
+/*
+ * Copyright (C) 2025 Zhiyu Zhou (jimzhouzzy@gmail.com)
+ * This file is part of Web-JunQi.
+ * Licensed under the GPLv3 License.
+ */
+
 import React from "react";
 import { Box, Button, TextField, Typography, useTheme } from "@mui/material";
 import { useGameContext } from "../contexts/GameContext";

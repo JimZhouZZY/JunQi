@@ -1,3 +1,9 @@
+/*
+ * Copyright (C) 2025 Zhiyu Zhou (jimzhouzzy@gmail.com)
+ * This file is part of Web-JunQi.
+ * Licensed under the GPLv3 License.
+ */
+
 export async function fetchUserId(username: string) {
   const response = await fetch("/users/get-userid-by-username", {
     method: "POST",

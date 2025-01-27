@@ -1,3 +1,9 @@
+/*
+ * Copyright (C) 2025 Zhiyu Zhou (jimzhouzzy@gmail.com)
+ * This file is part of Web-JunQi.
+ * Licensed under the GPLv3 License.
+ */
+
 const { spawn } = require("child_process");
 const assert = require("assert"); // Node.js 的原生断言模块
 
