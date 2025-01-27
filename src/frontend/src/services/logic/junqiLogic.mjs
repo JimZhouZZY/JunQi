@@ -301,7 +301,6 @@ export default class JunqiGame {
         const updatedState = `${short_jzn} ${curr_player} ${String(semi_moves)} ${String(total_moves)}`;
         this.jzn = updatedState;
 
-        console.log(this.jzn);
         return updatedState;
     }
 
@@ -486,7 +485,6 @@ export default class JunqiGame {
 
     applyLayout(layout) {
         const ascii_number = layout.charCodeAt(0);
-        console.log(ascii_number);
         let player, start;
         if (ascii_number < 97) {
             player = "b";
@@ -499,8 +497,7 @@ export default class JunqiGame {
         for (let i = start; i < start + 30; i++) {
             this.jzn = JunqiGame.changeString(this.jzn, i, layout[i - start]);
         }
-        console.log(player, start);
-        console.log(`Recieved layout ${layout} and updated jzn to ${this.jzn}`);
+        // console.log(`Recieved layout ${layout} and updated jzn to ${this.jzn}`);
         this.layout = this.layout.set(player, layout);
     }
 
@@ -561,23 +558,3 @@ export default class JunqiGame {
         return this.jzn.split(" ")[1];
     }
 }
-
-/* DEBUG */
-//a = new JunqiGame("0acc0Ljc0e000000000000000000e000D00B000000000GB000JK00DCACC0 r 0 0");
-//console.log(a.isLegalAction('f4g4'));
-//a = new JunqiGame("000000000000000000000000000000000000000000000000000000000000 r 0 0");
-//console.log(a.isTerminal());
-//a = new JunqiGame("0acc000c00000000000000000000000000000000000000000000000CE000 r 15 139");
-//console.log(a.getWinner());
-//a = new JunqiGame();
-//console.log(a.isLegalLayout('ehdjcfbiccf0f0bla0ehe0i0djgdkg'));
-//a = new JunqiGame();
-//console.log(a.applyLayout('caccbbdddee0e0fff0ggh0h0iijjkl'));
-//a = new JunqiGame();
-//console.log(a.skipAction('r'));
-/* DEBUG */
-
-
-
-
-
