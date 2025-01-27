@@ -16,7 +16,7 @@
 let io;
 
 // TODO: this is too ugly, refactor it!
-const usernameSocketMap = require("../sockets/variables");
+const { usernameSocketMap } = require("../sockets/variables");
 const JunqiGame = require("../src/logic/junqiLogic");  // Game logic and board setup
 
 // Maps for storing game boards and room data

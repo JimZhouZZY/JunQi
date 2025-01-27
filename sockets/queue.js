@@ -20,6 +20,7 @@ module.exports = (io, socket) => {
   // Event handler for players joining a queue
   socket.on("queues-join", async (username, queuename) => {
     usernameSocketMap[username] = socket.id;  // Map the username to the socket ID
+    console.log(usernameSocketMap);
     console.log(`${username} joined with socket id: ${socket.id}`);  // Log the join action
 
     // Add the player to the specific queue
