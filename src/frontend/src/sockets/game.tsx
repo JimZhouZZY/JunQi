@@ -22,12 +22,10 @@ const useGameSocket = () => {
         socket?.on('move', function (move: string, new_jzn: string) {
             console.log(`Client recieved move: ${move}`)
             // TODO: encrypt local jzn
-            const newGame = new JunqiGame();
-            newGame.jzn = new_jzn;
-            setGame(newGame);
-            console.log(color);
-            window.updateBoardFromFEN(newGame.getMaskedJzn(color));
-            console.log(`New Masked JZN: ${newGame.getMaskedJzn(color)}`);
+            gameRef.current.jzn = new_jzn;
+            console.log(`GameRef color: ${gameRef.current.color}`);
+            window.updateBoardFromFEN(gameRef.current.getMaskedJzn(gameRef.current.color));
+            console.log(`New Masked JZN: ${gameRef.current.getMaskedJzn(gameRef.current.color)}`);
             console.log(`New JZN: ${new_jzn}`);
         });
 
@@ -38,6 +36,8 @@ const useGameSocket = () => {
                 socket.emit('submit-layout', gameRef.current.layout.get(req_color), roomName);
                 console.log(`Submitted layout ${gameRef.current.layout.get(req_color)}`)
                 newGame(gameRef.current.layout.get(req_color)!, req_color);
+                gameRef.current.color = req_color;
+                console.log(`gameRef color: ${gameRef.current.color} - req_color: ${req_color}`);
             } else {
                 console.log('Room name is undefined, possibly not synced.')
             }
@@ -56,7 +56,7 @@ const useGameSocket = () => {
         return () => {
             //socket?.disconnect();
         };
-    }, [socket, color]);
+    }, [socket]);
 
     const emitMove = (move: string, roomName: string) => {
         socket?.emit('move', move, roomName);

@@ -8,6 +8,7 @@ declare global {
     jzn?: string;
     game_phase?: string;
     updateBoardFromFEN;
+    det_color?: 'r' | 'b' | '0';
     oppo_color: 'red' | 'blue';
   }
 }
