@@ -4,7 +4,13 @@
  * Licensed under the GPLv3 License.
  */
 
-// constants.js
+/**
+ * config.js
+ * 
+ * This module defines constants for the server-side app
+ */
+
+// JWT secret key
 const SECRET_KEY = "Fallinthewind";
 
 module.exports = { SECRET_KEY };

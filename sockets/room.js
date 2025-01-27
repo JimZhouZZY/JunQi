@@ -4,37 +4,54 @@
  * Licensed under the GPLv3 License.
  */
 
+/**
+ * sockets/room.js
+ * 
+ * This module handles the socket events related to room management in the Web-JunQi game.
+ * It allows players to join or leave rooms, send messages within rooms, and broadcasts notifications to 
+ * other players in the room when these actions occur.
+ * 
+ * The room system enables players to interact with each other in the same virtual space, allowing 
+ * real-time communication and gameplay interactions.
+ */
+
 module.exports = (io, socket) => {
-  // 玩家加入房间
+  // Event handler for players joining a room
   socket.on("joinRoom", (roomName) => {
-    // 暂无用法
-    socket.join(roomName); // 加入房间
-    console.log(`${socket.id} joined room: ${roomName}`);
-    // 通知房间内其他玩家
+    // The player joins the specified room
+    socket.join(roomName);  // Add the socket to the specified room
+    console.log(`${socket.id} joined room: ${roomName}`);  // Log the action
+
+    // Notify other players in the room that a new player has joined
     socket.to(roomName).emit("playerJoined", `${socket.id} joined the room.`);
   });
 
-  // 玩家离开房间
+  // Event handler for players leaving a room
   socket.on("leaveRoom", (roomName) => {
-    socket.leave(roomName); // 离开房间
-    console.log(`${socket.id} left room: ${roomName}`);
+    // The player leaves the specified room
+    socket.leave(roomName);  // Remove the socket from the room
+    console.log(`${socket.id} left room: ${roomName}`);  // Log the action
 
-    // 通知房间内其他玩家
+    // Notify other players in the room that a player has left
     socket.to(roomName).emit("playerLeft", `${socket.id} left the room.`);
   });
 
-  // 房间内广播消息
+  // Event handler for broadcasting messages to all players in a room
   socket.on("messageToRoom", ({ roomName, message }) => {
+    // Log the message being sent
     console.log(`Message to room ${roomName}: ${message}`);
+
+    // Broadcast the message to all players in the room
     io.to(roomName).emit("roomMessage", {
-      sender: socket.id,
-      message,
+      sender: socket.id,  // Sender’s socket ID
+      message,  // The message sent to the room
     });
   });
 
-  // 监听断开连接
+  // Event handler for when a player disconnects
   socket.on("disconnect", () => {
-    // TODO: emit msg to other users
-    // console.log(`User disconnected: ${socket.id}`);
+    // TODO: Emit a message to other players indicating the user has disconnected
+    // A placeholder for handling player disconnection
+    // console.log(`User disconnected: ${socket.id}`);  // Log the disconnection
   });
 };

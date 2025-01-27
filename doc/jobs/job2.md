@@ -19,7 +19,7 @@ All the static implementations that shouldn't be exposed are moved to `types`, s
 
 Note that:
 
-- You are an experienced developer now, **DO NOT** write sh_ts that **NOBODY** can understand.
+- You are an experienced developer now, **DO NOT** write code that **NOBODY** can understand.
 - You **MUST** follow the documentation I provided including:
   - The **NAME** of variables that might be used from outside
   - The **NAME** of methods

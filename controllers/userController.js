@@ -1,12 +1,32 @@
 /*
  * Copyright (C) 2025 Zhiyu Zhou (jimzhouzzy@gmail.com)
- * This file is part of Web-JunQi.
- * Licensed under the GPLv3 License.
+ * This file is part of the Web-JunQi project.
+ * Licensed under the terms of the GPLv3 License.
+ */
+
+/**
+ * controllers/userController.js
+ * 
+ * This module handles user authentication and user-related operations.
+ * It provides endpoints for login, registration, and protected routes,
+ * as well as functionality to retrieve a user's information by either 
+ * username or user ID.
  */
 
 const userModel = require("../models/userModel");
 const authService = require("../services/authService");
 
+/**
+ * Handles both user login and registration.
+ * 
+ * If the user exists, it attempts to log the user in by verifying 
+ * the password and generating a JWT token.
+ * If the user does not exist, it creates a new user with the provided 
+ * username and password, and then returns the user ID.
+ * 
+ * @param {Object} req - The request object containing the user credentials.
+ * @param {Object} res - The response object to send the result.
+ */
 exports.loginOrRegister = async (req, res) => {
   const { username, password } = req.body;
 
@@ -17,11 +37,11 @@ exports.loginOrRegister = async (req, res) => {
   }
 
   try {
-    // If the username is taken, try to login
+    // Attempt to find the user by username
     const user = await userModel.selectUserByName(username);
 
     if (user) {
-      // Verify password
+      // If user exists, validate the password
       const isPasswordValid = await authService.verifyPassword(
         password,
         user.password_hash,
@@ -29,11 +49,11 @@ exports.loginOrRegister = async (req, res) => {
       if (!isPasswordValid) {
         return res.status(401).json({ message: "Invalid password." });
       }
-      // Generate JWT token
+      // Generate a JWT token upon successful login
       const token = authService.generateToken(user.id);
       return res.status(200).json({ message: "Login successful!", token });
     }
-    // If the username is not taken, create a new user with that password
+    // If user does not exist, register a new user
     const hashedPassword = await authService.hashPassword(password);
     const userId = await userModel.insertUser(username, hashedPassword);
 
@@ -44,16 +64,29 @@ exports.loginOrRegister = async (req, res) => {
   }
 };
 
+/**
+ * A protected route that returns a message along with the user information
+ * extracted from the valid JWT token.
+ * 
+ * @param {Object} req - The request object containing the authenticated user.
+ * @param {Object} res - The response object to send the result.
+ */
 exports.protectedRoute = (req, res) => {
   res.status(200).json({
     message: "Valid token",
-    user: req.user, // Return user info from the token
+    user: req.user, // Return user info extracted from the token
   });
 };
 
+/**
+ * Retrieves the username associated with a given user ID.
+ * 
+ * @param {Object} req - The request object containing the user ID.
+ * @param {Object} res - The response object to send the result.
+ */
 exports.getUsernameById = async (req, res) => {
   const { userid } = req.body;
-  user = await userModel.selectUserById(userid);
+  const user = await userModel.selectUserById(userid);
   if (user != null) {
     res.json({ username: user.username });
   } else {
@@ -61,9 +94,15 @@ exports.getUsernameById = async (req, res) => {
   }
 };
 
+/**
+ * Retrieves the user ID associated with a given username.
+ * 
+ * @param {Object} req - The request object containing the username.
+ * @param {Object} res - The response object to send the result.
+ */
 exports.getIdByUsername = async (req, res) => {
   const { username } = req.body;
-  user = await userModel.selectUserByName(username);
+  const user = await userModel.selectUserByName(username);
   if (user != null) {
     res.json({ userid: user.id });
   } else {
