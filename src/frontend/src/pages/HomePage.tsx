@@ -74,7 +74,7 @@ const HomePage: React.FC = () => {
     const { initGame } = useGameService();
     const { initSocket } = useSocket();
     const { socket } = useSocketContext();
-    const { roomName, game, isInQueue, setIsInQueue } = useGameContext();
+    const { roomName, gameRef, isInQueue, setIsInQueue } = useGameContext();
 
     const theme = useTheme();
     const navigate = useNavigate();
@@ -97,6 +97,7 @@ const HomePage: React.FC = () => {
                 case 'button-save_layout':
                     break;
                 case 'button-load_layout':
+                    handleLayoutChose();
                     break;
                 case 'button-draw':
                     break
@@ -109,7 +110,7 @@ const HomePage: React.FC = () => {
     }
 
     const renderButtonGrid = () => {
-        if (game.game_phase === "DEPLOYING") {
+        if (gameRef.current.game_phase === "DEPLOYING") {
             return (
                 <Item>
                     <Grid container columns={1} rowSpacing={1} wrap='nowrap' direction={"column"}>
@@ -127,7 +128,7 @@ const HomePage: React.FC = () => {
                     </Grid>
                 </Item>
             )
-        } else if (game.game_phase === "MOVING") {
+        } else if (gameRef.current.game_phase === "MOVING") {
             return (
                 <Item>
                     <Grid container columns={1} rowSpacing={1} wrap='nowrap' direction={"column"}>
@@ -144,6 +145,50 @@ const HomePage: React.FC = () => {
             )
         }
     }
+
+    const [fileContent, setFileContent] = useState("");
+    const fileInputRef = useRef<HTMLInputElement>(null); // 用来引用文件输入框
+    const isFirstRender = useRef(true);
+    useEffect(
+        () => {
+            if (isFirstRender.current === true) {
+                isFirstRender.current = false;
+                return;
+            } else {
+                console.log(`Read layout: ${fileContent}`);
+                const layout = fileContent;
+                initGame(layout);
+                window.updateBoardFromFEN('0'.repeat(30) + layout);
+            };
+        }, [fileContent]);
+
+    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0];
+        if (!file) return;
+
+        // 检查文件后缀
+        if (!file.name.endsWith(".lyt")) {
+            alert("请选择一个 .lyt 文件！");
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            if (typeof e.target?.result === "string") {
+                setFileContent(e.target.result.trimEnd().trimStart()); // 将文件内容设置为状态变量
+            }
+        };
+        reader.onerror = (e) => {
+            console.error("文件读取失败", e);
+            alert("文件读取失败，请重试！");
+        };
+
+        reader.readAsText(file); // 以文本形式读取文件内容
+    };
+
+    const handleLayoutChose = () => {
+        fileInputRef.current?.click();
+    };
 
     return (
         <div style={{ textAlign: 'center', marginTop: '0px', backgroundColor: '#f0f0f0', minHeight: '100vh' }}>
@@ -163,6 +208,13 @@ const HomePage: React.FC = () => {
 
                 <Grid columns={1} rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} wrap='nowrap' direction={"column"}>
                     {renderButtonGrid()}
+                    <input
+                        type="file"
+                        ref={fileInputRef}
+                        accept=".lyt"
+                        onChange={handleFileChange}
+                        className="hidden" // 隐藏文件输入框
+                    />
                     <Item>
                         <div style={{ borderBottom: '1px solid #333' }}></div>
                     </Item>

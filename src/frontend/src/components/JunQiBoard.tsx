@@ -25,10 +25,27 @@ export interface JunqiBoardRef {
 const JunqiBoard = () => {
   const [board, setBoard] = useState<(Piece | null)[][]>(Array(12).fill(null).map(() => Array(5).fill(null)));
   const [selectedPiece, setSelectedPiece] = useState<Piece | null>(null);
-  const {game, setGame, color} = useGameContext();
+  const {gameRef, setGame, color} = useGameContext();
   const { moveHandler, swapHandler } = useGameHandler();
 
+  const detColorRef = useRef(window.det_color);
+
+  function getDirection(idx: number, mode: 'row'|'col') {
+    if (mode === 'row') return (gameRef.current.color === 'b') ? idx : (11-idx);
+    else if (mode === 'col') return (gameRef.current.color === 'b') ? idx : (4-idx);
+    else return idx; 
+  }
+
+  function revDirection(idx: number, mode: 'row'|'col') {
+    console.log(gameRef.current.color, idx, mode );
+    if (mode === 'row') return 11-idx;
+    else if (mode === 'col') return 4-idx;
+    else return idx; 
+  }
+
   window.updateBoardFromFEN = function (fen: string) {
+    console.log(`Updating board with game:`);
+    console.log(gameRef.current);
     const jzn_splitted = fen.split(" ")[0];
     const pieces = jzn_splitted.split('').filter(char => /^[#a-zA-Z0-9]$/.test(char));
 
@@ -38,23 +55,19 @@ const JunqiBoard = () => {
 
     let idx = 0;
 
-    var det_color = '0'
     function detColor() {
       pieces.forEach((piece) => {
         for (const char of piece) {
           if (char !== '#' && char !== '0') {
-            det_color = char === char.toUpperCase() ? 'b' : 'r';
+            detColorRef.current = char === char.toUpperCase() ? 'b' : 'r';
+            console.log(`Determined color ${detColorRef.current}`);
+            console.log(`Game(Class) color ${gameRef.current.color}`);
+            break;
           } 
         }
       });
     }
-    detColor();
-
-    function getDirection(idx: number, mode: 'row'|'col') {
-      if (mode === 'row') return (det_color === 'b') ? idx : (11-idx);
-      else if (mode === 'col') return (det_color === 'b') ? idx : (4-idx);
-      else return idx; 
-    }
+    if (gameRef.current.color === '0' && gameRef.current.game_phase === 'MOVING') detColor();
 
     pieces.forEach((piece) => {
       for (const char of piece) {
@@ -72,18 +85,12 @@ const JunqiBoard = () => {
             curr_color = char === char.toUpperCase() ? 'blue' : 'red';
           }
           else {
-            if (color === '0') {
-              console.log(`[JunqiBoard]: Unknown pieces displays in color: ${color}`);
-              curr_color = det_color === 'r' ? 'blue' : 'red';
-            } else {
-              console.log(`[JunqiBoard]: Unknown pieces displays in color: ${color}`);
-              curr_color = color === 'r' ? 'blue' : 'red';
-            }
+            curr_color = gameRef.current.color === 'r' ? 'blue' : 'red';
           }
           const type = char.toUpperCase(); // Use uppercase letters for piece type
           const selected = false;
           // console.log(`TEST: ${type}, ${color}, ${row}, ${col} , ${selected}`);
-          newBoard[getDirection(row, 'row')][getDirection(col, 'col')] = { type, color: curr_color, row, col , selected};
+          newBoard[getDirection(row, 'row')][getDirection(col, 'col')] = { type, color: curr_color, row: getDirection(row, 'row'), col: getDirection(col, 'col') , selected};
           idx++;
         }
       }
@@ -121,9 +128,21 @@ const JunqiBoard = () => {
 
   function handleClick(row: number, col: number) {
     const piece = board[row][col];
-    if (selectedPiece && piece && selectedPiece.color != piece.color && game.game_phase == "MOVING") {
+    if (selectedPiece && piece && selectedPiece.color != piece.color && gameRef.current.game_phase == "MOVING") {
       // Attack another piece 
-      const move = convertToChessNotation(selectedPiece.row, selectedPiece.col) + convertToChessNotation(row, col);
+      var real_start_row = selectedPiece.row;
+      var real_start_col = selectedPiece.col;
+      var real_end_row = row;
+      var real_end_col = col;
+      console.log(gameRef.current.color);
+      console.log(real_start_row, real_start_col, real_end_row, real_end_col)
+      if (selectedPiece.color === 'red') {
+        real_start_row = revDirection(real_start_row, 'row');
+        real_start_col = revDirection(real_start_col, 'col');
+        real_end_row = revDirection(real_end_row, 'row');
+        real_end_col = revDirection(real_end_col, 'col');
+      }
+      const move = convertToChessNotation(real_start_row, real_start_col) + convertToChessNotation(real_end_row, real_end_col);
       if (moveHandler) {
         moveHandler(move);
       } else {
@@ -132,7 +151,7 @@ const JunqiBoard = () => {
       updatePiece([{row:selectedPiece!.row, col:selectedPiece!.col, newPiece: {type: selectedPiece!.type, color: selectedPiece!.color, row: selectedPiece!.row, col: selectedPiece!.col, selected: false} }]);
       setSelectedPiece(null);
     }    
-    else if (game.game_phase == 'DEPLOYING' && selectedPiece && piece && selectedPiece.color == piece.color) {
+    else if (gameRef.current.game_phase == 'DEPLOYING' && selectedPiece && piece && selectedPiece.color == piece.color) {
       // Swap pieces during deployment phase
       const temp_piece: Piece = {
         type: piece.type,
@@ -163,9 +182,23 @@ const JunqiBoard = () => {
       updates.push({row:piece!.row, col:piece!.col, newPiece: {type: piece!.type, color: piece!.color, row: piece!.row, col: piece!.col, selected: true} });
       updatePiece(updates);
       console.log(`Piece selected: ${piece.type} (${piece.color}) at (${row}, ${col})`);
-    } else if (selectedPiece && game.game_phase == 'MOVING') {
+    } else if (selectedPiece && gameRef.current.game_phase == 'MOVING') {
         // Move to an empty square
-        const move = convertToChessNotation(selectedPiece.row, selectedPiece.col) + convertToChessNotation(row, col);
+        var real_start_row = selectedPiece.row;
+        var real_start_col = selectedPiece.col;
+        var real_end_row = row;
+        var real_end_col = col;
+        console.log(gameRef.current);
+        console.log(gameRef.current.color);
+        console.log(real_start_row, real_start_col, real_end_row, real_end_col)
+        if (selectedPiece.color === 'red') {
+          real_start_row = revDirection(real_start_row, 'row');
+          real_start_col = revDirection(real_start_col, 'col');
+          real_end_row = revDirection(real_end_row, 'row');
+          real_end_col = revDirection(real_end_col, 'col');
+        }
+        console.log(real_start_row, real_start_col, real_end_row, real_end_col)
+        const move = convertToChessNotation(real_start_row, real_start_col) + convertToChessNotation(real_end_row, real_end_col);
         if (moveHandler) {
           moveHandler(move);
         } else {

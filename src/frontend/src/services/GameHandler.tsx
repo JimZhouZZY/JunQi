@@ -4,17 +4,17 @@ import { useRef } from "react";
 import useGameSocket from "../sockets/game"
 
 const useGameHandler = () => {
-    const { roomName, setRoomName, game, setGame } = useGameContext();
+    const { roomName, setRoomName, gameRef, setGame } = useGameContext();
     const { emitMove } = useGameSocket();
 
     const moveHandler = (move: string) => {
-        const canMove = game.isLegalAction(move);
+        const canMove = gameRef.current.isLegalAction(move);
         console.log(`Move ${move} - ${canMove}`);
         // TODO: 服务端也需要判断
         if (!canMove) {
             // return 'snapback';
         } else {
-            // TODO: move this to sockets/game.tsx
+            // TODO: move this to sockets/gameRef.current.tsx
             emitMove(move, roomName);
         };
     }
@@ -46,7 +46,7 @@ const useGameHandler = () => {
                 return row * 5 + col; // 计算索引
             }
 
-            const old_short_jzn = game.jzn.split(" ")[0]
+            const old_short_jzn = gameRef.current.jzn.split(" ")[0]
 
             // 提取位置
             const pos1 = swap.slice(0, 2);
@@ -64,20 +64,20 @@ const useGameHandler = () => {
             var new_jzn = swapPieces(old_short_jzn, index1, index2);
             new_jzn = swapPieces(new_jzn, 59 - index1, 59 - index2);
 
-            if (game.isLegalLayout(new_jzn.slice(0, 30)) && game.isLegalLayout(new_jzn.slice(30))) {
+            if (gameRef.current.isLegalLayout(new_jzn.slice(0, 30)) && gameRef.current.isLegalLayout(new_jzn.slice(30))) {
                 console.log(`sJZN after swapping: ${new_jzn}`);
                 return new_jzn + ' r 0 0';
             } else {
                 console.log(`Illegal layout after swaping: ${new_jzn}`);
-                return game.jzn;
+                return gameRef.current.jzn;
             }
         }
         
         const new_jzn = swap_layout(swap);
-        if (game.jzn !== new_jzn) { canSwap = true; }
-        game.jzn = new_jzn;
-        game.applyLayout(game.jzn.slice(0, 30));
-        game.applyLayout(game.jzn.slice(30, 60));
+        if (gameRef.current.jzn !== new_jzn) { canSwap = true; }
+        gameRef.current.jzn = new_jzn;
+        gameRef.current.applyLayout(gameRef.current.jzn.slice(0, 30));
+        gameRef.current.applyLayout(gameRef.current.jzn.slice(30, 60));
         return canSwap;
     };
 
