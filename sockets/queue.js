@@ -14,7 +14,7 @@
  */
 
 const queueService = require("../services/queueService");  // Import the queueService module to manage queues
-const usernameSocketMap = {};  // A map to associate usernames with their respective socket IDs
+const { usernameSocketMap } = require("./variables")
 
 module.exports = (io, socket) => {
   // Event handler for players joining a queue
@@ -49,6 +49,3 @@ module.exports = (io, socket) => {
     }
   });
 };
-
-// Export the usernameSocketMap so it can be accessed by other modules if needed
-module.exports.usernameSocketMap = usernameSocketMap;
