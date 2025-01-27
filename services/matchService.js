@@ -16,7 +16,7 @@
 let io;
 
 // TODO: this is too ugly, refactor it!
-const socketsQueue = require("../sockets/queue");  // Handles socket connections
+const usernameSocketMap = require("../sockets/variables");
 const JunqiGame = require("../src/logic/junqiLogic");  // Game logic and board setup
 
 // Maps for storing game boards and room data
@@ -76,7 +76,7 @@ function startMatch(usernames) {
   
   // Add players to the room and send initial game data
   usernames.forEach((username) => {
-    const socketId = socketsQueue.usernameSocketMap[username];  // Get socket ID from username
+    const socketId = usernameSocketMap[username];  // Get socket ID from username
     rooms.get(roomName).push(socketId);
     
     // TODO: this is too ugly, refactor it!
