@@ -5,6 +5,6 @@
  */
 
 // constants.js
-const SECRET_KEY = 'Fallinthewind';
+const SECRET_KEY = "Fallinthewind";
 
 module.exports = { SECRET_KEY };

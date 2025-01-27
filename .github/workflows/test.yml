@@ -37,7 +37,7 @@ jobs:
 
       - name: Run Python Tests
         run: pytest
-        
+
   test_compatibility_node23:
     runs-on: ubuntu-22.04
 

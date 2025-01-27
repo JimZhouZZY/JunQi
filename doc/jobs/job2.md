@@ -3,7 +3,9 @@
 ## Assigned to Haozhang Tang. You are nolonger a noob, so code professionally.
 
 ## Some Information
+
 I've refactored your code, `junqiLogic.js`, and now `src/logic` looks like:
+
 ```
 src/logic
 ├── junqiLogic.js
@@ -12,10 +14,12 @@ src/logic
     ├── junqiGraph.js
     └── junqiNode.js
 ```
+
 All the static implementations that shouldn't be exposed are moved to `types`, so the only file you need to edit is `junqiLogic.js`, where the exact only thing you need to do is to add more variables inside the constructor and more methods(functions) **In the class**.
 
 Note that:
-- You are an experienced developer now, **DO NOT** write sh_ts that **NOBODY** can understand. 
+
+- You are an experienced developer now, **DO NOT** write sh_ts that **NOBODY** can understand.
 - You **MUST** follow the documentation I provided including:
   - The **NAME** of variables that might be used from outside
   - The **NAME** of methods
@@ -27,11 +31,13 @@ Note that:
 - Pay **ATTENTION** to the documentation below.
 
 # Job Documentation
+
 Implement class `JunqiLogic`. Note that in the examples, we assume that `this.jzn = "0acc0Ljc0e0000000000000000000000000B000000000GB000JK000CACC0 r 30 149", `
+
 ```
 class JunqiLogic
 
-- Description: 
+- Description:
     Provide interface to initiallize junqi game and handle all the game logics.
 - Args:
     jzn (String) - Jim-Zhou Notation of the game state to initialize with
@@ -46,14 +52,14 @@ class JunqiLogic
 - Methods:
     isLegalAction()
         Description:
-            Check wether the inputed move is legal. 
+            Check wether the inputed move is legal.
         Args:
             action (String) - String representation of move
         Returns:
             Boolean: True - The move is legal
                    Flase - The move is illegal
         Modifies:
-           None 
+           None
         Example:
           >>> isLegalAction("b2c2")
               True
@@ -71,7 +77,7 @@ class JunqiLogic
             this.jzn
         TODO:
             Check if the action is legal before going into the apply action logic
-    
+
     isTerminal()
         Description:
             Check if the game is end
@@ -121,7 +127,7 @@ class JunqiLogic
             this.jzn
             this.layout - this.layout.set('r', layout) // if the player is red else 'b'
         Note:
-            The player information is contained in the inputed JZN string `layout`. 
+            The player information is contained in the inputed JZN string `layout`.
             (Red always have lowercase letter while Blue always has uppercase letters)
 
     getMaskedJzn()
@@ -144,6 +150,7 @@ class JunqiLogic
             >>> getMaskedJzn('r')
                 0acc0#jc0e0000000000000000000000000#000000000##000##000####0 r 30 149
 ```
+
 <p align="center">
   <img src="https://github.com/user-attachments/assets/06510707-a99a-4ad8-810a-906ccc2ed440" alt="Example 1" width="45%">
   <img src="https://github.com/user-attachments/assets/65b00498-5e02-475f-a746-3bc4ff71b760" alt="Example 2" width="45%">
