@@ -1,48 +1,28 @@
-# 本项目使用的棋盘表示方法
+# Representation Method of the Chessboard Used in This Project
 
-### 标准化二人军棋棋盘状态字符串
-此部分可参考国际象棋FEN字符串,通过连接多个字符串，要能记录完整棋谱，思路如下：
-  - 棋盘可以被当作一个10行5列的列表
-  - 棋子可以被一个字符（char）表示
-  - 棋手可以由一个字符（char）表示
-  - 由此我们可以构建一个字符串，来表示任意棋盘的状态。
+### Standardized Two-Player Army Chessboard State String
 
-让我们按照这个思路设计一下，二人军棋有两方，我们用红方(red小写字母)和蓝方（BLUE大写字母）来表示`：
+This section is inspired by the FEN string used in chess. By connecting multiple strings, it can record the complete game, and the approach is as follows:
 
-  
-  | 棋子 | 字符 | 棋子 | 字符 |
-  |:-----:|:-----:|:-----:|:-----:|
-  | 司令  | l (L)  | 连长  | f (F) |
-  | 军长  | k (K)  | 排长  | e (E) |
-  | 师长  | j (J)  | 工兵  | d (D) |
-  | 旅长  | i (I)  | 地雷  | c (C) |
-  | 团长  | h (H)  | 炸弹  | b (B) |
-  | 营长  | g (G)  | 军棋  | a (A)  |
-  | 空位  | 0      |
+- The chessboard can be considered as a 10-row, 5-column list.
+- Chess pieces can be represented by a character (char).
+- Players can be represented by a character (char).
+- With these, we can construct a string to represent any chessboard state.
 
-有了以上定义，我们就可以构建出一个棋局。默认红方在字符串的前端，加上一些后缀记录当前棋手、半回合数（距离上次碰子的回合数）和总回合数，用空格分开，就好了，例如：
+Let's design it this way. In two-player army chess, there are two sides: we use red (represented by lowercase "red" letters) and blue (represented by uppercase "BLUE" letters):
+
+| Piece | Character | Piece | Character |
+| :---: | :-------: | :---: | :-------: |
+| Commander | l (L) | Platoon Leader | f (F) |
+| General | k (K) | Squad Leader | e (E) |
+| Division Leader | j (J) | Engineer | d (D) |
+| Brigade Leader | i (I) | Mine | c (C) |
+| Regiment Leader | h (H) | Bomb | b (B) |
+| Battalion Leader | g (G) | Army Chess | a (A) |
+| Empty Space | 0 | |
+
+With the above definitions, we can now construct a game state. By default, the red side is at the front of the string, followed by suffixes to record the current player, half-move count (number of turns since the last capture), and total move count, separated by spaces. For example:
+
 `0acc0Ljc0e0000000000000000000000000B000000000GB000JK000CACC0 r 30 149`
 
-表示了一个红方很劣势的棋盘状态，下一步红方走棋，双方已经30回合（移动一次算一回合）没有吃子，双方共下了149回合。我们具体把棋盘竖着画出来，大概是这样：
-```
- |1 2 3 4 5
-a｜空旗雷雷空
-b｜令师雷空排
-c｜空空空空空
-d｜空空空空空
-e｜空空空空空
-f｜空空空空空
- ｜-------
-g｜空空空空空
-h｜炸空空空空
-i｜空空空空空
-j｜营炸空空空
-k｜师军空空空
-l｜雷旗雷雷空
-```
-
-### 标准化位置表示
-类似国际象棋，用字母编号棋盘的行，用数字编号棋盘的列，红方永远在上端，如上例所示。字母在前，数字在后，就可以表示一个位置。例如红方的师长所在的位置是`b2`。
-
-### 标准化操作表示
-操作可以被起始位置和目标位置表示。将这两个位置连缀起来，就可以描述所有的操作。把例如在上例中，红方想把处在`b2`的棋子（师长）移动到`c2`，就可以写成`b2c2`。
+This represents a chessboard state where the red side is at a disadvantage, and it is the red side's turn. 30 half-moves (turns without a capture) have passed, and 149 total moves have been made. The chessboard, if drawn vertically, looks like this:

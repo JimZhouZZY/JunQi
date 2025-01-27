@@ -1,14 +1,24 @@
-import * as React from 'react';
-import { AppProvider } from '@toolpad/core/AppProvider';
+/*
+ * Copyright (C) 2025 Zhiyu Zhou (jimzhouzzy@gmail.com)
+ * This file is part of Web-JunQi.
+ * Licensed under the GPLv3 License.
+ */
+
+import * as React from "react";
+import { AppProvider } from "@toolpad/core/AppProvider";
+import { type AuthProvider, SignInPage } from "@toolpad/core/SignInPage";
+import { useTheme } from "@mui/material/styles";
 import {
-  type AuthProvider,
-  SignInPage,
-} from '@toolpad/core/SignInPage';
-import { useTheme } from '@mui/material/styles';
-import { Box, SxProps, TextField, TextFieldProps, Theme, Typography } from '@mui/material'; // 引入 Box 组件
-import { Co2Sharp } from '@mui/icons-material';
-import { useNavigate } from 'react-router-dom';
-import { useAuthContext } from '../contexts/AuthContext';
+  Box,
+  SxProps,
+  TextField,
+  TextFieldProps,
+  Theme,
+  Typography,
+} from "@mui/material"; // 引入 Box 组件
+import { Co2Sharp } from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
+import { useAuthContext } from "../contexts/AuthContext";
 
 interface AuthResponse {
   /**
@@ -32,9 +42,12 @@ interface AuthResponse {
   token?: string;
 }
 
-const providers = [{ id: 'credentials', name: 'Email and password' }];
+const providers = [{ id: "credentials", name: "Email and password" }];
 
-const mergeSlotSx = (defaultSx: SxProps<Theme>, slotProps?: { sx?: SxProps<Theme> }) => {
+const mergeSlotSx = (
+  defaultSx: SxProps<Theme>,
+  slotProps?: { sx?: SxProps<Theme> },
+) => {
   if (Array.isArray(slotProps?.sx)) {
     return [defaultSx, ...slotProps!.sx];
   }
@@ -46,7 +59,10 @@ const mergeSlotSx = (defaultSx: SxProps<Theme>, slotProps?: { sx?: SxProps<Theme
   return [defaultSx];
 };
 
-const getCommonTextFieldProps = (theme: Theme, baseProps: TextFieldProps = {}): TextFieldProps => ({
+const getCommonTextFieldProps = (
+  theme: Theme,
+  baseProps: TextFieldProps = {},
+): TextFieldProps => ({
   required: true,
   fullWidth: true,
   ...baseProps,
@@ -59,7 +75,9 @@ const getCommonTextFieldProps = (theme: Theme, baseProps: TextFieldProps = {}): 
           paddingTop: theme.spacing(1),
           paddingBottom: theme.spacing(1),
         },
-        typeof baseProps.slotProps?.htmlInput === 'function' ? {} : baseProps.slotProps?.htmlInput,
+        typeof baseProps.slotProps?.htmlInput === "function"
+          ? {}
+          : baseProps.slotProps?.htmlInput,
       ),
     },
     inputLabel: {
@@ -69,7 +87,7 @@ const getCommonTextFieldProps = (theme: Theme, baseProps: TextFieldProps = {}): 
           lineHeight: theme.typography.pxToRem(12),
           fontSize: theme.typography.pxToRem(14),
         },
-        typeof baseProps.slotProps?.inputLabel === 'function'
+        typeof baseProps.slotProps?.inputLabel === "function"
           ? {}
           : baseProps.slotProps?.inputLabel,
       ),
@@ -77,12 +95,10 @@ const getCommonTextFieldProps = (theme: Theme, baseProps: TextFieldProps = {}): 
   },
 });
 
-
-
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
   const theme = useTheme();
-  const { isLoggedIn, setIsLoggedIn, username, setUsername} = useAuthContext();
+  const { isLoggedIn, setIsLoggedIn, username, setUsername } = useAuthContext();
 
   const gridPattern = `
     <svg width="200" height="200" xmlns="http://www.w3.org/2000/svg">
@@ -100,7 +116,7 @@ const LoginPage: React.FC = () => {
     callbackUrl?: string,
   ) => Promise<AuthResponse> = async (provider, formData, callbackUrl) => {
     /* DEBUG */
-    for (let [key, value] of formData!.entries()) {
+    for (const [key, value] of formData!.entries()) {
       console.log(`${key}: ${value}`);
     }
     /* DEBUG */
@@ -119,7 +135,7 @@ const LoginPage: React.FC = () => {
 
     try {
       // 使用 fetch 发送 POST 请求
-      const response = await fetch('/users/login-register', {
+      const response = await fetch("/users/login-register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -139,11 +155,11 @@ const LoginPage: React.FC = () => {
       const result: AuthResponse = await response.json();
       console.log(result);
       if (formData.get("remember")) {
-        localStorage.setItem('token', result.token!);
+        localStorage.setItem("token", result.token!);
       }
       setUsername(email.toString()); // TODO: change variable name 'email' to 'username'
       setIsLoggedIn(true);
-      navigate('/');
+      navigate("/");
 
       return result;
     } catch (error) {
@@ -165,18 +181,20 @@ const LoginPage: React.FC = () => {
   );
 
   const UsernameField = () => {
-    return <TextField
-      {...getCommonTextFieldProps(theme, {
-        label: 'Username',
-        placeholder: 'Your username',
-        id: 'email-passkey',
-        name: 'email',
-        type: 'text',
-        autoComplete: 'email-webauthn',
-        autoFocus: false,
-      })}
-    />
-  }
+    return (
+      <TextField
+        {...getCommonTextFieldProps(theme, {
+          label: "Username",
+          placeholder: "Your username",
+          id: "email-passkey",
+          name: "email",
+          type: "text",
+          autoComplete: "email-webauthn",
+          autoFocus: false,
+        })}
+      />
+    );
+  };
 
   return (
     // preview-start
@@ -185,23 +203,23 @@ const LoginPage: React.FC = () => {
         sx={{
           // 使用SVG格子背景
           backgroundImage: `url("data:image/svg+xml,${encodedPattern}")`, // 使用 SVG 格子背景
-          backgroundRepeat: 'repeat', // 背景重复
-          minHeight: '100vh', // 设置背景的最小高度
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          position: 'relative', // 设置位置为相对，这样可以放置绝对定位的遮罩层
+          backgroundRepeat: "repeat", // 背景重复
+          minHeight: "100vh", // 设置背景的最小高度
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          position: "relative", // 设置位置为相对，这样可以放置绝对定位的遮罩层
         }}
       >
         {/* 添加黑色透明遮罩层，使背景变暗 */}
         <Box
           sx={{
-            position: 'absolute',
+            position: "absolute",
             top: 0,
             left: 0,
-            width: '100%',
-            height: '100%',
-            backgroundColor: 'rgba(0, 0, 0, 0.7)', // 半透明黑色
+            width: "100%",
+            height: "100%",
+            backgroundColor: "rgba(0, 0, 0, 0.7)", // 半透明黑色
             zIndex: 0, // 确保遮罩层在后面
           }}
         />
@@ -213,7 +231,7 @@ const LoginPage: React.FC = () => {
           }}
           slots={{
             emailField: UsernameField,
-            signUpLink: SignUpLink
+            signUpLink: SignUpLink,
           }}
           sx={{
             zIndex: 1,
@@ -223,6 +241,6 @@ const LoginPage: React.FC = () => {
     </AppProvider>
     // preview-end
   );
-}
+};
 
 export default LoginPage;

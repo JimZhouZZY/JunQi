@@ -4,7 +4,7 @@
  * Licensed under the GPLv3 License.
  */
 
-const JunqiGame = require('../logic/junqiLogic.js');
+const JunqiGame = require("../logic/junqiLogic.js");
 
 const args = process.argv.slice(2);
 const state = args[0];
