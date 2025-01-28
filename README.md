@@ -3,7 +3,7 @@
 Web-based realtime JunQi chess platform.
 
 ## Installation guide
-MySQL or other equavalent database softerware is required to run the server. The following command shows a quick way to create a MySQL database with default values defined in `configs/database.js`. ** Please at least change the username and password when setting up the database. **
+MySQL or other equavalent database softerware is required to run the server. The following command shows a quick way to create a MySQL database with default values defined in `configs/database.js`. **Please at least change the username and password when setting up the database.**
 
 ```mysql
 CREATE junqi_server;
@@ -30,6 +30,13 @@ Then install node dependencies
 
 ```
 node install
+```
+
+Then we need to build the client. Please choose the correct script according to ther server's system. If the scripts are not functioning well for windows, you can run the commands in the bat file manually.
+```
+cd src/frontend
+npm install
+./build_and_copy.sh (or .\build_and_copy.bat for Windows)
 ```
 
 Finally start the server
