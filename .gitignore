@@ -1,3 +1,7 @@
+# build files
+src/frontend/build/
+public/
+
 # database.js
 config/database.js
 
