@@ -4,11 +4,11 @@
  * Licensed under the GPLv3 License.
  */
 
-/** 
+/**
  * routes/user.js
- * 
+ *
  * This file defines the routes related to user authentication and profile management.
- * It includes endpoints for user login/registration, retrieving user details by ID or username, 
+ * It includes endpoints for user login/registration, retrieving user details by ID or username,
  * and accessing a protected route that requires a valid authentication token.
  */
 

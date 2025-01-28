@@ -6,6 +6,7 @@ src/logic
     ├── junqiGraph.js
     └── junqiNode.js
 ```
+
 ```
 class JunqiLogic
 

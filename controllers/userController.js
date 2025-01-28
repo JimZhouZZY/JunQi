@@ -6,10 +6,10 @@
 
 /**
  * controllers/userController.js
- * 
+ *
  * This module handles user authentication and user-related operations.
  * It provides endpoints for login, registration, and protected routes,
- * as well as functionality to retrieve a user's information by either 
+ * as well as functionality to retrieve a user's information by either
  * username or user ID.
  */
 
@@ -18,12 +18,12 @@ const authService = require("../services/authService");
 
 /**
  * Handles both user login and registration.
- * 
- * If the user exists, it attempts to log the user in by verifying 
+ *
+ * If the user exists, it attempts to log the user in by verifying
  * the password and generating a JWT token.
- * If the user does not exist, it creates a new user with the provided 
+ * If the user does not exist, it creates a new user with the provided
  * username and password, and then returns the user ID.
- * 
+ *
  * @param {Object} req - The request object containing the user credentials.
  * @param {Object} res - The response object to send the result.
  */
@@ -67,7 +67,7 @@ exports.loginOrRegister = async (req, res) => {
 /**
  * A protected route that returns a message along with the user information
  * extracted from the valid JWT token.
- * 
+ *
  * @param {Object} req - The request object containing the authenticated user.
  * @param {Object} res - The response object to send the result.
  */
@@ -80,7 +80,7 @@ exports.protectedRoute = (req, res) => {
 
 /**
  * Retrieves the username associated with a given user ID.
- * 
+ *
  * @param {Object} req - The request object containing the user ID.
  * @param {Object} res - The response object to send the result.
  */
@@ -96,7 +96,7 @@ exports.getUsernameById = async (req, res) => {
 
 /**
  * Retrieves the user ID associated with a given username.
- * 
+ *
  * @param {Object} req - The request object containing the username.
  * @param {Object} res - The response object to send the result.
  */

@@ -6,11 +6,12 @@
 
 /**
  * sockets/variables.js
- * 
+ *
  * This module shares some variables that are involved with socket operations
  * TODO: refactor needed
  */
 
-const usernameSocketMap = {};  // A map to associate usernames with their respective socket IDs
+const usernameSocketMap = {}; // A map to associate usernames with their respective socket IDs
+const socketColorMap = {}; // A map to associate socket id with their color on board
 
-module.exports = { usernameSocketMap };
+module.exports = { usernameSocketMap, socketColorMap };

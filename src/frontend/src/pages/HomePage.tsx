@@ -17,6 +17,7 @@ import ChatBox from "../components/ChatBox";
 import { useAuthContext } from "../contexts/AuthContext";
 import useQueueSocket from "../sockets/queue";
 import useGameService from "../services/GameService";
+import useGameHandler from "../services/GameHandler";
 import useSocket from "../sockets/socket";
 import { useSocketContext } from "../contexts/SocketContext";
 import JunqiBoard from "../components/JunqiBoard";
@@ -79,6 +80,7 @@ const HomePage: React.FC = () => {
   const { initSocket } = useSocket();
   const { socket } = useSocketContext();
   const { roomName, gameRef, isInQueue, setIsInQueue } = useGameContext();
+  const { skipActionHandler } = useGameHandler();
 
   const theme = useTheme();
   const navigate = useNavigate();
@@ -105,6 +107,9 @@ const HomePage: React.FC = () => {
           handleLoadLayout();
           break;
         case "button-draw":
+          break;       
+        case "button-skip":
+          handleSkip();
           break;
         case "button-surrender":
           break;
@@ -210,7 +215,6 @@ const HomePage: React.FC = () => {
               <ItemWithoutPadding>
                 <Button
                   id="button-skip"
-                  style={{ textDecoration: "line-through" }}
                   variant="contained"
                   sx={{ width: "100%", maxWidth: "1000px" }}
                   onClick={ClickRouter}
@@ -302,7 +306,10 @@ const HomePage: React.FC = () => {
 
   const handleSaveLayout = () => {
     // 创建一个 Blob 对象，用于存储要保存的布局数据
-    const blob = new Blob([gameRef.current.layout.get(gameRef.current.color)?.toUpperCase()!], { type: "text/plain" });
+    const blob = new Blob(
+      [gameRef.current.layout.get(gameRef.current.color)?.toUpperCase()!],
+      { type: "text/plain" },
+    );
 
     // 创建一个链接，模拟下载
     const link = document.createElement("a");
@@ -315,6 +322,10 @@ const HomePage: React.FC = () => {
     // 清理 URL 对象
     URL.revokeObjectURL(link.href);
   };
+
+  const handleSkip = ()=> {
+    skipActionHandler();
+  }
 
   return (
     <div
@@ -355,7 +366,7 @@ const HomePage: React.FC = () => {
             ref={fileInputRef}
             accept=".lyt"
             onChange={handleFileChange}
-            style={{ display: 'none' }}
+            style={{ display: "none" }}
           />
           <Item>
             <div style={{ borderBottom: "1px solid #333" }}></div>

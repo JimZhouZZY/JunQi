@@ -7,7 +7,7 @@
 
 /**
  * middlewares/authToken.js
- * 
+ *
  * This module contains middleware functions to authenticate user requests.
  * It includes functionality to verify JWT tokens and check user passwords.
  */
@@ -17,11 +17,11 @@ const jwt = require("jsonwebtoken");
 
 /**
  * Middleware function to authenticate JWT token.
- * 
+ *
  * This function checks the 'Authorization' header of incoming requests for a valid JWT token.
  * If the token is not provided or is invalid/expired, it responds with an error.
  * If the token is valid, it decodes the token and attaches the user information to the request object.
- * 
+ *
  * @param {Object} req - The request object containing the headers with the token.
  * @param {Object} res - The response object used to send the response.
  * @param {Function} next - The next middleware function to call after token authentication.
@@ -49,10 +49,10 @@ function authenticateToken(req, res, next) {
 
 /**
  * Middleware function to authenticate the user's password (not yet implemented).
- * 
+ *
  * This function is intended to compare a password with the stored hashed password.
  * It should be called to verify user credentials during login or password-related operations.
- * 
+ *
  * @param {Object} req - The request object containing user credentials.
  * @param {Object} res - The response object used to send the response.
  * @param {Function} next - The next middleware function to call after password verification.
