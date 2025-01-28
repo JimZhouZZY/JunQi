@@ -22,7 +22,7 @@ module.exports = (io, socket) => {
     console.log(`[${roomName}]: Move received: ${JSON.stringify(move)}`); // Log the received move
     const board = boards.get(roomName);
 
-    // Handle skips fir
+    // Handle surrender and skip actions first
     if (move === "skip") {
       if (socketColorMap[socket.id] !== board.getCurrentPlayer()) {
         return;
@@ -36,9 +36,16 @@ module.exports = (io, socket) => {
       }
       return;
     }
-
+    else if (move === 'surrender') {
+      board.is_terminal = true;
+      // TODO: set winner
+      console.log(`[${roomName}]: Game is terminal`);
+      // Notify all players in the room that the game has ended
+      io.to(roomName).emit("terminal"); 
+      return;
+    }
     // Check if the move is legal according to the game rules
-    if (board.isLegalAction(move)) {
+    else if (board.isLegalAction(move)) {
       // Apply the move to the game board if it's legal
       board.applyAction(move);
 

@@ -80,7 +80,7 @@ const HomePage: React.FC = () => {
   const { initSocket } = useSocket();
   const { socket } = useSocketContext();
   const { roomName, gameRef, isInQueue, setIsInQueue } = useGameContext();
-  const { skipActionHandler } = useGameHandler();
+  const { skipHandler, surrenderHandler } = useGameHandler();
 
   const theme = useTheme();
   const navigate = useNavigate();
@@ -112,6 +112,7 @@ const HomePage: React.FC = () => {
           handleSkip();
           break;
         case "button-surrender":
+          handleSurrender();
           break;
         default:
           break;
@@ -324,7 +325,11 @@ const HomePage: React.FC = () => {
   };
 
   const handleSkip = ()=> {
-    skipActionHandler();
+    skipHandler();
+  }
+
+  const handleSurrender = () => {
+    surrenderHandler();
   }
 
   return (
