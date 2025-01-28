@@ -99,9 +99,10 @@ const HomePage: React.FC = () => {
           setIsInQueue(false);
           break;
         case "button-save_layout":
+          handleSaveLayout();
           break;
         case "button-load_layout":
-          handleLayoutChose();
+          handleLoadLayout();
           break;
         case "button-draw":
           break;
@@ -155,7 +156,6 @@ const HomePage: React.FC = () => {
               <ItemWithoutPadding>
                 <Button
                   id="button-save_layout"
-                  style={{ textDecoration: "line-through" }}
                   variant="contained"
                   sx={{ width: "100%", maxWidth: "1000px" }}
                   onClick={ClickRouter}
@@ -166,7 +166,6 @@ const HomePage: React.FC = () => {
               <ItemWithoutPadding>
                 <Button
                   id="button-load_layout"
-                  style={{ textDecoration: "line-through" }}
                   variant="contained"
                   sx={{ width: "100%", maxWidth: "1000px" }}
                   onClick={ClickRouter}
@@ -297,8 +296,24 @@ const HomePage: React.FC = () => {
     reader.readAsText(file); // 以文本形式读取文件内容
   };
 
-  const handleLayoutChose = () => {
+  const handleLoadLayout = () => {
     fileInputRef.current?.click();
+  };
+
+  const handleSaveLayout = () => {
+    // 创建一个 Blob 对象，用于存储要保存的布局数据
+    const blob = new Blob([gameRef.current.layout.get(gameRef.current.color)?.toUpperCase()!], { type: "text/plain" });
+
+    // 创建一个链接，模拟下载
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "layout.lyt"; // 设置文件名为 layout.lyt
+
+    // 触发点击事件开始下载
+    link.click();
+
+    // 清理 URL 对象
+    URL.revokeObjectURL(link.href);
   };
 
   return (
@@ -340,7 +355,7 @@ const HomePage: React.FC = () => {
             ref={fileInputRef}
             accept=".lyt"
             onChange={handleFileChange}
-            className="hidden" // 隐藏文件输入框
+            style={{ display: 'none' }}
           />
           <Item>
             <div style={{ borderBottom: "1px solid #333" }}></div>

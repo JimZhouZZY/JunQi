@@ -173,7 +173,7 @@ const LoginPage: React.FC = () => {
 
   const SignUpLink = () => (
     <Typography align="center" sx={{ mt: 2 }}>
-      Don't have an account?{" "}
+      Don&apos;t have an account?{" "}
       <a href="/signup" style={{ textDecoration: "none", color: "blue" }}>
         Sign Up
       </a>

@@ -162,10 +162,10 @@ const JunqiBoard = () => {
       gameRef.current.game_phase == "MOVING"
     ) {
       // Attack another piece
-      var real_start_row = selectedPiece.row;
-      var real_start_col = selectedPiece.col;
-      var real_end_row = row;
-      var real_end_col = col;
+      let real_start_row = selectedPiece.row;
+      let real_start_col = selectedPiece.col;
+      let real_end_row = row;
+      let real_end_col = col;
       console.log(gameRef.current.color);
       console.log(real_start_row, real_start_col, real_end_row, real_end_col);
       if (selectedPiece.color === "red") {
@@ -264,10 +264,10 @@ const JunqiBoard = () => {
       );
     } else if (selectedPiece && gameRef.current.game_phase == "MOVING") {
       // Move to an empty square
-      var real_start_row = selectedPiece.row;
-      var real_start_col = selectedPiece.col;
-      var real_end_row = row;
-      var real_end_col = col;
+      let real_start_row = selectedPiece.row;
+      let real_start_col = selectedPiece.col;
+      let real_end_row = row;
+      let real_end_col = col;
       console.log(gameRef.current);
       console.log(gameRef.current.color);
       console.log(real_start_row, real_start_col, real_end_row, real_end_col);
