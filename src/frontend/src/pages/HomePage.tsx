@@ -236,7 +236,6 @@ const HomePage: React.FC = () => {
               <ItemWithoutPadding>
                 <Button
                   id="button-save_layout"
-                  style={{ textDecoration: "line-through" }}
                   variant="contained"
                   sx={{ width: "100%", maxWidth: "1000px" }}
                   onClick={ClickRouter}
