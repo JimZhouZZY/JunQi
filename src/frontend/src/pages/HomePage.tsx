@@ -247,7 +247,6 @@ const HomePage: React.FC = () => {
               <ItemWithoutPadding>
                 <Button
                   id="button-surrender"
-                  style={{ textDecoration: "line-through" }}
                   variant="contained"
                   sx={{ width: "100%", maxWidth: "1000px" }}
                   onClick={ClickRouter}
