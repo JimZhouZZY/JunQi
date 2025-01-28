@@ -4,10 +4,9 @@
  * Licensed under the GPLv3 License.
  */
 
-
 /**
  * app.js
- * 
+ *
  * Server-side node app for Web-JunQi.
  */
 

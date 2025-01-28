@@ -6,7 +6,7 @@
 
 /**
  * config.js
- * 
+ *
  * This module defines constants for the server-side app
  */
 

@@ -636,4 +636,28 @@ export default class JunqiGame {
   getCurrentPlayer() {
     return this.jzn.split(" ")[1];
   }
+
+  applySkip(color='0') {    
+    const boardState = this.jzn;
+    const splitResult = JunqiGame.splitBySpace(boardState);
+    let short_jzn = splitResult[0];
+    let curr_player = splitResult[1];
+    let semi_moves = Number(splitResult[2]);
+    let total_moves = Number(splitResult[3]);
+
+    color = color === '0' ? this.getCurrentPlayer() : color;
+    const prev_skips = this.skipped_actions.get(color);
+    this.skipped_actions.set(color, prev_skips - 1);
+    
+    if (prev_skips <= 1) {
+      this.isTerminal = true;
+    }
+    
+    curr_player = curr_player === "r" ? "b" : "r";
+    semi_moves += 1;
+    total_moves += 1;
+
+    const updatedState = `${short_jzn} ${curr_player} ${String(semi_moves)} ${String(total_moves)}`;
+    this.jzn = updatedState;
+  }
 }

@@ -6,7 +6,7 @@
 
 /**
  * services/authServices.js
- * 
+ *
  * This module provides functions related to user authentication and security.
  * It includes utilities for password hashing, password verification, and JWT token generation.
  */
@@ -17,7 +17,7 @@ const { SECRET_KEY } = require("../configs/config");
 
 /**
  * verifyPassword
- * 
+ *
  * Compares the input password with the stored hashed password to verify if they match.
  * @param {string} inputPassword - The password provided by the user during login.
  * @param {string} storedPasswordHash - The hashed password stored in the database.
@@ -29,7 +29,7 @@ async function verifyPassword(inputPassword, storedPasswordHash) {
 
 /**
  * hashPassword
- * 
+ *
  * Hashes the given password using bcrypt with a salt rounds of 10.
  * This function is typically used during user registration to securely store passwords.
  * @param {string} password - The plain-text password to be hashed.
@@ -41,7 +41,7 @@ async function hashPassword(password) {
 
 /**
  * generateToken
- * 
+ *
  * Generates a JSON Web Token (JWT) for the user, using the user's ID and a secret key.
  * The token expires in 1 hour.
  * @param {string} userId - The unique identifier of the user.

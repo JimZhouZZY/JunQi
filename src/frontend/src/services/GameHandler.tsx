@@ -95,7 +95,15 @@ const useGameHandler = () => {
     return canSwap;
   };
 
-  return { moveHandler, swapHandler };
+  const skipHandler = () => {
+    emitMove("skip", roomName);
+  };
+
+  const surrenderHandler = () => {
+    emitMove('surrender', roomName);
+  }
+
+  return { moveHandler, swapHandler, skipHandler, surrenderHandler };
 };
 
 export default useGameHandler;
