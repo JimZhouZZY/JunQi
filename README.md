@@ -21,27 +21,28 @@ FLUSH PRIVILEGES;
 
 After setting up the database, clone and cd into the repository
 
-```
+```shell
 git clone https://github.com/jimzhouzzy/JunQi.git
 cd JunQi
 ```
 
 Then install node dependencies
 
-```
+```shell
 node install
 ```
 
 Then we need to build the client. Please choose the correct script according to ther server's system. If the scripts are not functioning well for windows, you can run the commands in the bat file manually.
-```
+```shell
 cd src/frontend
 npm install
-./build_and_copy.sh (or .\build_and_copy.bat for Windows)
+./build_and_copy.sh
+# or .\build_and_copy.bat for Windows
 ```
 
 Finally start the server
 
-```
+```shell
 node app
 ```
 
