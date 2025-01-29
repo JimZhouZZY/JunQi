@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "JunQi",
+  "name": "Web-based realtime JunQi platform",
   "icons": [
     {
       "src": "favicon.ico",
