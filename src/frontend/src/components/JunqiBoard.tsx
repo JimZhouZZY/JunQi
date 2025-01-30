@@ -330,7 +330,8 @@ const JunqiBoard = () => {
   }
 
   function renderSquare(row: number, col: number) {
-    const isBlack = (row + col) % 2 === 1;
+    // const isBlack = (row + col) % 2 === 1;
+    const isBlack = false;
     const piece = board[row][col];
 
     const size_mult = 1.5;
