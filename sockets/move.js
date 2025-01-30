@@ -28,6 +28,7 @@ module.exports = (io, socket) => {
         return;
       }
       board.applySkip();
+      io.to(roomName).emit("move", move, board.jzn);
       // Check if the game has reached a terminal state (end of game)
       if (board.is_terminal) {
         console.log(`[${roomName}]: Game is terminal`);

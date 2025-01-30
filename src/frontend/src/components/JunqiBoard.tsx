@@ -16,6 +16,22 @@ import "./JunqiBoard.css";
 import { useGameContext } from "../contexts/GameContext";
 import useGameHandler from "../services/GameHandler";
 
+const typeToChineseMap: Record<string, string> = {
+  "L": "司令",
+  "K": "军长",
+  "J": "师长",
+  "I": "旅长",
+  "H": "团长",
+  "G": "营长",
+  "F": "连长",
+  "E": "排长",
+  "D": "工兵",
+  "C": "炸弹",
+  "B": "地雷",
+  "A": "军旗",
+  '#': "    ",
+};
+
 type Piece = {
   type: string;
   color: "red" | "blue";
@@ -327,22 +343,22 @@ const JunqiBoard = () => {
       return (
         <svg
           style={{ userSelect: "none" }}
-          width="30"
-          height="30"
-          viewBox="0 0 100 100"
+          width="60"
+          height="40"
+          viewBox="0 0 60 40"
           xmlns="http://www.w3.org/2000/svg"
         >
-          <rect x="10" y="10" width="80" height="80" fill={fillColor} />
+          <rect x="5" y="4" width="50" height="30" fill={fillColor} />
           <text
             style={{ pointerEvents: "none" }}
             x="50%"
             y="50%"
-            fontSize="30"
+            fontSize="20"
             textAnchor="middle"
             dy=".3em"
             fill="white"
           >
-            {type}
+            {typeToChineseMap[type.toUpperCase()] || type}
           </text>
         </svg>
       );
