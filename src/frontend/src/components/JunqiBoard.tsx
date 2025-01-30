@@ -26,8 +26,8 @@ const typeToChineseMap: Record<string, string> = {
   "F": "连长",
   "E": "排长",
   "D": "工兵",
-  "C": "炸弹",
-  "B": "地雷",
+  "C": "地雷",
+  "B": "炸弹",
   "A": "军旗",
   '#': "    ",
 };
