@@ -359,7 +359,7 @@ const JunqiBoard = () => {
               <feDropShadow dx="3" dy="3" stdDeviation="2" flood-color="black" />
             </filter>
             <filter id="shadow_f2" x="0" y="0" width="150%" height="150%">
-              <feDropShadow dx="-1" dy="0" stdDeviation="1" flood-color="white" />
+              <feDropShadow dx="1" dy="1" stdDeviation="0" flood-color="gray" />
             </filter>
           </defs>
       
