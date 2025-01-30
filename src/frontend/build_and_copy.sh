@@ -8,3 +8,4 @@
 npm run build
 rm -rf ../../public
 cp -r build ../../public
+touch ../../public/.gitkeep # re-create .gitkeep
