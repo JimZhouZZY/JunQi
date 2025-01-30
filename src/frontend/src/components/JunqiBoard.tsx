@@ -349,7 +349,31 @@ const JunqiBoard = () => {
           viewBox="0 0 60 40"
           xmlns="http://www.w3.org/2000/svg"
         >
-          <rect x="5" y="4" width="50" height="30" fill={fillColor} />
+          {/* Define gradient effect */}
+          <defs>
+            <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style={{ stopColor: fillColor, stopOpacity: 1 }} />
+              <stop offset="100%" style={{ stopColor: fillColor, stopOpacity: 1 }} />
+            </linearGradient>
+            <filter id="shadow_f1" x="0" y="0" width="150%" height="150%">
+              <feDropShadow dx="3" dy="3" stdDeviation="2" flood-color="black" />
+            </filter>
+            <filter id="shadow_f2" x="0" y="0" width="150%" height="150%">
+              <feDropShadow dx="-1" dy="0" stdDeviation="1" flood-color="white" />
+            </filter>
+          </defs>
+      
+          <rect
+            x="5"
+            y="4"
+            width="50"
+            height="30"
+            fill="url(#grad1)" // Use gradient
+            filter="url(#shadow_f1)" // Use shadow
+            rx="2"
+            ry="2"
+          />
+          
           <text
             style={{ pointerEvents: "none" }}
             x="50%"
@@ -358,6 +382,7 @@ const JunqiBoard = () => {
             textAnchor="middle"
             dy=".3em"
             fill="white"
+            filter="url(#shadow_f2)"
           >
             {typeToChineseMap[type.toUpperCase()] || type}
           </text>
