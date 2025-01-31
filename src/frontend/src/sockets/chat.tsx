@@ -27,7 +27,7 @@ const useChatSocket = () => {
     }, [socket]);
 
     const emitMessage = (input: string) => {
-        if (input.trim() === "") return;
+        if (input.trim() === "" || roomName === undefined) return;
         socket?.emit("chat-message", {sender: username,  text: input}, roomName)
     };
 

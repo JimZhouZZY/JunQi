@@ -115,7 +115,7 @@ const JunqiBoard = () => {
           const row = Math.floor(idx / 5);
           const col = idx % 5;
           let curr_color: "red" | "blue";
-          if (char != "#") {
+          if (char !== "#") {
             curr_color = char === char.toUpperCase() ? "blue" : "red";
           } else {
             curr_color = gameRef.current.color === "r" ? "blue" : "red";
@@ -134,6 +134,7 @@ const JunqiBoard = () => {
         }
       }
     });
+    console.log(newBoard);
     setBoard(newBoard);
   };
 
@@ -351,10 +352,6 @@ const JunqiBoard = () => {
         >
           {/* Define gradient effect */}
           <defs>
-            <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" style={{ stopColor: fillColor, stopOpacity: 1 }} />
-              <stop offset="100%" style={{ stopColor: fillColor, stopOpacity: 1 }} />
-            </linearGradient>
             <filter id="shadow_f1" x="0" y="0" width="150%" height="150%">
               <feDropShadow dx="3" dy="3" stdDeviation="2" flood-color="black" />
             </filter>
@@ -368,7 +365,7 @@ const JunqiBoard = () => {
             y="4"
             width="50"
             height="30"
-            fill="url(#grad1)" // Use gradient
+            fill={fillColor}
             filter="url(#shadow_f1)" // Use shadow
             rx="2"
             ry="2"
