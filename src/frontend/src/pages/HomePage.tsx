@@ -53,7 +53,12 @@ const HomePage: React.FC = () => {
     const onPageLoad = () => {
       console.log("Initializing game...");
       initSocket();
-      initGame();
+      const cachedLayout = localStorage.getItem("layout");
+      console.log(cachedLayout);
+      if (cachedLayout !== null) {
+        initGame(cachedLayout);
+      }
+      else initGame();
     };
 
     // Check if the page has already loaded
@@ -320,6 +325,9 @@ const HomePage: React.FC = () => {
 
     // 清理 URL 对象
     URL.revokeObjectURL(link.href);
+
+    // Cache layout
+    localStorage.setItem("layout", gameRef.current.layout.get(gameRef.current.color)?.toUpperCase()!)
   };
 
   const handleSkip = ()=> {

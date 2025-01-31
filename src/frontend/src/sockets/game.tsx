@@ -52,6 +52,9 @@ const useGameSocket = () => {
         console.log(
           `Submitted layout ${gameRef.current.layout.get(req_color)}`,
         );
+        // Cache layout
+        localStorage.setItem("layout", gameRef.current.layout.get('b')!);
+        // New game
         newGame(gameRef.current.layout.get(req_color)!, req_color);
         gameRef.current.color = req_color;
         console.log(
