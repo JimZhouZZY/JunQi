@@ -17,6 +17,7 @@ let io;
 
 // TODO: this is too ugly, refactor it!
 const { usernameSocketMap, socketColorMap } = require("../sockets/variables");
+const { emitMessage } = require("../sockets/chat");
 const JunqiGame = require("../src/logic/junqiLogic"); // Game logic and board setup
 
 // Maps for storing game boards and room data
@@ -85,6 +86,9 @@ function startMatch(usernames) {
     io.to(socketId).emit("request-layout", usernameToColor.get(username)); // Send assigned color
     socketColorMap[socketId] = usernameToColor.get(username);
   });
+
+  // Message the player that game started
+  emitMessage({sender: "Server", text: "Game started!"}, roomName);
 }
 
 module.exports = { setIo, startMatch, boards, rooms };

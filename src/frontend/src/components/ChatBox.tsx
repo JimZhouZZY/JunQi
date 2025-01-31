@@ -4,12 +4,17 @@
  * Licensed under the GPLv3 License.
  */
 
-import React from "react";
+import React, { useState } from "react";
 import { Box, Button, TextField, Typography, useTheme } from "@mui/material";
 import { useGameContext } from "../contexts/GameContext";
+import useChatSocket from "../sockets/chat";
+import { useAuthContext } from "../contexts/AuthContext";
 
 function ChatBox() {
   const theme = useTheme();
+  const { emitMessage, messages} = useChatSocket(); 
+  const { username } = useAuthContext();
+  const [input, setInput] = useState<string>("");
 
   const { roomName } = useGameContext();
   return (
@@ -33,37 +38,22 @@ function ChatBox() {
           padding: "10px",
           marginBottom: "10px",
           borderRadius: "4px",
-          backgroundColor: "#fff",
+          backgroundColor: "#fff",    
           boxShadow: "inset 0 0 5px rgba(0, 0, 0, 0.1)",
         }}
       >
-        <Typography
-          sx={{
-            textAlign: "left",
-            color: "gray",
-            marginBottom: "5px",
-          }}
-        >
-          System: Welcome to the chat! Room: {roomName}.
-        </Typography>
-        <Typography
-          sx={{
-            textAlign: "left",
-            color: "blue",
-            marginBottom: "5px",
-          }}
-        >
-          User: Hi there!
-        </Typography>
-        <Typography
-          sx={{
-            textAlign: "left",
-            color: "gray",
-            marginBottom: "5px",
-          }}
-        >
-          System: Your message has been received.
-        </Typography>
+        {messages.map((msg, index) => (
+          <Typography
+            key={index}
+            sx={{
+              textAlign: "left",
+              color: msg.sender === "Server" ? "red" : (msg.sender === username ? "blue" : "gray"),
+              marginBottom: "5px",
+            }}
+          >
+            {msg.sender}: {msg.text}
+          </Typography>
+        ))}
       </Box>
 
       {/* 输入框和按钮区域 */}
@@ -72,6 +62,8 @@ function ChatBox() {
           variant="outlined"
           fullWidth
           placeholder="Type a message"
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
           sx={{
             marginRight: "10px",
             height: "30px",
@@ -84,11 +76,12 @@ function ChatBox() {
               fontSize: "14px", // 可根据需要调整字体大小
             },
           }}
+          onKeyDown={(e) => {if (e.key === "Enter")  {emitMessage(input); setInput("");}}}
         />
         <Button
           variant="contained"
           color="primary"
-          style={{ textDecoration: "line-through" }}
+          onClick={() => {emitMessage(input); setInput("");}}
         >
           Send
         </Button>
