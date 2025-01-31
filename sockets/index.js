@@ -19,6 +19,7 @@ const roomHandler = require("./room"); // Handles room-related socket events (jo
 const moveHandler = require("./move"); // Handles player move-related socket events
 const queueHandler = require("./queue"); // Handles queue management (joining, leaving, matchmaking)
 const layoutHandler = require("./layout"); // Handles player layout-related events
+const chatHandler = require("./chat")
 
 /**
  * Main function that handles socket connection and event binding
@@ -33,6 +34,7 @@ module.exports = (io) => {
     moveHandler(io, socket); // Handle events related to player moves
     queueHandler(io, socket); // Handle events related to matchmaking and queueing
     layoutHandler(io, socket); // Handle events related to setting player layout (color, position, etc.)
+    chatHandler(io, socket); // Handle events related to in-game chat
 
     // Handle socket disconnections
     socket.on("disconnect", () => {
