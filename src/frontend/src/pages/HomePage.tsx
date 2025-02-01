@@ -318,7 +318,7 @@ const HomePage: React.FC = () => {
     // 创建一个链接，模拟下载
     const link = document.createElement("a");
     link.href = URL.createObjectURL(blob);
-    link.download = "layout.lyt"; // 设置文件名为 layout.lyt
+    link.download = "layout.lyt";
 
     // 触发点击事件开始下载
     link.click();
