@@ -21,17 +21,32 @@ const useChatSocket = () => {
           return;
         }
 
-        socket.on("chat-message", (msg: { sender: string, text: string }) => {
-            setMessages((prev) => [...prev, msg]);
+        socket.on("chat-message", (msg: { sender: string, text: string, comment?: string}) => {
+            console.log(`Message reveived: ${JSON.stringify(msg)}`)
+            if (msg.sender.toLowerCase() === 'server') {
+                if (msg.comment) {
+                    switch (msg.comment) {
+                        case "new-game":
+                            setMessages([msg]);
+                            break;
+                        default:
+                            setMessages((prev) => [...prev, msg]);
+                            break;
+                    }
+                }
+            }
+            else {
+                setMessages((prev) => [...prev, msg]);
+            }
         });
     }, [socket]);
 
     const emitMessage = (input: string) => {
-        if (input.trim() === "") return;
+        if (input.trim() === "" || roomName === undefined) return;
         socket?.emit("chat-message", {sender: username,  text: input}, roomName)
     };
 
-    return { emitMessage, messages };
+    return { emitMessage, messages, setMessages };
 }
 
 export default useChatSocket;

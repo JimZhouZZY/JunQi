@@ -6,6 +6,7 @@
 
 const { boards } = require("../services/matchService");
 const { socketColorMap } = require("./variables");
+const { emitMessage } = require('./chat')
 
 /**
  * sockets/move.js
@@ -33,6 +34,7 @@ module.exports = (io, socket) => {
       if (board.is_terminal) {
         console.log(`[${roomName}]: Game is terminal`);
         // Notify all players in the room that the game has ended
+        emitMessage({sender: "Server", text: "Game ended!"}, roomName)
         io.to(roomName).emit("terminal");
       }
       return;
@@ -42,6 +44,7 @@ module.exports = (io, socket) => {
       // TODO: set winner
       console.log(`[${roomName}]: Game is terminal`);
       // Notify all players in the room that the game has ended
+      emitMessage({sender: "Server", text: "Game ended!"}, roomName)
       io.to(roomName).emit("terminal"); 
       return;
     }
@@ -57,8 +60,8 @@ module.exports = (io, socket) => {
       if (board.isTerminal()) {
         console.log(`[${roomName}]: Game is terminal`)
         // Notify all players in the room that the game has ended
+        emitMessage({sender: "Server", text: "Game ended!"}, roomName)
         io.to(roomName).emit("terminal");
-
         // TODO: Implement a more efficient way to handle the end of the game (cleanup, etc.)
       }
     }

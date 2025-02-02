@@ -53,7 +53,12 @@ const HomePage: React.FC = () => {
     const onPageLoad = () => {
       console.log("Initializing game...");
       initSocket();
-      initGame();
+      const cachedLayout = localStorage.getItem("layout");
+      console.log(cachedLayout);
+      if (cachedLayout !== null) {
+        initGame(cachedLayout);
+      }
+      else initGame();
     };
 
     // Check if the page has already loaded
@@ -313,13 +318,16 @@ const HomePage: React.FC = () => {
     // 创建一个链接，模拟下载
     const link = document.createElement("a");
     link.href = URL.createObjectURL(blob);
-    link.download = "layout.lyt"; // 设置文件名为 layout.lyt
+    link.download = "layout.lyt";
 
     // 触发点击事件开始下载
     link.click();
 
     // 清理 URL 对象
     URL.revokeObjectURL(link.href);
+
+    // Cache layout
+    localStorage.setItem("layout", gameRef.current.layout.get(gameRef.current.color)?.toUpperCase()!)
   };
 
   const handleSkip = ()=> {

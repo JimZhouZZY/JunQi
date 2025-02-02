@@ -101,6 +101,14 @@ export default function PrimarySearchAppBar() {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
+  const handleLogOut = () => {
+    // Clear local storage, including token and cached layout
+    // TODO: implement cached layout
+    localStorage.clear();
+    // Refresh after logged out
+    window.location.reload();
+  }
+
   const menuId = "primary-search-account-menu";
   const renderMenu = (
     <Menu
@@ -120,6 +128,7 @@ export default function PrimarySearchAppBar() {
     >
       <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
       <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <MenuItem onClick={handleLogOut}>Log out</MenuItem>
     </Menu>
   );
 

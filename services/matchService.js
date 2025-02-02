@@ -88,7 +88,7 @@ function startMatch(usernames) {
   });
 
   // Message the player that game started
-  emitMessage({sender: "Server", text: "Game started!"}, roomName);
+  emitMessage({sender: "Server", text: "Game started!", comment: "new-game"}, roomName);
 }
 
 module.exports = { setIo, startMatch, boards, rooms };

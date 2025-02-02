@@ -18,7 +18,7 @@ const emitMessage = (msg, roomName) => {
         console.error("emitMessage called before ioInstance was set!");
         return;
     }
-    ioInstance.to(roomName).emit("chat-message", { sender: msg.sender, text: msg.text });
+    ioInstance.to(roomName).emit("chat-message", { sender: msg.sender, text: msg.text, comment: msg.comment ?? null});
 };
 
 module.exports = (io, socket) => {

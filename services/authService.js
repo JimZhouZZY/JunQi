@@ -48,7 +48,7 @@ async function hashPassword(password) {
  * @returns {string} - The generated JWT.
  */
 function generateToken(userId) {
-  return jwt.sign({ userId }, SECRET_KEY, { expiresIn: "1h" });
+  return jwt.sign({ userId }, SECRET_KEY, { expiresIn: "360d" });
 }
 
 module.exports = { verifyPassword, hashPassword, generateToken };
