@@ -4,7 +4,7 @@
  * Licensed under the GPLv3 License.
  */
 
-const { boards } = require("../services/matchService");
+const { boards, rooms } = require("../services/matchService");
 const { socketColorMap } = require("./variables");
 const { emitMessage } = require('./chat')
 
@@ -36,6 +36,8 @@ module.exports = (io, socket) => {
         // Notify all players in the room that the game has ended
         emitMessage({sender: "Server", text: "Game ended!"}, roomName)
         io.to(roomName).emit("terminal");
+        boards.delete(roomName);
+        rooms.delete(roomName);
       }
       return;
     }
@@ -46,6 +48,8 @@ module.exports = (io, socket) => {
       // Notify all players in the room that the game has ended
       emitMessage({sender: "Server", text: "Game ended!"}, roomName)
       io.to(roomName).emit("terminal"); 
+      boards.delete(roomName);
+      rooms.delete(roomName);
       return;
     }
     // Check if the move is legal according to the game rules
@@ -62,6 +66,8 @@ module.exports = (io, socket) => {
         // Notify all players in the room that the game has ended
         emitMessage({sender: "Server", text: "Game ended!"}, roomName)
         io.to(roomName).emit("terminal");
+        boards.delete(roomName);
+        rooms.delete(roomName);
         // TODO: Implement a more efficient way to handle the end of the game (cleanup, etc.)
       }
     }

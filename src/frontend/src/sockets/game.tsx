@@ -66,7 +66,12 @@ const useGameSocket = () => {
     });
 
     socket?.on("terminal", function () {
-      initGame();
+      const cachedLayout = localStorage.getItem("layout");
+      console.log(cachedLayout);
+      if (cachedLayout !== null) {
+        initGame(cachedLayout);
+      }
+      else initGame();
       setColor("0");
       setRoomName("");
     });
