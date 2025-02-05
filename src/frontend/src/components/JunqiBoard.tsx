@@ -386,6 +386,7 @@ const JunqiBoard = () => {
         </svg>
       );
     };
+
     return (
       <div
         key={`${row}-${col}`}
