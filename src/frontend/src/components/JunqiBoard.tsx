@@ -339,12 +339,12 @@ const JunqiBoard = () => {
     // Function to render SVG based on piece type and color
     const renderPieceSVG = (piece: Piece) => {
       const { color, type, selected } = piece;
-      let fillColor = color === "red" ? "red" : "blue";
+      let fillColor = color === "red" ? "#ba1818" : "#181eba";
       fillColor = selected ? "purple" : fillColor;
 
       return (
         <svg
-          style={{ userSelect: "none" }}
+          style={{ userSelect: "none", zIndex: 3}}
           width="60"
           height="40"
           viewBox="0 0 60 40"
@@ -359,7 +359,7 @@ const JunqiBoard = () => {
               <feDropShadow dx="1" dy="1" stdDeviation="0" flood-color="gray" />
             </filter>
           </defs>
-      
+
           <rect
             x="5"
             y="4"
@@ -368,11 +368,13 @@ const JunqiBoard = () => {
             fill={fillColor}
             filter="url(#shadow_f1)" // Use shadow
             rx="2"
-            ry="2"
+            ry="2"  
+            // stroke="purple"             // Set the border color to white
+            // stroke-width="2"  
           />
-          
+
           <text
-            style={{ pointerEvents: "none" }}
+            style={{ pointerEvents: "none"}}
             x="50%"
             y="50%"
             fontSize="20"
@@ -386,6 +388,344 @@ const JunqiBoard = () => {
         </svg>
       );
     };
+
+    const renderTexture = (row: number, col: number) => {
+      const VerticalLine = () => {
+        return
+        <div
+          style={{
+            position: "absolute",
+            top: 0,
+            left: "50%",
+            width: "2px",
+            height: "100%",
+            backgroundColor: "black",
+            transform: "translateX(-50%)",
+            zIndex: 1,
+          }}
+        />
+      }
+
+      const TopLine = () => {
+        return (
+          <div
+            style={{
+              position: "absolute",
+              top: 0,
+              left: "50%",
+              width: "2px",
+              height: "50%",
+              backgroundColor: "black",
+              transform: "translateX(-50%)",
+              zIndex: 1,
+            }}
+          />);
+      }
+
+      const BottomLine = () => {
+        return (
+          <div
+            style={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              width: "2px",
+              height: "100%",
+              backgroundColor: "black",
+              transform: "translateX(-50%)",
+              zIndex: 1,
+            }}
+          />
+        );
+      }
+
+      const TopRail = () => {
+        return (
+          <div
+            style={{
+              position: "absolute",
+              top: 0,
+              left: "50%",
+              width: "4px",
+              height: "50%",
+              backgroundColor: "black",
+              transform: "translateX(-50%)",
+              zIndex: 1,
+            }}
+          />);
+      }
+
+      const BottomRail = () => {
+        return (
+          <div
+            style={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              width: "4px",
+              height: "50%",
+              backgroundColor: "black",
+              transform: "translateX(-50%)",
+              zIndex: 1,
+            }}
+          />
+        );
+      }
+
+      const HorizontalLine = () => {
+        return (
+          <div
+            style={{
+              position: "absolute",
+              top: "50%",
+              left: 0,
+              width: "100%",
+              height: "2px",
+              backgroundColor: "black",
+              transform: "translateY(-50%)",
+              zIndex: 1,
+            }}
+          />
+        );
+      }
+
+      const LeftLine = () => {
+        return (
+          <div
+            style={{
+              position: "absolute",
+              top: "50%",
+              left: "-25%",
+              width: "75%",
+              height: "2px",
+              backgroundColor: "black",
+              transform: "translateY(-50%)",
+              zIndex: 1,
+            }}
+          />
+        );
+      }
+
+      const RightLine = () => {
+        return (
+          <div
+            style={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              width: "75%",
+              height: "2px",
+              backgroundColor: "black",
+              transform: "translateY(-50%)",
+              zIndex: 1,
+            }}
+          />
+        );
+      }
+      const LeftRail = () => {
+        return (
+          <div
+            style={{
+              position: "absolute",
+              top: "50%",
+              left: 0,
+              width: "50%",
+              height: "4px",
+              backgroundColor: "black",
+              transform: "translateY(-50%)",
+              zIndex: 1,
+            }}
+          />
+        );
+      }
+
+      const RightRail = () => {
+        return (
+          <div
+            style={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              width: "50%",
+              height: "4px",
+              backgroundColor: "black",
+              transform: "translateY(-50%)",
+              zIndex: 1,
+            }}
+          />
+        );
+      }
+
+      const TopLeftDiagLine = () => {
+        return (
+          <div
+            style={{
+              position: "absolute",
+              top: "0%",
+              left: "0%",
+              width: "70%",  // 调整为想要的长度
+              height: "2px",
+              backgroundColor: "black",
+              transform: "translate(-50%, -50%) rotate(31deg)",
+              zIndex: 1,
+            }}
+          />
+        );
+      }
+
+      const TopRightDiagLine = () => {
+        return (
+          <div
+            style={{
+              position: "absolute",
+              top: "0%",
+              left: "100%",
+              width: "70%",  // 调整为想要的长度
+              height: "2px",
+              backgroundColor: "black",
+              transform: "translate(-50%, -50%) rotate(-31deg)",
+              zIndex: 1,
+            }}
+          />
+        );
+      }
+
+      const BottomLeftDiagLine = () => {
+        return (
+          <div
+            style={{
+              position: "absolute",
+              top: "100%",
+              left: "0%",
+              width: "70%",  // 调整为想要的长度
+              height: "2px",
+              backgroundColor: "black",
+              transform: "translate(-50%, -50%) rotate(149deg)",
+              zIndex: 1,
+            }}
+          />
+        );
+      }
+
+      const BottomRightDiagLine = () => {
+        return (
+          <div
+            style={{
+              position: "absolute",
+              top: "100%",
+              left: "100%",
+              width: "70%",  // 调整为想要的长度
+              height: "2px",
+              backgroundColor: "black",
+              transform: "translate(-50%, -50%) rotate(-149deg)",
+              zIndex: 1,
+            }}
+          />
+        );
+      }
+
+      const CampCircle = () => {
+        return (
+          <div
+            style={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              width: "35px",  // 设置圆的大小
+              height: "35px",
+              borderRadius: "50%",  // 使其成为圆形
+              border: "4px solid black",  // 设置边框为 2px
+              transform: "translate(-50%, -50%)",
+              backgroundColor: "lightgray",  // 设置背景颜色
+              zIndex: 2,
+            }}
+          />
+        );
+      }
+
+      const GarrisonRect = () => {
+        return (
+          <div
+          style={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            width: "30px",  // 设置矩形宽度
+            height: "20px",  // 设置矩形高度
+            borderRadius: "6px",  // 圆角半径
+            border: "3px solid black",  // 边框样式
+            transform: "translate(-50%, -50%)",
+            backgroundColor: "lightgray",  // 设置矩形背景颜色
+            zIndex: 2,
+          }}
+        />
+      );
+      }
+
+      const boardMap = [
+        [1, 1, 1, 1, 1],
+        [2, 2, 2, 2, 2],
+        [2, 0, 1, 0, 2],
+        [2, 1, 0, 1, 2],
+        [2, 0, 1, 0, 2],
+        [2, 3, 2, 3, 2],
+        [2, 3, 2, 3, 2],
+        [2, 0, 1, 0, 2],
+        [2, 1, 0, 1, 2],
+        [2, 0, 1, 0, 2],
+        [2, 2, 2, 2, 2],
+        [1, 1, 1, 1, 1],
+      ]
+
+      const top = (row - 1 >= 0) ? boardMap[row - 1][col] : null;
+      const bottom = (row + 1 < 12) ? boardMap[row + 1][col] : null;
+      const left = (col - 1 >= 0) ? boardMap[row][col - 1] : null;
+      const right = (col + 1 < 5) ? boardMap[row][col + 1] : null;
+
+      if (boardMap[row][col] === 1) {
+        return (
+          <div>
+            {<GarrisonRect />}
+            {(top !== null) && <TopLine />}
+            {(bottom !== null) && <BottomLine />}
+            {(left !== null) && <LeftLine />}
+            {(right !== null) && <RightLine />}
+          </div>
+        );
+      } else if (boardMap[row][col] === 2) {
+        console.log(left);
+        return (
+          <div>
+            {<GarrisonRect />}
+            {(top !== null) && (top === 2 || top === 3) ? <TopRail /> : <TopLine />}
+            {(bottom !== null) && (bottom === 2 || bottom === 3) ? <BottomRail /> : <BottomLine />}
+            {(left !== null) ? ((left === 2 || left === 3) ? <LeftRail /> : <LeftLine />) : null}
+            {(right !== null) ? ((right === 2 || right === 3) ? <RightRail /> : <RightLine />) : null}
+          </div>
+        );
+      } else if (boardMap[row][col] === 3) {
+        return (
+          <div>
+            {<GarrisonRect />}
+            <LeftRail />
+            <RightRail />
+          </div>
+        );
+      } else if (boardMap[row][col] === 0) {
+        return (
+          <div>
+            {<CampCircle />}
+            <TopLine />
+            <BottomLine />
+            <TopLeftDiagLine />
+            <TopRightDiagLine />
+            <BottomLeftDiagLine />
+            <BottomRightDiagLine />
+          </div>
+        );
+      }
+    }
+
     return (
       <div
         key={`${row}-${col}`}
@@ -397,10 +737,10 @@ const JunqiBoard = () => {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          border: "1px solid gray",
         }}
         onClick={() => handleClick(row, col)} // Add onClick event here
       >
+        {renderTexture(row, col)}
         {piece && renderPieceSVG(piece)}
       </div>
     );

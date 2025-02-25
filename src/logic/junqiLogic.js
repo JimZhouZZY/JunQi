@@ -274,6 +274,7 @@ class JunqiGame {
     if (goalPiece === "0") {
       short_jzn = updateStringAtIndex(short_jzn, headI * 5 + headJ, "0");
       short_jzn = updateStringAtIndex(short_jzn, tailI * 5 + tailJ, currPiece);
+      // TODO: peaceMove 逻辑可能有问题
       peaceMove = false;
     }
     // 处理棋子 "d" 或 "D"
@@ -295,7 +296,12 @@ class JunqiGame {
           short_jzn = updateStringAtIndex(short_jzn, headI * 5 + headJ, "0");
           short_jzn = updateStringAtIndex(short_jzn, tailI * 5 + tailJ, "0");
           peaceMove = false;
-        } else {
+        } else if (goalPiece === "a" || goalPiece === "A") {
+          short_jzn = updateStringAtIndex(short_jzn, headI * 5 + headJ, currPiece);
+          short_jzn = updateStringAtIndex(short_jzn, tailI * 5 + tailJ, currPiece);
+          peaceMove = false;
+        }
+        else {
           short_jzn = updateStringAtIndex(short_jzn, headI * 5 + headJ, "0");
           peaceMove = false;
         }

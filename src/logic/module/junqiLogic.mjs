@@ -295,7 +295,12 @@ export default class JunqiGame {
           short_jzn = updateStringAtIndex(short_jzn, headI * 5 + headJ, "0");
           short_jzn = updateStringAtIndex(short_jzn, tailI * 5 + tailJ, "0");
           peaceMove = false;
-        } else {
+        } else if (goalPiece === "a" || goalPiece === "A") {
+          short_jzn = updateStringAtIndex(short_jzn, headI * 5 + headJ, currPiece);
+          short_jzn = updateStringAtIndex(short_jzn, tailI * 5 + tailJ, currPiece);
+          peaceMove = false;
+        }
+        else {
           short_jzn = updateStringAtIndex(short_jzn, headI * 5 + headJ, "0");
           peaceMove = false;
         }

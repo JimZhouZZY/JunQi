@@ -100,6 +100,7 @@ const HomePage: React.FC = () => {
         case "button-start":
           joinQueue();
           setIsInQueue(true);
+          localStorage.setItem("layout", gameRef.current.layout.get('b')!);
           break;
         case "button-cancle":
           leaveQueue();

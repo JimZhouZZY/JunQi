@@ -10,6 +10,7 @@ import { useGameContext } from "../contexts/GameContext";
 import { useSocketContext } from "../contexts/SocketContext";
 import useGameService from "../services/GameService";
 import JunqiGame from "../services/logic/junqiLogic";
+import AudioController from "../utils/AudioController";
 
 const useGameSocket = () => {
   const { username } = useAuthContext(); // Access username from context
@@ -34,6 +35,8 @@ const useGameSocket = () => {
       window.updateBoardFromFEN(
         gameRef.current.getMaskedJzn(gameRef.current.color),
       );
+      // TODO: audio controller needs refector
+      AudioController.playSound("roger");
       console.log(
         `New Masked JZN: ${gameRef.current.getMaskedJzn(gameRef.current.color)}`,
       );
@@ -66,7 +69,12 @@ const useGameSocket = () => {
     });
 
     socket?.on("terminal", function () {
-      initGame();
+      const cachedLayout = localStorage.getItem("layout");
+      console.log(cachedLayout);
+      if (cachedLayout !== null) {
+        initGame(cachedLayout);
+      }
+      else initGame();
       setColor("0");
       setRoomName("");
     });
